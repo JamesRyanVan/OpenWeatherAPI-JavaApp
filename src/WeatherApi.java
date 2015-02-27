@@ -129,13 +129,5 @@ public class WeatherAPI {
     }
 
 
-    public static void main(String[] args) {
-        WeatherAPI weather = new WeatherAPI(1851632, false);
-
-//        System.out.println(weather.getLocal());
-        System.out.println(weather.getShortTerm());
-//        System.out.println(weather.getLongTerm());
-    }
-
 
 }
