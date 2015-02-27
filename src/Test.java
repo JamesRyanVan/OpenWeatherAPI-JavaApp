@@ -7,7 +7,7 @@ public class Test {
 	
 	public static void main(String [] args) throws JSONException, IOException{
 		WeatherApi a = new WeatherApi(2643743,true);
-		JSONObject apiObj = a.getapiObj();
+		JSONObject apiObj = a.getLocal();
 		Local l =  new Local(apiObj);
 		System.out.println("THE LOCAL FORECAST IS: ");
 		System.out.println("Time of data collection is: "+l.getUpdateTimeString()+"\nThe weather conditions are:"+l.getSkyCondition());
