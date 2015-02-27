@@ -6,13 +6,13 @@ import java.net.MalformedURLException;
 import java.util.Scanner;
 
 /**
- * Class that performs a call on the Open Weather Map API.
+ * Class that performs a call on the Open Weather Map API and fetches the JSONObject.
  *
  * @author Jeremy Alcorta
  * @version 1.0
  * @since February 24, 2015
  */
-public class WeatherApi {
+public class WeatherAPI {
 
     /* City id for the query. */
     private int cityID;
@@ -32,7 +32,7 @@ public class WeatherApi {
     /* API key parameter for url string */
     private final String APIKEY = "&APPID=bb4d737a642c4e98afff6652ea5e0d17";
 
-    /* JSON key parameter for url string */
+    /* JSON parameter for url string */
     private final String JSON = "&mode=json";
 
     /**
@@ -41,7 +41,7 @@ public class WeatherApi {
      * @param cityID the city id for the query
      * @param viewMetric true if metric units are being used, false if imperial units are used
      */
-    public WeatherApi(int cityID, boolean viewMetric) {
+    public WeatherAPI(int cityID, boolean viewMetric) {
         this.cityID = cityID;
         this.viewMetric = viewMetric;
     }
@@ -55,7 +55,7 @@ public class WeatherApi {
      */
     public JSONObject getShortTerm() {
 
-        /* Performs an API call */
+        /* Performs an API call and fetches JSONObject */
         return this.getWeather(BASE + "/forecast?id=" + cityID + APIKEY + JSON);
 }
 
@@ -67,7 +67,7 @@ public class WeatherApi {
      */
     public JSONObject getLongTerm() {
 
-        /* Perform API call */
+        /* Perform API call and fetches JSONObject */
         return this.getWeather(BASE + "/forecast/daily?id=" + cityID + APIKEY + JSON + "&cnt=5");
     }
 
@@ -77,9 +77,9 @@ public class WeatherApi {
      *
      * @return if valid call, the JSONObject for current weather, null otherwise
      */
-    public JSONObject getapiObj() {
+    public JSONObject getLocal() {
 
-        /* Performs API call */
+        /* Performs API call and fetches JSONObject */
         return this.getWeather(BASE + "/weather?id=" + cityID + APIKEY + JSON);
     }
 
@@ -128,14 +128,14 @@ public class WeatherApi {
         return jsonObj;
     }
 
-    /*
-    public static void main(String[] args) {
-        WeatherAPI weather = new WeatherAPI(2172797, false);
 
-        System.out.println(weather.getapiObj());
+    public static void main(String[] args) {
+        WeatherAPI weather = new WeatherAPI(1851632, false);
+
+//        System.out.println(weather.getLocal());
         System.out.println(weather.getShortTerm());
-        System.out.println(weather.getLongTerm());
+//        System.out.println(weather.getLongTerm());
     }
-    */
+
 
 }
