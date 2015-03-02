@@ -58,40 +58,12 @@ public class Local {
 		}
 			
 	}
-	public double getTempMax() {
-		return tempMax;
-	}
-	public double getTempMin() {
-		return tempMin;
-	}
 	
 	/**
-	 * Helper method converts unix time to a formatted date
-	 * 
-	 * @param An integer of the unix time to be converted
-	 * @return String of the formatted date and time
+	 *The getter methods for the local weather data 
 	 */
-	private String unixToDate(int unixTime){
-		int unixSeconds = unixTime;
-		Date date = new Date(unixSeconds*1000L); 
-		SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-		String formattedDate = formatDate.format(date);
-		return formattedDate;
-	}
 	
-	/**
-	 * Helper method converts unix time to a formatted time
-	 * @param An integer of the unix time to be converted
-	 * @return String of the formatted time
-	 */
-	private String unixToTime(int unixTime){
-		int unixSeconds = unixTime;
-		Date date = new Date(unixSeconds*1000L); 
-		SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss z");
-		String formattedTime = formatTime.format(date);
-		return formattedTime;
-	}
-
+	//Gets the dates and times as strings
 	public String getSunriseString(){
 		return unixToTime(this.sunriseTime);
 	}
@@ -104,6 +76,7 @@ public class Local {
 		return unixToDate(this.updateTime);
 	}
 	
+	//Gets the dates and times as unix time
 	public int getSunriseTime() {
 		return sunriseTime;
 	}
@@ -143,4 +116,40 @@ public class Local {
 	public String getIcon() {
 		return icon;
 	}
+	
+	public double getTempMax() {
+		return tempMax;
+	}
+	public double getTempMin() {
+		return tempMin;
+	}
+	
+	/**
+	 * Helper method converts unix time to a formatted date
+	 * 
+	 * @param An integer of the unix time to be converted
+	 * @return String of the formatted date and time
+	 */
+	private String unixToDate(int unixTime){
+		int unixSeconds = unixTime;
+		Date date = new Date(unixSeconds*1000L); 
+		SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+		String formattedDate = formatDate.format(date);
+		return formattedDate;
+	}
+	
+	/**
+	 * Helper method converts unix time to a formatted time
+	 * @param An integer of the unix time to be converted
+	 * @return String of the formatted time
+	 */
+	private String unixToTime(int unixTime){
+		int unixSeconds = unixTime;
+		Date date = new Date(unixSeconds*1000L); 
+		SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss z");
+		String formattedTime = formatTime.format(date);
+		return formattedTime;
+	}
+
+	
 }

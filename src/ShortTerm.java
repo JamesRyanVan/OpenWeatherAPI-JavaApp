@@ -20,6 +20,14 @@ public class ShortTerm {
 	private String[] skyConditions=new String[9],icons=new String[8];
 	private int[] times=new int[8]; 
 	
+	/**
+	 * Creates a Short term weather object and stores the weather information
+	 * Cover data for 24 hours
+	 * Each index of an array represents a 3 hour period of time
+	 * 
+	 * @param apiObjJson A JSONObject of the short term weather from open weather map
+	 * @throws JSONException
+	 */
 	public ShortTerm(JSONObject apiObjJson) throws JSONException{
 		try{
 			this.list = apiObjJson.getJSONArray("list");
@@ -51,14 +59,29 @@ public class ShortTerm {
 		}
 	}
 	
+	/**
+	 * Method to get the Short term forecast sky conditions for 24 hours 
+	 * Each index of the array is 3 hours
+	 * @return String array of the sky conditions
+	 */
 	public String[] getSkyConditions() {
 		return skyConditions;
 	}
 
+	/**
+	 * Method to get the Short term forecast sky condition icons for 24 hours 
+	 * Each index of the array is 3 hours
+	 * Each string is a code used in a url to get a specific icon
+	 * @return String array of the sky condition icons
+	 */
 	public String[] getIcons() {
 		return icons;
 	}
 
+	/**
+	 * @return an array storing the total snow and rain precipitation for the 24 hours
+	 * each index is one 3 hour increment
+	 */
 	public double[] getPrecips() {
 	double[] precips = new double[8];
 	for (int x=0; x<8;x++){
@@ -67,14 +90,46 @@ public class ShortTerm {
 	return precips;
 	}
 
+	/**
+	 * Method to get the times of weather data for 24 hours
+	 * Each index of the array is 3 hours
+	 * @return String of integers each integer is a unix time
+	 */
 	public int[] getTimes() {
 		return times;
 	}
 	
+	/**
+	 * Method to get the Short term forecast rain amount for 24 hours 
+	 * Each index of the array is 3 hours
+	 * @return Array with the amount of rain every 3 hours at each index
+	 */
+	public double[] getRain(){
+		return rain;
+	}
+	
+	/**
+	 * Method to get the Short term forecast snow amount for 24 hours 
+	 * Each index of the array is 3 hours
+	 * @return Array with the amount of snow every 3 hours at each index
+	 */
+	public double[] getSnow(){
+		return snow;
+	}
+	
+	/**
+	 * Method to get the Short term forecast temperatures for 24 hours 
+	 * Each index of the array is 3 hours
+	 * @return Array of doubles each a temperature
+	 */
 	public double[] getTemps(){
 		return temps;
 	}
 
+	/**
+	 * Method to return an array of strings containing just the times of weather data
+	 * @return strings with times of weather data
+	 */
 	public String[] getTimeArray(){
 		String[] timeStrings = new String[9];
 		for (int t=0; t<9; t++){
@@ -83,6 +138,10 @@ public class ShortTerm {
 		return timeStrings;
 	}
 	
+	/**
+	 * Method to return an array of strongs containing times and dates of weather data
+	 * @return string with time and date of weather data
+	 */
 	public String[] getDateArray(){
 		String[] timeStrings = new String[8];
 		for (int t=0; t<8; t++){

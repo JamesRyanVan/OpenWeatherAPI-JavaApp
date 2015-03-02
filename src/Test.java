@@ -6,7 +6,7 @@ import org.json.JSONObject;
 public class Test {
 	
 	public static void main(String [] args) throws JSONException, IOException{
-		WeatherApi a = new WeatherApi(2643743,true);
+		WeatherAPI a = new WeatherAPI(2643743,true);
 		JSONObject apiObj = a.getLocal();
 		Local l =  new Local(apiObj);
 		System.out.println("THE LOCAL FORECAST IS: ");
