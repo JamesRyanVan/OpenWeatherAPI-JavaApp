@@ -43,13 +43,13 @@ public class AppWindow extends JFrame{
 	 */
 	private void initUI() {
 		
-		try {
+		try { // Try to set window theme to Windows7
 			  UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
 			} catch (Exception e) {
 			  }
 		
-		try {
+		try { // If not using a Microsoft OS then use default theme
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}	catch (Exception e) {
 			
