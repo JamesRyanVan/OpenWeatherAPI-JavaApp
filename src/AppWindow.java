@@ -11,19 +11,36 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
-import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JRadioButtonMenuItem; 
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
+/**
+ * <h2>The AppWindow Class</h2>
+ * <br>
+ * This class is the main GUI and interacts with all other classes
+ * 
+ * @author	Group10 (James V, Li G, Curtis V, Alec W, Jeremy A)
+ * @version	1.0
+ * @since 	2015-02-01
+ *  *
+ */
 public class AppWindow extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Default Contruction initiates default window settings in the
+	 * initUI() method
+	 */
 	public AppWindow() {
 		this.initUI(); // Default Constructor initiates default settings
 	}
 	
+	/**
+	 * Method that generates the main window and its properties
+	 */
 	private void initUI() {
 		
 		try {
@@ -31,6 +48,7 @@ public class AppWindow extends JFrame{
 
 			} catch (Exception e) {
 			  }
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}	catch (Exception e) {
@@ -40,10 +58,10 @@ public class AppWindow extends JFrame{
 		// Window Properties
 		
 		this.setTitle("OpenWeather Application v1.0"); // Window Title
-		this.setSize(1000,500); // Window Size
+		this.setSize(1015,525); // Window Size
 		this.setPreferredSize(new Dimension(1015,525)); // Window size fix for linux
 		this.setMinimumSize(new Dimension(1015,525)); // Sets the minimum size the window can have
-		this.setMaximumSize(new Dimension(1000,525)); // Sets the maximum size the window can have
+		this.setMaximumSize(new Dimension(1015,525)); // Sets the maximum size the window can have
 		this.setLocationRelativeTo(null); // Sets default screen location 
 		this.setVisible(true);
 		this.setResizable(false);
@@ -59,6 +77,11 @@ public class AppWindow extends JFrame{
 		
 	}
 	
+	/**
+	 * The JMenuBar generates the top menu bar. This method also includes
+	 * the add location combo box feature.
+	 * @return MenuBar
+	 */
 	private JMenuBar menuBar() {
 		
 		JMenuBar menubar = new JMenuBar(); // Creates menu bar
@@ -268,6 +291,10 @@ public class AppWindow extends JFrame{
 		
 	}
 	
+	/**
+	 * tabbedContent method produces a tabbed area in the main window
+	 * which separates different weather data.
+	 */
 	private void tabbedContent() {
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -287,8 +314,4 @@ public class AppWindow extends JFrame{
 		tabbedPane.addTab("LongTerm", null, tabbedPane_long, null);
 		
 	}
-	
-
-	
-	
 }
