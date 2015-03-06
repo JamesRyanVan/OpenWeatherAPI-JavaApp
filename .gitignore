@@ -2,5 +2,5 @@ target/
 .setting/
 bin/
 team10/
-.classpath
-.project
+*.classpath
+*.project
