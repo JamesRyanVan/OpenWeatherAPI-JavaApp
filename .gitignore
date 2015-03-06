@@ -1,6 +1,6 @@
-target/
-.setting/
+.settings/
 bin/
 team10/
 *.classpath
 *.project
+*.class
