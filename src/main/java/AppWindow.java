@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -475,11 +476,13 @@ public class AppWindow extends JFrame{
 	
 	private int findCityID(String currentLocation) throws IOException {
 		
-		FileInputStream inputStream = null; // Starts new stream and scanner
+		java.io.InputStream inputStream = null; // Starts new stream and scanner
 		Scanner sc = null;
 		try {
-		    inputStream = new FileInputStream(new File("city.list")); // File containing the list
-		    sc = new Scanner(inputStream, "UTF-8");
+			getClass().getClassLoader();
+		    inputStream = ClassLoader.getSystemResourceAsStream("city.list"); // File containing the list
+		    System.out.println(inputStream);
+		    sc = new Scanner(inputStream);
 		    while (sc.hasNextLine()) { // While lines exist
 		        String line = sc.nextLine();
 		        
@@ -500,7 +503,11 @@ public class AppWindow extends JFrame{
 		    if (sc.ioException() != null) { // If any error is caught then 0 is returned
 		        throw sc.ioException();
 		    }
-		} finally {
+		} catch (FileNotFoundException e){
+			JOptionPane.showMessageDialog (null, "Error", "City list file not found", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		finally {
 		    if (inputStream != null) {
 		        inputStream.close();
 		    }
