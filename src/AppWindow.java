@@ -3,18 +3,29 @@ import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButtonMenuItem; 
 import javax.swing.JTabbedPane;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+
+import org.json.JSONObject;
 
 /**
  * <h2>The AppWindow Class</h2>
@@ -27,15 +38,42 @@ import javax.swing.UIManager;
  *  *
  */
 public class AppWindow extends JFrame{
-
+	
+	 // Main JFrame used by window
+	private JFrame mainFrame;
+	
+	// Global Control elements so we can update them
+	private JComboBox locationCombo;
+	private JTabbedPane tabbedPane;
+	private JTextPane localText;
+	private JTextPane shortText;
+	private JTextPane longText;
+	
+	// Location Storage
+	private String currentLocation = null;
+	private int currentLocationID = 0;
+	
+	// Class Creation
+	private WeatherAPI weather;
+	private List<String> locationList;
+	private Settings settings;
+	
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Default Contruction initiates default window settings in the
+	 * Default Constructor initiates default window settings in the
 	 * initUI() method
 	 */
 	public AppWindow() {
+		this.initSettings();
 		this.initUI(); // Default Constructor initiates default settings
+	}
+	
+	/**
+	 * Method that reads user settings
+	 */
+	private void initSettings() {
+		settings = new Settings(true, true, true, true, true, true, true, 0);
 	}
 	
 	/**
@@ -55,9 +93,14 @@ public class AppWindow extends JFrame{
 			
 		}
 		
+		locationList = new ArrayList<String>(); // Start the location list
+		locationList.add("Add Location..");	// Add the default option
+		locationCombo = new JComboBox(locationList.toArray(new String[locationList.size()])); // Make a new combo box
+		mainFrame = new JFrame(); // Create the main frame
+		
 		// Window Properties
 		
-		this.setTitle("OpenWeather Application v1.0"); // Window Title
+		mainFrame.setTitle("OpenWeather Application v1.0"); // Window Title
 		this.setSize(1015,525); // Window Size
 		this.setPreferredSize(new Dimension(1015,525)); // Window size fix for linux
 		this.setMinimumSize(new Dimension(1015,525)); // Sets the minimum size the window can have
@@ -104,7 +147,16 @@ public class AppWindow extends JFrame{
 				JMenuItem menuFileLocationNew = new JMenuItem("New");
 				menuFileLocationNew.setToolTipText("New Location");
 				menuFileLocationNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-				
+				menuFileLocationNew.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						try {
+							newLocation();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
 				menuFileLocation.add(menuFileLocationNew);
 				
 		
@@ -279,15 +331,42 @@ public class AppWindow extends JFrame{
 		menubar.add(panel);
 		panel.setLayout(null);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setBounds(718, 0, 180, 22);
+		locationComboBox();		
 		
-		comboBox.addItem("Add Location");
-		
-		panel.add(comboBox);
 		this.getContentPane().setLayout(null);
 		
 		return menubar;
+		
+	}
+	
+	
+	/**
+	 * Method that creates the combobox to control locations
+	 */
+	private void locationComboBox() {
+
+		locationCombo.setBounds(829, -1, 181, 23);
+		locationCombo.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+
+		        String s = (String) locationCombo.getSelectedItem();
+
+		        switch (s) {
+		            case "Add Location..":
+					try {
+						newLocation();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+		                break;
+		            default: 
+		            	System.out.println("Selected City");
+		            	break;
+		        }
+		    }
+		});
+		
+		this.add(locationCombo);
 		
 	}
 	
@@ -297,21 +376,140 @@ public class AppWindow extends JFrame{
 	 */
 	private void tabbedContent() {
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(1, 0, 1009, 474);
 		this.getContentPane().add(tabbedPane);
 		
+		localText = new JTextPane();
+		localText.setText("Please add a city");
+		localText.setEditable(false);
+		
+		shortText = new JTextPane();
+		shortText.setText("Please add a city");
+		shortText.setEditable(false);
+		
+		longText = new JTextPane();
+		longText.setText("Please add a city");
+		longText.setEditable(false);
+		
 		JTabbedPane tabbedPane_local = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_local.setBackground(SystemColor.menu);
-		tabbedPane.addTab("Local", null, tabbedPane_local, null);
+		tabbedPane.addTab("Local", null, localText, null);
 		
 		JTabbedPane tabbedPane_short = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_short.setBackground(SystemColor.menu);
-		tabbedPane.addTab("ShortTerm", null, tabbedPane_short, null);
+		tabbedPane.addTab("ShortTerm", null, shortText, null);
 		
 		JTabbedPane tabbedPane_long = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane_long.setBackground(SystemColor.menu);
-		tabbedPane.addTab("LongTerm", null, tabbedPane_long, null);
+		tabbedPane.addTab("LongTerm", null, longText, null);
+				
+	}
+	
+	/**
+	 * Method that takes user input as location and adds it to the combo menu
+	 * @throws IOException
+	 */
+	@SuppressWarnings("unchecked")
+	private void newLocation() throws IOException {
+		System.out.println("Adding a new Location");
+		String locationPopUp = (String)JOptionPane.showInputDialog(mainFrame, "Enter city name:", "Add new location", JOptionPane.PLAIN_MESSAGE); // Location pop up window
+		
+		if (locationPopUp == null) {
+			System.out.println("No location entered");
+		}
+		else {
+			System.out.println("Location added: " + locationPopUp);
+			locationList.add(locationPopUp);	 // Adds location to list
+			locationCombo.addItem(locationPopUp); // Adds location to combo box
+			locationCombo.setSelectedItem(locationPopUp); // Sets it as the selected item
+			currentLocation = locationPopUp; // Sets it to the current locatiopn
+			
+			getJSON(currentLocation); // Gets the JSON for that location
+			
+		}
 		
 	}
+	
+	/**
+	 * Method that gets the json from WeatherAPI.
+	 * @param location
+	 * @throws IOException
+	 */
+	private void getJSON(String location) throws IOException {
+		
+		int cityID = findCityID(location); // Takes the city string and finds the id (int)
+		
+		if (cityID != 0) {
+			
+			weather = new WeatherAPI(cityID, settings.viewMetricUnits()); // Gets the JSON data from WeatherAPI
+			
+			JSONObject local = weather.getLocal();
+			JSONObject shortTerm = weather.getShortTerm();
+			JSONObject longTerm = weather.getLongTerm();
+			
+			/////////////////////////// WHERE JSON WRITES TO WINDOW /////////////////////////////////////////
+			
+			localText.setText(local.toString());
+			shortText.setText(shortTerm.toString());
+			longText.setText(longTerm.toString());	
+			
+			// Need to add formatting
+			
+			
+			/////////////////////////////////////////////////////////////////////////////////////////////////
+			
+		}
+		else {
+			System.out.println("Error: City not found");
+		}
+		
+	}
+	
+	/**
+	 * Method that is responsible for searching through the city list to find the appropriate cityID
+	 * @param currentLocation
+	 * @return
+	 * @throws IOException
+	 */
+	
+	private int findCityID(String currentLocation) throws IOException {
+		
+		FileInputStream inputStream = null; // Starts new stream and scanner
+		Scanner sc = null;
+		try {
+		    inputStream = new FileInputStream(new File("city.list")); // File containing the list
+		    sc = new Scanner(inputStream, "UTF-8");
+		    while (sc.hasNextLine()) { // While lines exist
+		        String line = sc.nextLine();
+		        
+		        if(line.toLowerCase().contains(currentLocation.toLowerCase())) { // If the line contains the city name 
+		        	
+		        	System.out.println(line);
+		        	
+		        	String[] lineArray = line.split("\\s+"); // Split the line up where spaces are
+		        	currentLocationID = Integer.parseInt(lineArray[0]); // Take the ID number
+		        	
+		        	System.out.println(currentLocationID);
+		        	
+		        	return currentLocationID; // Return that number
+		        	
+		        }
+		        
+		    }
+		    if (sc.ioException() != null) { // If any error is caught then 0 is returned
+		        throw sc.ioException();
+		    }
+		} finally {
+		    if (inputStream != null) {
+		        inputStream.close();
+		    }
+		    if (sc != null) {
+		        sc.close();
+		    }
+		}
+		return 0;
+		
+	}
+	
 }
