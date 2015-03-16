@@ -12,7 +12,7 @@ import org.json.JSONObject;
  */
 public class Local {
 	private JSONObject apiObj;
-	private int sunriseTime, sunsetTime, updateTime;
+	private Time sunriseTime, sunsetTime, updateTime;
 	private double temp, windSpeed, windDir, airPressure, humidity, tempMax, tempMin ;
 	private String skyCondition, icon;
 	
@@ -28,8 +28,8 @@ public class Local {
 		/* Get the system data from JSON object */
 		try{
 			JSONObject sys = apiObj.getJSONObject("sys");
-			this.sunriseTime = sys.getInt("sunrise");
-			this.sunsetTime  = sys.getInt("sunset");
+			this.sunriseTime = new Time(sys.getInt("sunrise"));
+			this.sunsetTime  = new Time(sys.getInt("sunset"));
 			
 			/* Get the weather data from JSON object*/
 			JSONObject weather = apiObj.getJSONArray("weather").getJSONObject(0);
@@ -50,7 +50,7 @@ public class Local {
 			this.windDir = wind.getDouble("deg");
 			
 			/* Get the time data from the JSON object */
-			this.updateTime = apiObj.getInt("dt");
+			this.updateTime = new Time(apiObj.getInt("dt"));
 		
 		/* Ensure the location was valid and not null */
 		} catch (NullPointerException e){
@@ -64,92 +64,88 @@ public class Local {
 	 */
 	
 	//Gets the dates and times as strings
-	public String getSunriseString(){
-		return unixToTime(this.sunriseTime);
+	/**
+	 * @return a Time object of the sunrise 
+	 */
+	public Time getSunriseTime(){
+		return this.sunriseTime;
 	}
 	
-	public String getSunsetString(){
-		return unixToTime(this.sunsetTime);
+	/**
+	 * @return a Time object of the sunset
+	 */
+	public Time getSunsetTime(){
+		return this.sunsetTime;
 	}
 	
-	public String getUpdateTimeString(){
-		return unixToDate(this.updateTime);
+	/**
+	 * @return a Time object of the time of the data collection
+	 */
+	public Time getUpdateTime(){
+		return this.updateTime;
 	}
 	
-	//Gets the dates and times as unix time
-	public int getSunriseTime() {
-		return sunriseTime;
-	}
-
-	public int getSunsetTime() {
-		return sunsetTime;
-	}
-
-	public int getUpdateTime() {
-		return updateTime;
-	}
-
+	/**
+	 * @return double of the current temperature
+	 */
 	public double getTemp() {
 		return temp;
 	}
 
+	/**
+	 * @return double of the wind speed
+	 */
 	public double getWindSpeed() {
 		return windSpeed;
 	}
 
+	/**
+	 * @return double of the wind direction
+	 */
 	public double getWindDir() {
 		return windDir;
 	}
-
+	
+	/**
+	 * @return double of the air speed
+	 */
 	public double getAirPressure() {
 		return airPressure;
 	}
 
+	/**
+	 * @return double of the humidity
+	 */
 	public double getHumidity() {
 		return humidity;
 	}
 
+	/**
+	 * @return String of the sky conditions currently
+	 */
 	public String getSkyCondition() {
 		return skyCondition;
 	}
 
+	/**
+	 * @return String of the location of the sky conditions icon.
+	 */
 	public String getIcon() {
 		return icon;
 	}
 	
+	/**
+	 * @return double of the maximum temperature of the day
+	 */
 	public double getTempMax() {
 		return tempMax;
 	}
+	
+	/**
+	 * @return double of the minimum temperature of the day
+	 */
 	public double getTempMin() {
 		return tempMin;
 	}
-	
-	/**
-	 * Helper method converts unix time to a formatted date
-	 * 
-	 * @param An integer of the unix time to be converted
-	 * @return String of the formatted date and time
-	 */
-	private String unixToDate(int unixTime){
-		int unixSeconds = unixTime;
-		Date date = new Date(unixSeconds*1000L); 
-		SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-		String formattedDate = formatDate.format(date);
-		return formattedDate;
-	}
-	
-	/**
-	 * Helper method converts unix time to a formatted time
-	 * @param An integer of the unix time to be converted
-	 * @return String of the formatted time
-	 */
-	private String unixToTime(int unixTime){
-		int unixSeconds = unixTime;
-		Date date = new Date(unixSeconds*1000L); 
-		SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss z");
-		String formattedTime = formatTime.format(date);
-		return formattedTime;
-	}
-
 	
 }

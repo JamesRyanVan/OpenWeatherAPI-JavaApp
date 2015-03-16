@@ -46,7 +46,6 @@ public class AddLocationDialog extends JDialog {
 
         /* Set up the search button */
         searchButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 try {
 	            	String city = searchField.getText();

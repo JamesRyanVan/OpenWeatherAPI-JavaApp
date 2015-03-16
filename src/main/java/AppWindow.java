@@ -495,7 +495,6 @@ public class AppWindow extends JFrame{
 		try {
 			getClass().getClassLoader();
 		    inputStream = ClassLoader.getSystemResourceAsStream("city.list"); // File containing the list
-		    System.out.println(inputStream);
 		    sc = new Scanner(inputStream);
 		    while (sc.hasNextLine()) { // While lines exist
 		        String line = sc.nextLine();

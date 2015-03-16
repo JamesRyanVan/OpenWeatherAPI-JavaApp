@@ -1,6 +1,3 @@
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +15,7 @@ public class ShortTerm {
 	private JSONArray list;
 	private double[] temps=new double[8],snow=new double[8],rain=new double[8]; 
 	private String[] skyConditions=new String[9],icons=new String[8];
-	private int[] times=new int[8]; 
+	private Time[] times=new Time[8]; 
 	
 	/**
 	 * Creates a Short term weather object and stores the weather information
@@ -34,7 +31,7 @@ public class ShortTerm {
 			for (int i=1 ; i<9 ; i++){
 				JSONObject increment = list.getJSONObject(i);
 				
-				this.times[i-1] = increment.getInt("dt");
+				this.times[i-1] = new Time(increment.getInt("dt"));
 				this.temps[i-1] = increment.getJSONObject("main").getDouble("temp");
 				this.skyConditions[i-1] = increment.getJSONArray("weather").getJSONObject(0).getString("main");
 				this.icons[i-1] = increment.getJSONArray("weather").getJSONObject(0).getString("icon");
@@ -93,9 +90,9 @@ public class ShortTerm {
 	/**
 	 * Method to get the times of weather data for 24 hours
 	 * Each index of the array is 3 hours
-	 * @return String of integers each integer is a unix time
+	 * @return String of time objects
 	 */
-	public int[] getTimes() {
+	public Time[] getTimes() {
 		return times;
 	}
 	
@@ -126,57 +123,11 @@ public class ShortTerm {
 		return temps;
 	}
 
-	/**
-	 * Method to return an array of strings containing just the times of weather data
-	 * @return strings with times of weather data
-	 */
-	public String[] getTimeArray(){
-		String[] timeStrings = new String[9];
-		for (int t=0; t<9; t++){
-			timeStrings[t] = unixToTime(times[t]);
-		}
-		return timeStrings;
-	}
-	
-	/**
-	 * Method to return an array of strongs containing times and dates of weather data
-	 * @return string with time and date of weather data
-	 */
-	public String[] getDateArray(){
-		String[] timeStrings = new String[8];
-		for (int t=0; t<8; t++){
-			timeStrings[t] = unixToDate(times[t]);
-		}
-		return timeStrings;
-	}
-	
-	/**
-	 * Helper method converts unix time to a formatted date
-	 * 
-	 * @param An integer of the unix time to be converted
-	 * @return String of the formatted date and time
-	 */
-	private String unixToDate(int unixTime){
-		int unixSeconds = unixTime;
-		Date date = new Date(unixSeconds*1000L); 
-		SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-		String formattedDate = formatDate.format(date);
-		return formattedDate;
-	}
 	
 	
-	/**
-	 * Helper method converts unix time to a formatted time
-	 * @param An integer of the unix time to be converted
-	 * @return String of the formatted time
-	 */
-	private String unixToTime(int unixTime){
-		int unixSeconds = unixTime;
-		Date date = new Date(unixSeconds*1000L); 
-		SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss z");
-		String formattedTime = formatTime.format(date);
-		return formattedTime;
-	}
+	
+	
+	
 	
 }
 

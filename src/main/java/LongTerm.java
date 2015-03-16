@@ -20,7 +20,7 @@ public class LongTerm {
 			maxTemps = new double[5], snow = new double[5],
 			rain = new double[5];
 	private String[] skyConditions = new String[5], icons = new String[5];
-	private int[] days = new int[5];
+	private Time[] days = new Time[5];
 
 	/**
 	 * Creates a long term weather object and stores the weather information
@@ -36,7 +36,7 @@ public class LongTerm {
 			for (int i = 1; i < 6; i++) {
 				JSONObject increment = list.getJSONObject(i);
 
-				this.days[i - 1] = increment.getInt("dt");
+				this.days[i - 1] = new Time(increment.getInt("dt"));
 				this.temps[i - 1] = increment.getJSONObject("temp").getDouble(
 						"day");
 				this.minTemps[i - 1] = increment.getJSONObject("temp")
@@ -147,36 +147,8 @@ public class LongTerm {
 	 * Each index of the array is one day
 	 * @return String of integers each integer is a unix time
 	 */
-	public int[] getTimes() {
+	public Time[] getTimes() {
 		return days;
-	}
-
-	/**
-	 * Method to return an array of strongs containing times and dates of weather data
-	 * @return string with time and date of weather data
-	 */
-	public String[] getDateArray() {
-		String[] timeStrings = new String[10];
-		for (int t = 0; t < 6; t++) {
-			timeStrings[t] = unixToDate(days[t]);
-		}
-		return timeStrings;
-	}
-
-	/**
-	 * Helper method converts unix time to a formatted date
-	 * 
-	 * @param An
-	 *            integer of the unix time to be converted
-	 * @return String of the formatted date and time
-	 */
-	private String unixToDate(int unixTime) {
-		int unixSeconds = unixTime;
-		Date date = new Date(unixSeconds * 1000L);
-		SimpleDateFormat formatDate = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss z");
-		String formattedDate = formatDate.format(date);
-		return formattedDate;
 	}
 
 }
