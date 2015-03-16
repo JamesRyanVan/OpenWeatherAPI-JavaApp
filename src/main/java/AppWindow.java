@@ -130,6 +130,20 @@ public class AppWindow extends JFrame{
 		
 		JMenuBar menubar = new JMenuBar(); // Creates menu bar
 		
+		/// Test..
+//		JMenu show = new JMenu("Show");
+//		JMenuItem showDialog = new JMenuItem("Location Dialog");
+//		show.add(showDialog);
+//		showDialog.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				AddLocationDialog dialog = new AddLocationDialog(AppWindow.this);
+//			}
+//		});
+//		menubar.add(show);
+		
+		///
+		
 		JMenu menuFile = new JMenu("File"); // Creates file button
 		menuFile.setMnemonic(KeyEvent.VK_F);
 		
