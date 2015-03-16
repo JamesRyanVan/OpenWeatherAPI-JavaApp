@@ -21,19 +21,19 @@ public class WeatherAPI {
     private boolean viewMetric;
 
     /* Base url string */
-    private final String BASE = "http://api.openweathermap.org/data/2.5/";
+    private final static String BASE = "http://api.openweathermap.org/data/2.5/";
 
     /* Metric units parameter for url string */
-    private final String METRIC = "&units=metric";
+    private final static String METRIC = "&units=metric";
 
     /* Imperial units parameter for url string */
-    private final String IMPERIAL = "&units=imperial";
+    private final static String IMPERIAL = "&units=imperial";
 
     /* API key parameter for url string */
-    private final String APIKEY = "&APPID=bb4d737a642c4e98afff6652ea5e0d17";
+    private final static String APIKEY = "&APPID=bb4d737a642c4e98afff6652ea5e0d17";
 
     /* JSON parameter for url string */
-    private final String JSON = "&mode=json";
+    private final static String JSON = "&mode=json";
 
     /**
      * Creates a WeatherAPI object. Sets the city ID and units to be used (metric or imperial).
@@ -54,10 +54,19 @@ public class WeatherAPI {
      * @return if valid call, the JSONObject for short-term forecast, null otherwise
      */
     public JSONObject getShortTerm() {
-
+    	
+    	String address = BASE + "/forecast?id=" + cityID + APIKEY + JSON;
+    	/* Adds the units parameter to the url address */
+        if (viewMetric) {
+            address = address + METRIC;
+        } else {
+            address = address + IMPERIAL;
+        }
+        
         /* Performs an API call and fetches JSONObject */
-        return this.getWeather(BASE + "/forecast?id=" + cityID + APIKEY + JSON);
+        return getJSON(address, 0);
 }
+    
 
     /**
      * Returns a JSONObject from a API call for the long-term forecast of a provided city.
@@ -67,8 +76,17 @@ public class WeatherAPI {
      */
     public JSONObject getLongTerm() {
 
+		String address = BASE + "/forecast/daily?id=" + cityID + APIKEY + JSON + "&cnt=5";
+        
+		/* Adds the units parameter to the url address */
+        if (viewMetric) {
+            address = address + METRIC;
+        } else {
+            address = address + IMPERIAL;
+        }
+        
         /* Perform API call and fetches JSONObject */
-        return this.getWeather(BASE + "/forecast/daily?id=" + cityID + APIKEY + JSON + "&cnt=5");
+        return getJSON(address, 0);
     }
 
     /**
@@ -78,26 +96,38 @@ public class WeatherAPI {
      * @return if valid call, the JSONObject for current weather, null otherwise
      */
     public JSONObject getLocal() {
+    	
+    		String address = BASE + "/weather?id=" + cityID + APIKEY + JSON;
+	         
+    		/* Adds the units parameter to the url address */
+	        if (viewMetric) {
+	            address = address + METRIC;
+	        } else {
+	            address = address + IMPERIAL;
+	        }
 
         /* Performs API call and fetches JSONObject */
-        return this.getWeather(BASE + "/weather?id=" + cityID + APIKEY + JSON);
+        return getJSON(address, 0);
     }
+    
+    
+    public static JSONObject getLikeCities(String cityName) {
+    
+    	return getJSON(BASE + "find?q=" + cityName + "&type=like" + APIKEY + JSON, 1);
+    }
+
+
 
     /**
      * Helper method that performs the API call for long-term or short-term forecast or current weather.
      *
      * @param address the base url address for the API call (NOT including parameter for units)
+     * @param requestType 0 for long-term, short-term and current weather requests, 1 for like request
      * @return if valid call, the JSONObject for current weather, null otherwise
      */
-    private JSONObject getWeather(String address) {
-
-         /* Adds the units parameter to the url address */
-        if (viewMetric) {
-            address = address + METRIC;
-        } else {
-            address = address + IMPERIAL;
-        }
-
+    private static JSONObject getJSON(String address, int requestType) {
+    	
+ 
         JSONObject jsonObj = new JSONObject();
         try {
              /* Does a query and saves query result as a string */
@@ -110,23 +140,34 @@ public class WeatherAPI {
 
             /* Builds the JSON Object from query result */
             jsonObj = new JSONObject(queryResult);
-
-            /* Checks if API call was valid */
-            if (jsonObj.get("cod").equals("404")) {
-                return null;
-            }
-
+            
+            if (requestType == 0) {
+	            /* Checks if API call was valid */
+	            if (jsonObj.get("cod").equals("404")) {
+	                return null;
+	            }
+            } else if (requestType == 1)
+            	/* Location not found */
+            	if (jsonObj.get("count").equals(0)) {
+            		return null;
+            	}
+            
         } catch (MalformedURLException malEx) {
             malEx.printStackTrace();
+            return null;
         } catch (IOException ioEx) {
             ioEx.printStackTrace();
+            return null;
         } catch (JSONException jsonEx) {
             jsonEx.printStackTrace();
+            return null;
         }
 
         /* Return the JSON object */
         return jsonObj;
     }
+    
+    
 
 
 
