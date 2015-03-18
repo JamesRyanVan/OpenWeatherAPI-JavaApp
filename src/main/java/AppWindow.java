@@ -3,6 +3,7 @@ package main.java;
 import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 
 import javax.imageio.ImageIO;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -14,6 +15,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.UIManager;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 import java.awt.Dimension;
 import java.awt.Image;
@@ -31,6 +33,8 @@ import javax.swing.ImageIcon;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JComboBox;
 
@@ -47,7 +51,6 @@ import javax.swing.border.EtchedBorder;
 import org.json.JSONObject;
 
 import main.java.Settings;
-
 
 public class AppWindow {
 
@@ -219,7 +222,7 @@ public class AppWindow {
 		});
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("../resource/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/main/resource/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -255,8 +258,7 @@ public class AppWindow {
 	
 	private void newLocation() throws IOException {
 		
-		AddLocationDialog dialog = new AddLocationDialog(AppWindow.frmOpenweatherapp);
-		
+		AddLocationDialog dialog = new AddLocationDialog(frmOpenweatherapp);		
 	}
 	
 	/**
@@ -275,15 +277,6 @@ public class AppWindow {
 			JSONObject local = weather.getLocal();
 			JSONObject shortTerm = weather.getShortTerm();
 			JSONObject longTerm = weather.getLongTerm();
-			
-			/////////////////////////// WHERE JSON WRITES TO WINDOW /////////////////////////////////////////
-			
-			
-			
-			// Need to add formatting
-			
-			
-			/////////////////////////////////////////////////////////////////////////////////////////////////
 			
 		}
 		else {
@@ -384,7 +377,7 @@ public class AppWindow {
 		
 		JLabel lblHelloToStart = new JLabel("Hello! To start add a location");
 		lblHelloToStart.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblHelloToStart.setBounds(225, 11, 275, 58);
+		lblHelloToStart.setBounds(225, 11, 375, 58);
 		panel_local.add(lblHelloToStart);
 		
 	}

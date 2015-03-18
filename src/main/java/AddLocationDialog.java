@@ -1,3 +1,5 @@
+package main.java;
+
 import javax.swing.*;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionListener;
@@ -9,6 +11,9 @@ import org.json.JSONObject;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import org.json.*;
@@ -20,7 +25,7 @@ public class AddLocationDialog extends JDialog {
     private JButton cancelButton;
     private JButton searchButton;
     private JTextField searchField;
-    private JList cityList;
+    private JList<String> cityList;
     DefaultListModel cityModel;
 
 
@@ -33,16 +38,26 @@ public class AddLocationDialog extends JDialog {
         setVisible(true);
 
         /* Create components */
-        searchField = new JTextField(10);
+        searchField = new JTextField(12);
         addButton = new JButton("Add");
         cancelButton = new JButton("Cancel");
         searchButton = new JButton("Search");
-
+        
         /* Set up the JList */
         cityModel = new DefaultListModel();
-        cityList = new JList(cityModel);
+        cityList = new JList<String>(cityModel);
         cityList.setVisibleRowCount(5);
         JScrollPane cityScrollPane = new JScrollPane(cityList);
+        
+        cityList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList<String> list = (JList)evt.getSource();
+                if (evt.getClickCount() == 2) {	
+                	System.out.println(list.getSelectedValue());
+                } 
+            }
+        });
+        
 
         /* Set up the search button */
         searchButton.addActionListener(new ActionListener() {
@@ -50,8 +65,6 @@ public class AddLocationDialog extends JDialog {
                 try {
 	            	String city = searchField.getText();
 	                getLikeCities(city);
-
-	            
 	                searchField.requestFocusInWindow();
 	                searchField.setText("");
                 } catch (JSONException ex) {
@@ -123,14 +136,7 @@ public class AddLocationDialog extends JDialog {
 			throw new JSONException("Failed");
 			
 		}
-		
-		
-		
 	}
-    
-    
-
-
 }
 
 
