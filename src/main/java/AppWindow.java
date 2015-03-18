@@ -1,373 +1,240 @@
+package main.java;
+
+import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
+
+import javax.imageio.ImageIO;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.UIManager;
+import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
+
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Point;
 import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
+import java.awt.Toolkit;
+
+import javax.swing.JProgressBar;
+import javax.swing.JLabel;
+
+import java.awt.Font;
+
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.io.FileInputStream;
+import java.awt.event.ActionEvent;
+
+import javax.swing.JComboBox;
+
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JComboBox;
-import javax.swing.JRadioButtonMenuItem; 
-import javax.swing.JTabbedPane;
-import javax.swing.JTextPane;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
+import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 
 import org.json.JSONObject;
 
-/**
- * <h2>The AppWindow Class</h2>
- * <br>
- * This class is the main GUI and interacts with all other classes
- * 
- * @author	Group10 (James V, Li G, Curtis V, Alec W, Jeremy A)
- * @version	1.0
- * @since 	2015-02-01
- *  *
- */
-public class AppWindow extends JFrame{
+import main.java.Settings;
+
+
+public class AppWindow {
+
+	static JFrame frmOpenweatherapp;
 	
-	 // Main JFrame used by window
-	private JFrame mainFrame;
-	
-	// Global Control elements so we can update them
-	private JComboBox locationCombo;
 	private JTabbedPane tabbedPane;
-	private JTextPane localText;
-	private JTextPane shortText;
-	private JTextPane longText;
+	private JPanel panel_local;
+	private JPanel panel_short;
+	private JPanel panel_long;
+	private JComboBox<String> comboBox_location;
+	
+	private WeatherAPI weather;
+	private Settings settings;
+	
+	private List<String> locationList;
 	
 	// Location Storage
 	private String currentLocation = null;
 	private int currentLocationID = 0;
 	
-	// Class Creation
-	private WeatherAPI weather;
-	private List<String> locationList;
-	private Settings settings;
-	
-	private static final long serialVersionUID = 1L;
+	private AddLocationDialog locationDialog;
 
 	/**
-	 * Default Constructor initiates default window settings in the
-	 * initUI() method
+	 * Create the application.
 	 */
 	public AppWindow() {
-		this.initSettings();
-		this.initUI(); // Default Constructor initiates default settings
+		initializeSettings();
+		initialize();
 	}
-	
-	/**
-	 * Method that reads user settings
-	 */
-	private void initSettings() {
+
+	private void initializeSettings() {
 		settings = new Settings(true, true, true, true, true, true, true, 0);
 	}
 	
+	
 	/**
-	 * Method that generates the main window and its properties
+	 * Initialize the contents of the frame.
 	 */
-	private void initUI() {
+	private void initialize() {
 		
-		try { // Try to set window theme to Windows7
-			  UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-
-			} catch (Exception e) {
-			  }
+		try 
+	    {
+	      UIManager.setLookAndFeel(new SyntheticaAluOxideLookAndFeel());
+	    } 
+	    catch (Exception e) 
+	    {
+	      e.printStackTrace();
+	    }		
 		
-		try { // If not using a Microsoft OS then use default theme
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}	catch (Exception e) {
-			
-		}
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		frmOpenweatherapp = new JFrame();
 		
-		locationList = new ArrayList<String>(); // Start the location list
-		locationList.add("Add Location..");	// Add the default option
-		locationCombo = new JComboBox(locationList.toArray(new String[locationList.size()])); // Make a new combo box
-		mainFrame = new JFrame(); // Create the main frame
+		frmOpenweatherapp.getContentPane().setBackground(SystemColor.menu);
+		frmOpenweatherapp.setFont(new Font("Courier New", Font.PLAIN, 12));
+		frmOpenweatherapp.setTitle("OpenWeatherApp");
+		frmOpenweatherapp.setBounds(100, 100, 793, 550);
+		frmOpenweatherapp.setResizable(false);
+		frmOpenweatherapp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		// Window Properties
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Point middle = new Point(screenSize.width / 2, screenSize.height / 2);
+		Point newLocation = new Point(middle.x - (frmOpenweatherapp.getWidth() / 2), middle.y - (frmOpenweatherapp.getHeight() / 2));
+		frmOpenweatherapp.setLocation(newLocation);
 		
-		mainFrame.setTitle("OpenWeather Application v1.0"); // Window Title
-		this.setSize(1015,525); // Window Size
-		this.setPreferredSize(new Dimension(1015,525)); // Window size fix for linux
-		this.setMinimumSize(new Dimension(1015,525)); // Sets the minimum size the window can have
-		this.setMaximumSize(new Dimension(1015,525)); // Sets the maximum size the window can have
-		this.setLocationRelativeTo(null); // Sets default screen location 
-		this.setVisible(true);
-		this.setResizable(false);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmOpenweatherapp.setJMenuBar(menubar());
 		
-		// Menu Bar
+		locationList = new ArrayList<String>();
+		locationList.add("Add Location");
+		comboBox_location = new JComboBox<String>(locationList.toArray(new String[locationList.size()]));
 		
-		this.setJMenuBar(this.menuBar());
-				
-		// Tabbed Content
+		frmOpenweatherapp.getContentPane().add(locationPanel());
+		frmOpenweatherapp.getContentPane().add(tabbedPane());
 		
-		this.tabbedContent();
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.setBounds(631, 457, 146, 14);
+		frmOpenweatherapp.getContentPane().add(progressBar);
+		
+		JLabel lblProgramstatusnull = new JLabel("program_status_null");
+		lblProgramstatusnull.setBounds(12, 454, 138, 14);
+		frmOpenweatherapp.getContentPane().add(lblProgramstatusnull);
 		
 	}
 	
-	/**
-	 * The JMenuBar generates the top menu bar. This method also includes
-	 * the add location combo box feature.
-	 * @return MenuBar
-	 */
-	private JMenuBar menuBar() {
+	private JMenuBar menubar() {
 		
-		JMenuBar menubar = new JMenuBar(); // Creates menu bar
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(SystemColor.menu);
 		
-		/// Test..
-//		JMenu show = new JMenu("Show");
-//		JMenuItem showDialog = new JMenuItem("Location Dialog");
-//		show.add(showDialog);
-//		showDialog.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				AddLocationDialog dialog = new AddLocationDialog(AppWindow.this);
-//			}
-//		});
-//		menubar.add(show);
+		JMenu mnFile = new JMenu("File");
+		menuBar.add(mnFile);
 		
-		///
+		JMenu mnLocations = new JMenu("Locations");
+		mnFile.add(mnLocations);
 		
-		JMenu menuFile = new JMenu("File"); // Creates file button
-		menuFile.setMnemonic(KeyEvent.VK_F);
-		
-		menubar.add(menuFile);
-		
-			// Locations menu list
-		
-			JMenu menuFileLocation = new JMenu("Locations");
-			menuFileLocation.setMnemonic(KeyEvent.VK_S);
-			menuFileLocation.setToolTipText("Locations");
-			
-			menuFile.add(menuFileLocation);
-			
-				// New Location sub menu button
-			
-				JMenuItem menuFileLocationNew = new JMenuItem("New");
-				menuFileLocationNew.setToolTipText("New Location");
-				menuFileLocationNew.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-				menuFileLocationNew.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						try {
-							newLocation();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				});
-				menuFileLocation.add(menuFileLocationNew);
-				
-		
-			// Refresh menu button
-		
-			JMenuItem menuFileRefresh = new JMenuItem("Refresh");
-			menuFileRefresh.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
-			menuFileRefresh.setMnemonic(KeyEvent.VK_E);
-			menuFileRefresh.setToolTipText("Refresh current data");
-			menuFileRefresh.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					
+		JMenuItem mntmNew = new JMenuItem("New");
+		mntmNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					newLocation();
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
-			
-			});
-			
-			menuFile.add(menuFileRefresh);
+			}
+		});
+		mnLocations.add(mntmNew);
 		
-			// Exit menu button
+		JMenuItem mntmRemove = new JMenuItem("Remove");
+		mnLocations.add(mntmRemove);
 		
-			JMenuItem menuFileExit = new JMenuItem("Exit");
-			menuFileExit.setMnemonic(KeyEvent.VK_E);
-			menuFileExit.setToolTipText("Exit application");
-			menuFileExit.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-						System.exit(0); 
-				}
-			});
-			
-			menuFile.addSeparator();
-			menuFile.add(menuFileExit);
-			
-		JMenu menuView = new JMenu("View"); // Creates view button
-		menuView.setMnemonic(KeyEvent.VK_F);
+		JMenuItem mntmRefresh = new JMenuItem("Refresh");
+		mnFile.add(mntmRefresh);
 		
-		menubar.add(menuView);
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mnFile.add(mntmExit);
 		
-			// View temperature
+		JMenu mnView = new JMenu("View");
+		menuBar.add(mnView);
 		
-			JCheckBoxMenuItem menuViewTemp = new JCheckBoxMenuItem("Temperature");
-			menuViewTemp.setMnemonic(KeyEvent.VK_E);
-			menuViewTemp.setToolTipText("View Temperature");
-			menuViewTemp.setSelected(true);
-			menuViewTemp.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-						
-				}
-			});
+		JCheckBoxMenuItem chckbxmntmTemperature = new JCheckBoxMenuItem("Temperature");
+		mnView.add(chckbxmntmTemperature);
+		
+		JCheckBoxMenuItem chckbxmntmWindSpeed = new JCheckBoxMenuItem("Wind Speed");
+		mnView.add(chckbxmntmWindSpeed);
+		
+		JCheckBoxMenuItem chckbxmntmSkyConditions = new JCheckBoxMenuItem("Sky Conditions");
+		mnView.add(chckbxmntmSkyConditions);
+		
+		JCheckBoxMenuItem chckbxmntmAirPressure = new JCheckBoxMenuItem("Air Pressure");
+		mnView.add(chckbxmntmAirPressure);
+		
+		JCheckBoxMenuItem chckbxmntmHumidity = new JCheckBoxMenuItem("Humidity");
+		mnView.add(chckbxmntmHumidity);
+		
+		JCheckBoxMenuItem chckbxmntmSunsetsunrise = new JCheckBoxMenuItem("Sunset/Sunrise");
+		mnView.add(chckbxmntmSunsetsunrise);
+		
+		JSeparator separator = new JSeparator();
+		mnView.add(separator);
+		
+		JRadioButtonMenuItem rdbtnmntmMetric = new JRadioButtonMenuItem("Metric");
+		mnView.add(rdbtnmntmMetric);
+		
+		JRadioButtonMenuItem rdbtnmntmImperial = new JRadioButtonMenuItem("Imperial");
+		mnView.add(rdbtnmntmImperial);
+		
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		
+		JMenuItem mntmHelpDoc = new JMenuItem("Help Doc");
+		mnHelp.add(mntmHelpDoc);
+		frmOpenweatherapp.getContentPane().setLayout(null);
+		
+		return menuBar;
+		
+	}
 	
-			menuView.add(menuViewTemp);
-			
-			// View Wind Speed
-			
-			JCheckBoxMenuItem menuViewWind = new JCheckBoxMenuItem("Wind Speed");
-			menuViewWind.setMnemonic(KeyEvent.VK_E);
-			menuViewWind.setToolTipText("View WindSpeed");
-			menuViewWind.setSelected(true);
-			menuViewWind.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-						
-				}
-			});
-	
-			menuView.add(menuViewWind);
-			
-			// View Sky Condition
-			
-			JCheckBoxMenuItem menuViewSky = new JCheckBoxMenuItem("Sky Conditions");
-			menuViewSky.setMnemonic(KeyEvent.VK_E);
-			menuViewSky.setToolTipText("View Sky Conditions");
-			menuViewSky.setSelected(true);
-			menuViewSky.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-								
-				}
-			});
-				
-			menuView.add(menuViewSky);
-			
-			// View Air Pressure
-			
-			JCheckBoxMenuItem menuViewAir = new JCheckBoxMenuItem("Air Pressure");
-			menuViewAir.setMnemonic(KeyEvent.VK_E);
-			menuViewAir.setToolTipText("View Air Pressure");
-			menuViewAir.setSelected(true);
-			menuViewAir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-					
-				}
-			});
-			
-			menuView.add(menuViewAir);
-		
-			// View Humidity
-			
-			JCheckBoxMenuItem menuViewHumidity = new JCheckBoxMenuItem("Humidity");
-			menuViewHumidity.setMnemonic(KeyEvent.VK_E);
-			menuViewHumidity.setToolTipText("View Air Pressure");
-			menuViewHumidity.setSelected(true);
-			menuViewHumidity.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-					
-				}
-			});
-			
-			menuView.add(menuViewHumidity);
-			
-			// View Sunset/Rise
-			
-			JCheckBoxMenuItem menuViewSun = new JCheckBoxMenuItem("Sunset/Sunrise");
-			menuViewSun.setMnemonic(KeyEvent.VK_E);
-			menuViewSun.setToolTipText("View Sunset/Sunrise");
-			menuViewSun.setSelected(true);
-			menuViewSun.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-					
-				}
-			});
-			
-			menuView.add(menuViewSun);
-			
-			ButtonGroup unitsGroup = new ButtonGroup(); // Used to group ratio buttons to allow toggle
-			
-			menuView.addSeparator();
-			
-			// Metric Ratio Button
-			
-			JRadioButtonMenuItem menuViewMetric = new JRadioButtonMenuItem("Metric");
-			menuViewMetric.setMnemonic(KeyEvent.VK_E);
-			menuViewMetric.setToolTipText("Set Metric");
-			menuViewMetric.setSelected(true);
-			menuViewMetric.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-					
-				}
-			});
-			
-			unitsGroup.add(menuViewMetric);
-			menuView.add(menuViewMetric);
-			
-			// Imperial Ratio Button
-			
-			JRadioButtonMenuItem menuViewImperial = new JRadioButtonMenuItem("Imperial");
-			menuViewImperial.setMnemonic(KeyEvent.VK_E);
-			menuViewImperial.setToolTipText("Set Imperial");
-			menuViewImperial.setSelected(false);
-			menuViewImperial.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-					
-				}
-			});
-			
-			unitsGroup.add(menuViewImperial);
-			menuView.add(menuViewImperial);
-			
-			
-		JMenu menuOptions = new JMenu("Options"); // Create Options button
-		menuOptions.setMnemonic(KeyEvent.VK_F);
-		
-			JMenuItem menuOptionsHelp = new JMenuItem("Help");
-			menuOptionsHelp.setMnemonic(KeyEvent.VK_E);
-			menuOptionsHelp.setToolTipText("Help Documentation");
-		
-			menuOptions.add(menuOptionsHelp);
-			
-		menubar.add(menuOptions);
-		
-		// Location Drop Down box
+	private JPanel locationPanel() {
 		
 		JPanel panel = new JPanel();
+		panel.setBounds(516, -2, 266, 35);
 		panel.setBackground(SystemColor.menu);
-		menubar.add(panel);
+		
 		panel.setLayout(null);
 		
-		locationComboBox();		
+		JButton btnRefresh = new JButton("");
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		
-		this.getContentPane().setLayout(null);
-		
-		return menubar;
-		
-	}
-	
-	
-	/**
-	 * Method that creates the combobox to control locations
-	 */
-	private void locationComboBox() {
+		try {
+		    Image img = ImageIO.read(getClass().getResource("../resource/refresh-icon.png"));
+		    btnRefresh.setIcon(new ImageIcon(img));
+		  } catch (IOException ex) {
+		  }
 
-		locationCombo.setBounds(829, -1, 181, 23);
-		locationCombo.addActionListener(new ActionListener() {
+		btnRefresh.setBounds(233, 4, 31, 31);
+		panel.add(btnRefresh);
+		
+		comboBox_location.setBounds(31, 6, 198, 27);
+		comboBox_location.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 
-		        String s = (String) locationCombo.getSelectedItem();
+		        String s = (String) comboBox_location.getSelectedItem();
 
 		        switch (s) {
-		            case "Add Location..":
+		            case "Add Location":
 					try {
 						newLocation();
 					} catch (IOException e1) {
@@ -381,68 +248,14 @@ public class AppWindow extends JFrame{
 		    }
 		});
 		
-		this.add(locationCombo);
+		panel.add(comboBox_location);
 		
+		return panel;
 	}
 	
-	/**
-	 * tabbedContent method produces a tabbed area in the main window
-	 * which separates different weather data.
-	 */
-	private void tabbedContent() {
-		
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(1, 0, 1009, 474);
-		this.getContentPane().add(tabbedPane);
-		
-		localText = new JTextPane();
-		localText.setText("Please add a city");
-		localText.setEditable(false);
-		
-		shortText = new JTextPane();
-		shortText.setText("Please add a city");
-		shortText.setEditable(false);
-		
-		longText = new JTextPane();
-		longText.setText("Please add a city");
-		longText.setEditable(false);
-		
-		JTabbedPane tabbedPane_local = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_local.setBackground(SystemColor.menu);
-		tabbedPane.addTab("Local", null, localText, null);
-		
-		JTabbedPane tabbedPane_short = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_short.setBackground(SystemColor.menu);
-		tabbedPane.addTab("ShortTerm", null, shortText, null);
-		
-		JTabbedPane tabbedPane_long = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane_long.setBackground(SystemColor.menu);
-		tabbedPane.addTab("LongTerm", null, longText, null);
-				
-	}
-	
-	/**
-	 * Method that takes user input as location and adds it to the combo menu
-	 * @throws IOException
-	 */
-	@SuppressWarnings("unchecked")
 	private void newLocation() throws IOException {
-		System.out.println("Adding a new Location");
-		String locationPopUp = (String)JOptionPane.showInputDialog(mainFrame, "Enter city name:", "Add new location", JOptionPane.PLAIN_MESSAGE); // Location pop up window
 		
-		if (locationPopUp == null) {
-			System.out.println("No location entered");
-		}
-		else {
-			System.out.println("Location added: " + locationPopUp);
-			locationList.add(locationPopUp);	 // Adds location to list
-			locationCombo.addItem(locationPopUp); // Adds location to combo box
-			locationCombo.setSelectedItem(locationPopUp); // Sets it as the selected item
-			currentLocation = locationPopUp; // Sets it to the current locatiopn
-			
-			getJSON(currentLocation); // Gets the JSON for that location
-			
-		}
+		AddLocationDialog dialog = new AddLocationDialog(AppWindow.frmOpenweatherapp);
 		
 	}
 	
@@ -465,9 +278,7 @@ public class AppWindow extends JFrame{
 			
 			/////////////////////////// WHERE JSON WRITES TO WINDOW /////////////////////////////////////////
 			
-			localText.setText(local.toString());
-			shortText.setText(shortTerm.toString());
-			longText.setText(longTerm.toString());	
+			
 			
 			// Need to add formatting
 			
@@ -529,6 +340,186 @@ public class AppWindow extends JFrame{
 		    }
 		}
 		return 0;
+		
+	}
+	
+	private JTabbedPane tabbedPane() {
+		
+		panel_local = new JPanel();
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(12, 11, 765, 440);
+		
+		if (currentLocation == null) {
+			tabbedPane.setEnabled(false);
+		}
+		
+		panel_local.setBackground(Color.WHITE);
+		tabbedPane.addTab("Local", null, panel_local, null);
+		panel_local.setLayout(null);
+		
+		if (currentLocation == null) {
+			panel_blank();
+		} else {
+			panel_local_content();
+		}
+		
+		
+		panel_short = new JPanel();
+		panel_short.setBackground(Color.WHITE);
+		tabbedPane.addTab("ShortTerm", null, panel_short, null);
+		
+		panel_short_content();
+		
+		panel_long = new JPanel();
+		panel_long.setBackground(Color.WHITE);
+		tabbedPane.addTab("LongTerm", null, panel_long, null);
+		
+		panel_long_content();
+		
+		return tabbedPane;
+		
+	}
+	
+	private void panel_blank() {
+		
+		JLabel lblHelloToStart = new JLabel("Hello! To start add a location");
+		lblHelloToStart.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblHelloToStart.setBounds(225, 11, 275, 58);
+		panel_local.add(lblHelloToStart);
+		
+	}
+	
+	private void panel_local_content() {
+		
+		JLabel lblTemperature = new JLabel("00");
+		lblTemperature.setFont(new Font("Tahoma", Font.PLAIN, 45));
+		lblTemperature.setBounds(40, 56, 77, 44);
+		panel_local.add(lblTemperature);
+		
+		JLabel lblWeatherReportFor = new JLabel("null, null");
+		lblWeatherReportFor.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblWeatherReportFor.setFont(new Font("Tahoma", Font.PLAIN, 21));
+		lblWeatherReportFor.setBounds(583, 11, 161, 33);
+		panel_local.add(lblWeatherReportFor);
+		
+		JLabel lblSkycondition = new JLabel("SkyCondition");
+		lblSkycondition.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSkycondition.setBounds(40, 122, 150, 14);
+		panel_local.add(lblSkycondition);
+		
+		JLabel lblWindspeed = new JLabel("WindSpeed");
+		lblWindspeed.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblWindspeed.setBounds(40, 146, 150, 33);
+		panel_local.add(lblWindspeed);
+		
+		JLabel lblWindDir = new JLabel("Wind Direction");
+		lblWindDir.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblWindDir.setBounds(40, 185, 122, 25);
+		panel_local.add(lblWindDir);
+		
+		JLabel lblAirPressure = new JLabel("Air Pressure");
+		lblAirPressure.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblAirPressure.setBounds(40, 217, 113, 25);
+		panel_local.add(lblAirPressure);
+		
+		JLabel lblSunrise = new JLabel("SunRise");
+		lblSunrise.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSunrise.setBounds(40, 303, 110, 33);
+		panel_local.add(lblSunrise);
+		
+		JLabel lblSunset = new JLabel("SunSet");
+		lblSunset.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSunset.setBounds(40, 338, 93, 33);
+		panel_local.add(lblSunset);
+		
+		JLabel lblHumidity = new JLabel("Humidity");
+		lblHumidity.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblHumidity.setBounds(40, 251, 122, 25);
+		panel_local.add(lblHumidity);
+		
+		JLabel lblLastUpdate = new JLabel("Last Updated:");
+		lblLastUpdate.setBounds(650, 389, 77, 20);
+		panel_local.add(lblLastUpdate);
+		
+		JLabel lblUpdatedtime = new JLabel("null");
+		lblUpdatedtime.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblUpdatedtime.setBounds(724, 392, 27, 14);
+		panel_local.add(lblUpdatedtime);
+		
+		JLabel skycondvalue = new JLabel("null");
+		skycondvalue.setBounds(200, 122, 46, 14);
+		panel_local.add(skycondvalue);
+		
+		JLabel windspeedvalue = new JLabel("null");
+		windspeedvalue.setBounds(200, 157, 46, 14);
+		panel_local.add(windspeedvalue);
+		
+		JLabel windDirvalue = new JLabel("null");
+		windDirvalue.setBounds(200, 192, 46, 14);
+		panel_local.add(windDirvalue);
+		
+		JLabel airpressurevalue = new JLabel("null");
+		airpressurevalue.setBounds(200, 224, 46, 14);
+		panel_local.add(airpressurevalue);
+		
+		JLabel humidityvalue = new JLabel("null");
+		humidityvalue.setBounds(200, 257, 46, 14);
+		panel_local.add(humidityvalue);
+		
+		JLabel sinriseValue = new JLabel("null");
+		sinriseValue.setBounds(200, 314, 46, 14);
+		panel_local.add(sinriseValue);
+		
+		JLabel Sunsetvalue = new JLabel("null");
+		Sunsetvalue.setBounds(200, 349, 46, 14);
+		panel_local.add(Sunsetvalue);
+		
+		JLabel lblDailyHigh = new JLabel("High:");
+		lblDailyHigh.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblDailyHigh.setBounds(198, 25, 60, 26);
+		panel_local.add(lblDailyHigh);
+		
+		JLabel lblCurrent = new JLabel("Current:");
+		lblCurrent.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCurrent.setBounds(40, 24, 85, 28);
+		panel_local.add(lblCurrent);
+		
+		JLabel lblLow = new JLabel("Low:");
+		lblLow.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblLow.setBounds(324, 31, 46, 14);
+		panel_local.add(lblLow);
+		
+		JLabel label = new JLabel("00");
+		label.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		label.setBounds(197, 61, 58, 33);
+		panel_local.add(label);
+		
+		JLabel label_1 = new JLabel("00");
+		label_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		label_1.setBounds(323, 61, 60, 32);
+		panel_local.add(label_1);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		panel_1.setBounds(389, 122, 355, 249);
+		panel_local.add(panel_1);
+		
+		JLabel location_image = new JLabel("");
+		location_image.setBackground(Color.GRAY);
+		location_image.setIcon(null);
+		panel_1.add(location_image);
+		
+		JLabel lblMap = new JLabel("Map:");
+		lblMap.setBounds(389, 97, 46, 14);
+		panel_local.add(lblMap);
+		
+	}
+	
+	private void panel_short_content() {
+		
+	}
+	
+	private void panel_long_content() {
 		
 	}
 	

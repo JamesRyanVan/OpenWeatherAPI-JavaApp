@@ -1,3 +1,5 @@
+package main.java;
+
 import java.awt.EventQueue;
 
 /**
@@ -14,8 +16,13 @@ public class App {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				AppWindow window = new AppWindow();
-				window.setVisible(true);
+				try {
+					AppWindow window = new AppWindow();
+					AppWindow.frmOpenweatherapp.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}); }
+		});
+	}
 }
