@@ -1,8 +1,6 @@
-package main.java;
+//package main.java;
 
 import javax.swing.*;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,8 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 
 import org.json.*;
 
@@ -25,15 +21,16 @@ public class AddLocationDialog extends JDialog {
     private JButton cancelButton;
     private JButton searchButton;
     private JTextField searchField;
-    private JList<String> cityList;
-    DefaultListModel cityModel;
-
+    private JList<City> cityList;
+    private DefaultListModel<City> cityModel;
+    private DialogListener dialogListener;
 
     public AddLocationDialog(JFrame parent) {
+    	
         super(parent, "Add New Location", false);
 
         /* Set up window */
-        setSize(400, 300);
+        setSize(400, 150);
         setLocationRelativeTo(parent);
         setVisible(true);
 
@@ -42,36 +39,78 @@ public class AddLocationDialog extends JDialog {
         addButton = new JButton("Add");
         cancelButton = new JButton("Cancel");
         searchButton = new JButton("Search");
+
         
+        ////* Set up add button *////
+        addButton.setEnabled(false);
+       
+        /* If add button is clicked, dialog event is trigger */
+        addButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {        		
+        		
+				DialogEvent event = new DialogEvent((City)cityList.getSelectedValue());
+				
+				if (dialogListener != null) {
+					dialogListener.dialogEventOccurred(event);
+				}
+				setVisible(false);
+        	}
+        });
+        
+        ////* Set up cancel button *////
+         
+        cancelButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		setVisible(false);
+        	}
+        });
+        
+        /* Set up the search button */
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                	
+	            	String searchFieldIn = searchField.getText();
+	            	if (!searchFieldIn.equals("")) {
+		            	cityList.setVisible(true);
+		            	searchCities(searchFieldIn);
+		                searchField.requestFocusInWindow();
+		                searchField.setText("");
+	            	}
+                } catch (JSONException ex) {
+               
+
+                };
+            }
+        });
+
         /* Set up the JList */
         cityModel = new DefaultListModel();
-        cityList = new JList<String>(cityModel);
+        cityList = new JList(cityModel);
+        cityList.setVisible(false);
+        cityList.setPreferredSize(new Dimension(100, 50));
         cityList.setVisibleRowCount(5);
         JScrollPane cityScrollPane = new JScrollPane(cityList);
         
+        /** TEST ***/
         cityList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 JList<String> list = (JList)evt.getSource();
                 if (evt.getClickCount() == 2) {	
-                	System.out.println(list.getSelectedValue());
+                	DialogEvent event = new DialogEvent((City)cityList.getSelectedValue());
+                	if (dialogListener != null) {
+    					dialogListener.dialogEventOccurred(event);
+    				}
+                	setVisible(false);
                 } 
+            
+                
             }
         });
-        
-
-        /* Set up the search button */
-        searchButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-	            	String city = searchField.getText();
-	                getLikeCities(city);
-	                searchField.requestFocusInWindow();
-	                searchField.setText("");
-                } catch (JSONException ex) {
-                	
-                };
-            }
-        });
+        /** END OF TEST **/
 
         /* Lay out the components */
         layoutComponents();
@@ -88,13 +127,14 @@ public class AddLocationDialog extends JDialog {
         gc.gridy = 0;
 
         gc.gridx = 0;
-        gc.weightx = 1;
+        gc.weightx = 3;
         gc.weighty = 0.1;
-        gc.fill = GridBagConstraints.HORIZONTAL; // component = preferred size
+        gc.fill = GridBagConstraints.HORIZONTAL;
         add(searchField, gc);
 
         gc.gridx++;
-        gc.fill = GridBagConstraints.NONE;
+        gc.weightx = 1;
+        gc.fill = GridBagConstraints.HORIZONTAL;
         add(searchButton, gc);
 
         ////* next row *////
@@ -105,7 +145,7 @@ public class AddLocationDialog extends JDialog {
         gc.gridx = 0;
         gc.gridwidth = 2;
         gc.weightx = 1.0;
-        gc.weighty = 5.0;
+        gc.weighty = 1;
         gc.fill = GridBagConstraints.HORIZONTAL;
         gc.anchor = GridBagConstraints.FIRST_LINE_START;
         add(cityList, gc);
@@ -115,29 +155,55 @@ public class AddLocationDialog extends JDialog {
         gc.gridy++;
 
         gc.gridx = 0;
-
+        gc.gridwidth = 1;
+        gc.weightx = 1.0;
+        gc.weighty = 0.1;
+        gc.fill = GridBagConstraints.NONE;
+//        gc.anchor = 
+        add(addButton, gc);
+        
+        gc.gridx = 1;
+        add(cancelButton, gc);
+        
+        
     }
     
 	
-	public void getLikeCities(String cityName) throws JSONException {
+	public void searchCities(String cityName) throws JSONException {
 		JSONObject jsonObj = WeatherAPI.getLikeCities(cityName); 
-
+		cityModel.removeAllElements();
+		
 		if (jsonObj != null) {
-			JSONArray jsonArray = jsonObj.getJSONArray("list");		
-			cityModel.removeAllElements();
+			JSONArray jsonArray = jsonObj.getJSONArray("list");	
+			
+			addButton.setEnabled(true);
+			
 			for (int i = 0; i < jsonArray.length(); i++) {
-				String nameResult = jsonArray.getJSONObject(i).getString("name");
-				String countryResult = jsonArray.getJSONObject(i).getJSONObject("sys").getString("country");
-				cityModel.addElement(nameResult + ", " + countryResult);
+				int cityIdResult = jsonArray.getJSONObject(i).getInt("id");
+				String cityNameResult = jsonArray.getJSONObject(i).getString("name");
+				String countryNameResult = jsonArray.getJSONObject(i).getJSONObject("sys").getString("country");
+				cityModel.addElement(new City(cityIdResult, cityNameResult, countryNameResult));
 			}
 			
-//			System.out.println(cityModel.toString());
 		} else {
 			throw new JSONException("Failed");
 			
 		}
+		
+		
 	}
+	
+	public void setDialogListener(DialogListener dialogListener) {
+		this.dialogListener = dialogListener;
+		
+	}
+    
+    
+
+
 }
+
+
 
 
 
