@@ -61,6 +61,7 @@ public class AppWindow {
 	private JPanel panel_short;
 	private JPanel panel_long;
 	private JComboBox<String> comboBox_location;
+	private AddLocationDialog locationDialog;
 	
 	private WeatherAPI weather;
 	private Settings settings;
@@ -70,8 +71,8 @@ public class AppWindow {
 	// Location Storage
 	private String currentLocation = null;
 	private int currentLocationID = 0;
-	
-	private AddLocationDialog locationDialog;
+
+
 
 	/**
 	 * Create the application.
@@ -253,12 +254,28 @@ public class AppWindow {
 		
 		panel.add(comboBox_location);
 		
+		
 		return panel;
 	}
 	
 	private void newLocation() throws IOException {
 		
-		AddLocationDialog dialog = new AddLocationDialog(frmOpenweatherapp);		
+		locationDialog = new AddLocationDialog(frmOpenweatherapp);
+		locationDialog.setDialogListener(new DialogListener() {
+			@Override
+			public void dialogEventOccurred(DialogEvent event) {
+				// If user picks a new location....
+				if (event != null) {
+					////// Do something - Ryan please change this to desired behaviour //////
+					currentLocationID = event.getCityID();
+					currentLocation = event.getCityName() + ", " + event.getCountryName();
+					locationList.add(currentLocation);
+					System.out.println(locationList.toString());
+	//				System.out.println("Added " + currentLocation + " (id: " + currentLocationID 
+	//						+ ")");
+				}
+			}
+		});
 	}
 	
 	/**
