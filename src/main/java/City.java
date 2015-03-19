@@ -55,11 +55,15 @@ public class City {
     }
     
     /**
-     * Returns a string representation of the city object as "cityName , countryName."
+     * Returns a string representation of the city object as "cityName, countryName."
+     * If cityName is blank, returns "countryName."
      * 
      * @return String representation of city object
      */
     public String toString() {
-    	return cityName + ", " + countryName;
+    	if (cityName != "") {
+        	return cityName + ", " + countryName;
+    	} 
+    	return countryName;
     }
 }

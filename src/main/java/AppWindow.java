@@ -3,6 +3,7 @@ package main.java;
 import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -61,18 +62,22 @@ public class AppWindow {
 	private JPanel panel_short;
 	private JPanel panel_long;
 	private JComboBox<String> comboBox_location;
+
 	private AddLocationDialog locationDialog;
 	
 	private WeatherAPI weather;
 	private Settings settings;
 	
 	private List<String> locationList;
+	private DefaultComboBoxModel<City> locationModel;
 	
 	// Location Storage
 	private String currentLocation = null;
 	private int currentLocationID = 0;
 
-
+	/** Test 
+	private JComboBox<City> comboBox_location;
+	*/
 
 	/**
 	 * Create the application.
@@ -118,9 +123,19 @@ public class AppWindow {
 		
 		frmOpenweatherapp.setJMenuBar(menubar());
 		
+		
+	
 		locationList = new ArrayList<String>();
 		locationList.add("Add Location");
+	
 		comboBox_location = new JComboBox<String>(locationList.toArray(new String[locationList.size()]));
+		
+		/* Test
+		 locationModel = new DefaultComboBoxModel<City>();
+		 locationModel.addElement(new City(0, "", "Add Location")); 
+		 comboBox_location = new JComboBox<City>(locationModel);
+		*/
+	
 		
 		frmOpenweatherapp.getContentPane().add(locationPanel());
 		frmOpenweatherapp.getContentPane().add(tabbedPane());
@@ -235,7 +250,11 @@ public class AppWindow {
 		comboBox_location.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
 
-		        String s = (String) comboBox_location.getSelectedItem();
+		    	String s = (String) comboBox_location.getSelectedItem();
+		    	/* Test
+		        String s = ((City) comboBox_location.getSelectedItem()).toString();
+		        */
+
 
 		        switch (s) {
 		            case "Add Location":
@@ -267,12 +286,13 @@ public class AppWindow {
 				// If user picks a new location....
 				if (event != null) {
 					////// Do something - Ryan please change this to desired behaviour //////
-					currentLocationID = event.getCityID();
-					currentLocation = event.getCityName() + ", " + event.getCountryName();
-					locationList.add(currentLocation);
-					System.out.println(locationList.toString());
-	//				System.out.println("Added " + currentLocation + " (id: " + currentLocationID 
-	//						+ ")");
+//					currentLocationID = event.getCityID();
+//					currentLocation = event.getCityName() + ", " + event.getCountryName();
+
+					/* Test
+					locationModel.addElement(event.getCityObj());
+					*/
+			
 				}
 			}
 		});

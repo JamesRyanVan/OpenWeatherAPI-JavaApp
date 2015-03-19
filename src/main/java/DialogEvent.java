@@ -7,12 +7,19 @@ public class DialogEvent {
 
 	
 	/** 
-	 * Constructor method. The event 
+	 * Constructor method.
 	 * 
 	 * @param cityObj
 	 */
 	public DialogEvent(City cityObj) {
 		this.cityObj = cityObj;
+	}
+	
+	/**
+	 * @return cityObj the city obj from the dialog.
+	 */
+	public City getCityObj() {
+		return cityObj;
 	}
 	
 	/** 
@@ -24,10 +31,18 @@ public class DialogEvent {
 		return cityObj.getCityName();
 	}
 	
+	/**
+	 * 
+	 * @return city id from dialog
+	 */
 	public int getCityID() {
 		return cityObj.getCityID();
 	}
 	
+	/**
+	 * 
+	 * @return city id's country name
+	 */
 	public String getCountryName() {
 		return cityObj.getCountryName();
 	}
