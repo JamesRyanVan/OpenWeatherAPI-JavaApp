@@ -12,20 +12,20 @@ import java.io.IOException;
  *
  */
 
-public class Settings
+public class Settings implements java.io.Serializable
 {
 	/* Boolean values to determine whether or not user wishes to view corresponding data */
-	boolean Temp, WindSpeedAndDir, SkyCondition, AirPressure, Humidity,
+	private boolean Temp, WindSpeedAndDir, SkyCondition, AirPressure, Humidity,
 	SunsetAndRise, MetricUnits;
 	
 	/* Array storing city ID's */
-	int[] cityIDList = new int[50];
+	private int[] cityIDList = new int[50];
 	
 	/* Int value representing how many cities user has stored */
-	int listSize = 0;
+	private int listSize = 0;
 	
 	/* Int value pointing to cell in cityIDList array which corresponds to current city */
-	int currentCityID;
+	private int currentCityID;
 
 	/*
 	 * Creates a settings object. Initialized upon users first use setting boolean values to true
