@@ -109,7 +109,7 @@ public class AddLocationDialog extends JDialog {
                 try {
 	            	String searchFieldIn = searchField.getText();
 	            	if (!searchFieldIn.equals("")) {
-		      
+	            		
 	            		// TODO: errors to address: no Internet, API 501, no matches for search
 		            	searchCities(searchFieldIn); 
 		            	
@@ -122,7 +122,7 @@ public class AddLocationDialog extends JDialog {
 	            		
 	            	}
                 } catch (JSONException ex) {
-
+                	JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
                 };
             }
         });
@@ -194,7 +194,9 @@ public class AddLocationDialog extends JDialog {
 	 *  @param the city name to search
 	 *  */
 	private void searchCities(String cityName) throws JSONException {
+
 		JSONObject jsonObj = WeatherAPI.getLikeCities(cityName); 
+
 		cityModel.removeAllElements();
 		
 		if (jsonObj != null) {

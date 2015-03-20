@@ -1,3 +1,5 @@
+package main.java;
+
 /**
  * Class that represents a city.
  * 

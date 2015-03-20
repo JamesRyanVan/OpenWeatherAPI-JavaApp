@@ -18,7 +18,7 @@ public class App {
 			public void run() {
 				try {
 					AppWindow window = new AppWindow();
-					AppWindow.frmOpenweatherapp.setVisible(true);
+					window.frmOpenweatherapp.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
