@@ -1,4 +1,4 @@
-//package main.java;
+package main.java;
 
 import javax.swing.*;
 
@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -16,6 +17,10 @@ import java.awt.event.MouseEvent;
 
 public class AddLocationDialog extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JButton addButton;
     private JButton cancelButton;
     private JButton searchButton;
@@ -23,7 +28,7 @@ public class AddLocationDialog extends JDialog {
     private JList<City> cityList;
     private DefaultListModel<City> cityModel;
     private DialogListener dialogListener;
-    
+       
     /**
      * Constructor method.
      * 
@@ -34,23 +39,21 @@ public class AddLocationDialog extends JDialog {
     	
         super(parent, "Add New Location", false);
 
-        /* Sets up dialog window */
-//        setSize(400, 150);
-        setSize(450, 175);
+        // Sets up dialog window //
+        setBounds(100, 100, 376, 293);
         setLocationRelativeTo(parent);
         setVisible(true);
-
-        /* Creates components */
-        searchField = new JTextField(12);
+  
+        // Creates components //
+        searchField = new JTextField();
         addButton = new JButton("Add");
         cancelButton = new JButton("Cancel");
         searchButton = new JButton("Search");
 
-        
-        ////* Sets up add button *////
+        // Sets up add button //
         addButton.setEnabled(false); // off by default
        
-        /* If add button is clicked, creates a dialog event (containing city info) */
+        // If add button is clicked, creates a dialog event (containing city info) //
         addButton.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {        		
@@ -60,14 +63,14 @@ public class AddLocationDialog extends JDialog {
 				if (dialogListener != null) {
 					dialogListener.dialogEventOccurred(event);
 				}
-				/* Close the window */
+				// Close the window //
 				dispose(); 
         	}
         });
         
-        ////* Sets up cancel button *////
+        // Sets up cancel button //
          
-        /* If cancel button is clicked, close dialog window */
+        // If cancel button is clicked, close dialog window //
         cancelButton.addActionListener(new ActionListener() {
         	@Override
         	public void actionPerformed(ActionEvent e) {
@@ -75,58 +78,50 @@ public class AddLocationDialog extends JDialog {
         	}
         });
         
-        ////* Sets up the JList and its data model *////
-        cityModel = new DefaultListModel();
-        cityList = new JList(cityModel);
-        
+        ///// Sets up the JList and its data model /////
+        cityModel = new DefaultListModel<City>();
+        cityList = new JList<City>(cityModel);   
         cityList.setVisible(true);
         cityList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         cityList.setPreferredSize(new Dimension(100, 50));
-      
         cityList.setVisibleRowCount(5);
-        JScrollPane cityScrollPane = new JScrollPane(cityList);
         
-        /* If user double clicks search result, selects city */
+        // If user double clicks search result, selects city //
         cityList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 2) {	
                 	DialogEvent event = new DialogEvent((City)cityList.getSelectedValue());
                 	if (dialogListener != null) {
     					dialogListener.dialogEventOccurred(event);
+    					System.out.println("Added: " + cityList.getSelectedValue());
     				}
                 	dispose();	// close dialog window
                 } 
-            
-                
             }
         });
         
-        ////* Set up the search button/field *////
+        ///// Set up the search button/field /////
         
+        getRootPane().setDefaultButton(searchButton); // User can quick hit 'enter' key to search
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                	
-             
 	            	String searchFieldIn = searchField.getText();
 	            	if (!searchFieldIn.equals("")) {
 		      
-	            		// TODO: errors to address: no internet, API 501, no matches for search
+	            		// TODO: errors to address: no Internet, API 501, no matches for search
 		            	searchCities(searchFieldIn); 
 		            	
 		                searchField.requestFocusInWindow();
 		                searchField.setText("");
 		                
 		                cityList.setSelectedIndex(0);
+		                
 	            	} else { // print message to try again
 	            		
 	            	}
-	            	
-
-	            	
                 } catch (JSONException ex) {
-               
 
                 };
             }
@@ -137,7 +132,6 @@ public class AddLocationDialog extends JDialog {
         
         /* Focuses cursor on search field */
         searchField.requestFocusInWindow();
-
     }
     
     
@@ -147,57 +141,49 @@ public class AddLocationDialog extends JDialog {
 	 */
     private void layoutComponents() {
     	
-        setLayout(new GridBagLayout());
-        
-        GridBagConstraints gc = new GridBagConstraints();
-
-        ////* First row *////
-        gc.gridy = 0;
-
-        /* Search field (0,0) */
-        gc.gridx = 0;
-        gc.weightx = 3.0;
-        gc.weighty = 1.0;
-        gc.fill = GridBagConstraints.HORIZONTAL;
-        add(searchField, gc);
-
-        /* Search Button (1,0) */
-        gc.gridx++;
-        gc.weightx = 1.0;
-        gc.weighty = 1.0;
-        gc.fill = GridBagConstraints.HORIZONTAL;
-        add(searchButton, gc);
-
-        ////* Next row *////
-
-        gc.gridy++;
-        
-        /* City List (0,1) and (1,1) */
-        gc.gridx = 0;
-        gc.gridwidth = 2;
-        gc.weightx = 1.0;
-        gc.weighty = 1;
-        gc.fill = GridBagConstraints.HORIZONTAL;
-        gc.anchor = GridBagConstraints.FIRST_LINE_START;
-        add(cityList, gc);
-
-        ////* Next row *////
-
-        gc.gridy++;
-
-        /* Add Button (0,2) */
-        gc.gridx = 0;
-        gc.gridwidth = 1;
-        gc.weightx = 1.0;
-        gc.weighty = 0.05;
-        gc.fill = GridBagConstraints.NONE;
-//        gc.anchor = 
-        add(addButton, gc);
-        
-        /* Cancel Button (1,2) */
-        gc.gridx = 1;
-        add(cancelButton, gc); 
-        
+    	GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{13, 240, 0, 9, 0};
+		gridBagLayout.rowHeights = new int[]{61, 153, 44, 0};
+		gridBagLayout.columnWeights = new double[]{1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
+		getContentPane().setLayout(gridBagLayout);
+			
+		GridBagConstraints gbc_searchField = new GridBagConstraints();
+		gbc_searchField.insets = new Insets(0, 0, 5, 5);
+		gbc_searchField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_searchField.gridx = 1;
+		gbc_searchField.gridy = 0;
+		getContentPane().add(searchField, gbc_searchField);
+		searchField.setColumns(10);
+			
+		GridBagConstraints gbc_searchButton = new GridBagConstraints();
+		gbc_searchButton.anchor = GridBagConstraints.EAST;
+		gbc_searchButton.insets = new Insets(0, 0, 5, 5);
+		gbc_searchButton.gridx = 2;
+		gbc_searchButton.gridy = 0;
+		getContentPane().add(searchButton, gbc_searchButton);
+			
+		GridBagConstraints gbc_cancelButton = new GridBagConstraints();
+		gbc_cancelButton.anchor = GridBagConstraints.WEST;
+		gbc_cancelButton.insets = new Insets(0, 0, 0, 5);
+		gbc_cancelButton.gridx = 1;
+		gbc_cancelButton.gridy = 2;
+		getContentPane().add(cancelButton, gbc_cancelButton);
+		
+		GridBagConstraints gbc_addButton = new GridBagConstraints();
+		gbc_addButton.anchor = GridBagConstraints.EAST;
+		gbc_addButton.insets = new Insets(0, 0, 0, 5);
+		gbc_addButton.gridx = 2;
+		gbc_addButton.gridy = 2;
+		getContentPane().add(addButton, gbc_addButton);
+		
+		GridBagConstraints gbc_cityList = new GridBagConstraints();
+		gbc_cityList.insets = new Insets(0, 0, 5, 5);
+		gbc_cityList.fill = GridBagConstraints.BOTH;
+		gbc_cityList.gridx = 1;
+		gbc_cityList.gridy = 1;
+		getContentPane().add(cityList, gbc_cityList);
+    	
     }
     
 	/**
@@ -240,9 +226,6 @@ public class AddLocationDialog extends JDialog {
 		this.dialogListener = dialogListener;
 		
 	}
-    
-    
-
 
 }
 
