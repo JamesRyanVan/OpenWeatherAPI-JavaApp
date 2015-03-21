@@ -143,7 +143,6 @@ public class AppWindow {
 		try {
 			frmOpenweatherapp.getContentPane().add(tabbedPane());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -285,6 +284,12 @@ public class AppWindow {
 		            	System.out.println("Selected City: " + locationModel.getSelectedItem().toString());
 		            	currentLocation = (City) locationModel.getSelectedItem();
 		            	System.out.println(currentLocation.getCityID());
+					try {
+						getJSON(currentLocation.getCityID());
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					break;
 		        }
 		    }
@@ -314,7 +319,6 @@ public class AppWindow {
 					try {
 						getJSON(event.getCityID());
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					
@@ -345,7 +349,6 @@ public class AppWindow {
 			try {
 				panel_local_values(local);
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	}
@@ -412,25 +415,23 @@ public class AppWindow {
 			panel_labels();
 			lblHelloToStart.setText(null);
 		}
+
+		Local localWeather = new Local(local);
 		
-		JSONObject mainInfo = local.getJSONObject("main");
-		JSONObject sysInfo = local.getJSONObject("sys");
-		JSONObject windInfo = local.getJSONObject("wind");
-		
-		temperature.setText(String.valueOf(mainInfo.getInt("temp")));
-		temp_max.setText(String.valueOf(mainInfo.getInt("temp_max")));	
-		temp_min.setText(String.valueOf(mainInfo.getInt("temp_min")));
+		temperature.setText(String.valueOf(localWeather.getTemp()));
+		temp_max.setText(String.valueOf(localWeather.getTempMax()));	
+		temp_min.setText(String.valueOf(localWeather.getTempMin()));
 		locationName.setText(locationModel.getSelectedItem().toString());
-		skycondvalue.setText("null");
-		windspeedvalue.setText(String.valueOf(windInfo.getInt("speed")));
-		windDirvalue.setText(String.valueOf(windInfo.getInt("deg")));
-		airpressurevalue.setText(String.valueOf(mainInfo.getInt("pressure")));
-		humidityvalue.setText(String.valueOf(mainInfo.getInt("humidity")));
+		skycondvalue.setText(localWeather.getSkyCondition());
+		windspeedvalue.setText(String.valueOf(localWeather.getWindSpeed()));
+		windDirvalue.setText(String.valueOf(localWeather.getWindDir()));
+		airpressurevalue.setText(String.valueOf(localWeather.getAirPressure()));
+		humidityvalue.setText(String.valueOf(localWeather.getHumidity()));
 		
-		time = new Time(sysInfo.getInt("sunrise"));
+		time = localWeather.getSunriseTime();
 		sunriseValue.setText(String.valueOf(time.unixToTime()));
 		
-		time = new Time(sysInfo.getInt("sunset"));
+		time = localWeather.getSunsetTime();
 		sunsetValue.setText(String.valueOf(time.unixToTime()));
 		
 		Calendar cal = Calendar.getInstance();
@@ -443,7 +444,7 @@ public class AppWindow {
 	private void panel_labels() {
 		
 		temperature.setFont(new Font("Tahoma", Font.PLAIN, 45));
-		temperature.setBounds(40, 56, 77, 44);
+		temperature.setBounds(40, 56, 100, 44);
 		panel_local.add(temperature);
 		
 		temp_max.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -456,7 +457,7 @@ public class AppWindow {
 		
 		locationName.setHorizontalAlignment(SwingConstants.RIGHT);
 		locationName.setFont(new Font("Tahoma", Font.PLAIN, 21));
-		locationName.setBounds(583, 11, 161, 33);
+		locationName.setBounds(544, 11, 200, 33);
 		panel_local.add(locationName);
 		
 		lblUpdatedtime.setHorizontalAlignment(SwingConstants.LEFT);
