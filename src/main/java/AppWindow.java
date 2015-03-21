@@ -3,6 +3,7 @@ package main.java;
 import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 
 import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -32,11 +33,13 @@ import javax.swing.ImageIcon;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JComboBox;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -90,6 +93,17 @@ public class AppWindow {
 	private JLabel humidityvalue = new JLabel();
 	private JLabel sunriseValue = new JLabel();
 	private JLabel sunsetValue = new JLabel();
+	private JLabel lblSkycondition = new JLabel();
+	private JLabel lblWindspeed = new JLabel();
+	private JLabel lblWindDir = new JLabel();
+	private JLabel lblAirPressure = new JLabel();
+	private JLabel lblSunrise = new JLabel();
+	private JLabel lblSunset = new JLabel();
+	private JLabel lblDailyHigh = new JLabel();
+	private JLabel lblCurrent = new JLabel();
+	private JLabel lblHumidity = new JLabel();
+	private JLabel lblLastUpdate = new JLabel();
+	private JLabel lblLow = new JLabel();
 	
 	/**
 	 * Create the application.
@@ -198,37 +212,114 @@ public class AppWindow {
 		});
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmOpenweatherapp.dispatchEvent(new WindowEvent(frmOpenweatherapp, WindowEvent.WINDOW_CLOSING));
+			}
+		});
 		mnFile.add(mntmExit);
 		
 		JMenu mnView = new JMenu("View");
 		menuBar.add(mnView);
 		
 		JCheckBoxMenuItem chckbxmntmTemperature = new JCheckBoxMenuItem("Temperature");
+		chckbxmntmTemperature.setSelected(settings.viewTemp());
+		chckbxmntmTemperature.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settings.setViewTemp(!settings.viewTemp());
+				temperature.setVisible(settings.viewTemp());
+				temp_max.setVisible(settings.viewTemp());
+				temp_min.setVisible(settings.viewTemp());
+				lblDailyHigh.setVisible(settings.viewTemp());
+				lblLow.setVisible(settings.viewTemp());
+				lblCurrent.setEnabled(settings.viewTemp());
+			}
+		});
 		mnView.add(chckbxmntmTemperature);
 		
-		JCheckBoxMenuItem chckbxmntmWindSpeed = new JCheckBoxMenuItem("Wind Speed");
-		mnView.add(chckbxmntmWindSpeed);
-		
 		JCheckBoxMenuItem chckbxmntmSkyConditions = new JCheckBoxMenuItem("Sky Conditions");
+		chckbxmntmSkyConditions.setSelected(settings.viewSkyCondition());
+		chckbxmntmSkyConditions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settings.setSkyCondition(!settings.viewSkyCondition());
+				skycondvalue.setVisible(settings.viewSkyCondition());
+				lblSkycondition.setEnabled(settings.viewSkyCondition());
+				}
+			});
 		mnView.add(chckbxmntmSkyConditions);
 		
+		JCheckBoxMenuItem chckbxmntmWindSpeed = new JCheckBoxMenuItem("Wind");
+		chckbxmntmWindSpeed.setSelected(settings.viewWindSpeedAndDir());
+		chckbxmntmWindSpeed.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settings.setViewWindSpeedAndDir(!settings.viewWindSpeedAndDir());
+				windspeedvalue.setVisible(settings.viewWindSpeedAndDir());
+				windDirvalue.setVisible(settings.viewWindSpeedAndDir());
+				lblWindDir.setEnabled(settings.viewWindSpeedAndDir());
+				lblWindspeed.setEnabled(settings.viewWindSpeedAndDir());
+				}
+			});
+		mnView.add(chckbxmntmWindSpeed);
+		
 		JCheckBoxMenuItem chckbxmntmAirPressure = new JCheckBoxMenuItem("Air Pressure");
+		chckbxmntmAirPressure.setSelected(settings.viewAirPressure());
+		chckbxmntmAirPressure.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settings.setViewAirPressure(!settings.viewAirPressure());
+				airpressurevalue.setVisible(settings.viewAirPressure());
+				lblAirPressure.setEnabled(settings.viewAirPressure());
+				}
+			});
 		mnView.add(chckbxmntmAirPressure);
 		
 		JCheckBoxMenuItem chckbxmntmHumidity = new JCheckBoxMenuItem("Humidity");
+		chckbxmntmHumidity.setSelected(settings.viewHumidity());
+		chckbxmntmHumidity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settings.setViewHumidity(!settings.viewHumidity());
+				humidityvalue.setVisible(settings.viewHumidity());
+				lblHumidity.setEnabled(settings.viewHumidity());
+				}
+			});
 		mnView.add(chckbxmntmHumidity);
 		
 		JCheckBoxMenuItem chckbxmntmSunsetsunrise = new JCheckBoxMenuItem("Sunset/Sunrise");
+		chckbxmntmSunsetsunrise.setSelected(settings.viewSunsetAndRise());
+		chckbxmntmSunsetsunrise.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settings.setViewSunsetAndRise(!settings.viewSunsetAndRise());
+				sunriseValue.setVisible(settings.viewSunsetAndRise());
+				sunsetValue.setVisible(settings.viewSunsetAndRise());
+				lblSunrise.setEnabled(settings.viewSunsetAndRise());
+				lblSunset.setEnabled(settings.viewSunsetAndRise());
+			}
+			});
 		mnView.add(chckbxmntmSunsetsunrise);
 		
 		JSeparator separator = new JSeparator();
 		mnView.add(separator);
 		
 		JRadioButtonMenuItem rdbtnmntmMetric = new JRadioButtonMenuItem("Metric");
+		rdbtnmntmMetric.setSelected(settings.viewMetricUnits());
+		rdbtnmntmMetric.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settings.setViewMetricUnits(true);
+			}
+			});
 		mnView.add(rdbtnmntmMetric);
 		
 		JRadioButtonMenuItem rdbtnmntmImperial = new JRadioButtonMenuItem("Imperial");
+		rdbtnmntmImperial.setSelected(!settings.viewMetricUnits());
+		rdbtnmntmImperial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settings.setViewMetricUnits(false);
+			}
+			});
 		mnView.add(rdbtnmntmImperial);
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(rdbtnmntmMetric);
+		group.add(rdbtnmntmImperial);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
@@ -418,7 +509,9 @@ public class AppWindow {
 
 		Local localWeather = new Local(local);
 		
-		temperature.setText(String.valueOf(localWeather.getTemp()));
+		DecimalFormat df = new DecimalFormat("#.00");
+		temperature.setText(String.valueOf(df.format(localWeather.getTemp())));
+		
 		temp_max.setText(String.valueOf(localWeather.getTempMax()));	
 		temp_min.setText(String.valueOf(localWeather.getTempMin()));
 		locationName.setText(locationModel.getSelectedItem().toString());
@@ -444,15 +537,18 @@ public class AppWindow {
 	private void panel_labels() {
 		
 		temperature.setFont(new Font("Tahoma", Font.PLAIN, 45));
-		temperature.setBounds(40, 56, 100, 44);
+		temperature.setBounds(40, 56, 200, 44);
+		temperature.setVisible(settings.viewTemp());
 		panel_local.add(temperature);
 		
 		temp_max.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		temp_max.setBounds(197, 61, 60, 32);
+		temp_max.setVisible(settings.viewTemp());
 		panel_local.add(temp_max);
 		
 		temp_min.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		temp_min.setBounds(323, 61, 60, 32);
+		temp_min.setVisible(settings.viewTemp());
 		panel_local.add(temp_min);
 		
 		locationName.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -465,78 +561,95 @@ public class AppWindow {
 		panel_local.add(lblUpdatedtime);
 		
 		skycondvalue.setBounds(200, 122, 80, 14);
+		skycondvalue.setVisible(settings.viewSkyCondition());
 		panel_local.add(skycondvalue);
 		
 		windspeedvalue.setBounds(200, 157, 80, 14);
+		windspeedvalue.setVisible(settings.viewWindSpeedAndDir());
 		panel_local.add(windspeedvalue);
 		
 		windDirvalue.setBounds(200, 192, 80, 14);
+		windDirvalue.setVisible(settings.viewWindSpeedAndDir());
 		panel_local.add(windDirvalue);
 		
 		airpressurevalue.setBounds(200, 224, 80, 14);
+		airpressurevalue.setVisible(settings.viewAirPressure());
 		panel_local.add(airpressurevalue);
 		
 		humidityvalue.setBounds(200, 257, 80, 14);
+		humidityvalue.setVisible(settings.viewHumidity());
 		panel_local.add(humidityvalue);
 		
 		sunriseValue.setBounds(200, 314, 80, 14);
+		sunriseValue.setVisible(settings.viewSunsetAndRise());
 		panel_local.add(sunriseValue);
 		
 		sunsetValue.setBounds(200, 349, 80, 14);
+		sunsetValue.setVisible(settings.viewSunsetAndRise());
 		panel_local.add(sunsetValue);
 		
-		JLabel lblSkycondition = new JLabel("SkyCondition");
+		lblSkycondition = new JLabel("SkyCondition");
 		lblSkycondition.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSkycondition.setBounds(40, 122, 150, 14);
+		lblSkycondition.setEnabled(settings.viewSkyCondition());
 		panel_local.add(lblSkycondition);
 		
-		JLabel lblWindspeed = new JLabel("WindSpeed");
+		lblWindspeed = new JLabel("WindSpeed");
 		lblWindspeed.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblWindspeed.setBounds(40, 146, 150, 33);
+		lblWindspeed.setEnabled(settings.viewWindSpeedAndDir());
 		panel_local.add(lblWindspeed);
 		
-		JLabel lblWindDir = new JLabel("Wind Direction");
+		lblWindDir = new JLabel("Wind Direction");
 		lblWindDir.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblWindDir.setBounds(40, 185, 122, 25);
+		lblWindDir.setEnabled(settings.viewWindSpeedAndDir());
 		panel_local.add(lblWindDir);
 		
-		JLabel lblAirPressure = new JLabel("Air Pressure");
+		lblAirPressure = new JLabel("Air Pressure");
 		lblAirPressure.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblAirPressure.setBounds(40, 217, 113, 25);
+		lblAirPressure.setEnabled(settings.viewAirPressure());
 		panel_local.add(lblAirPressure);
 		
-		JLabel lblSunrise = new JLabel("SunRise");
+		lblSunrise = new JLabel("SunRise");
 		lblSunrise.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSunrise.setBounds(40, 303, 110, 33);
+		lblSunrise.setEnabled(settings.viewSunsetAndRise());
 		panel_local.add(lblSunrise);
 		
-		JLabel lblSunset = new JLabel("SunSet");
+		lblSunset = new JLabel("SunSet");
 		lblSunset.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblSunset.setBounds(40, 338, 93, 33);
+		lblSunset.setEnabled(settings.viewSunsetAndRise());
 		panel_local.add(lblSunset);
 		
-		JLabel lblHumidity = new JLabel("Humidity");
+		lblHumidity = new JLabel("Humidity");
 		lblHumidity.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblHumidity.setBounds(40, 251, 122, 25);
+		lblHumidity.setEnabled(settings.viewHumidity());
 		panel_local.add(lblHumidity);
-		
-		JLabel lblLastUpdate = new JLabel("Last Updated:");
+
+		lblLastUpdate = new JLabel("Last Updated:");
 		lblLastUpdate.setBounds(625, 389, 77, 20);
 		panel_local.add(lblLastUpdate);
 		
-		JLabel lblCurrent = new JLabel("Current:");
+		lblCurrent = new JLabel("Current:");
 		lblCurrent.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblCurrent.setBounds(40, 24, 85, 28);
+		lblCurrent.setEnabled(settings.viewTemp());
 		panel_local.add(lblCurrent);
 		
-		JLabel lblDailyHigh = new JLabel("High:");
+		lblDailyHigh = new JLabel("High:");
 		lblDailyHigh.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblDailyHigh.setBounds(198, 25, 60, 26);
+		lblDailyHigh.setVisible(settings.viewTemp());
 		panel_local.add(lblDailyHigh);
 		
-		JLabel lblLow = new JLabel("Low:");
+		lblLow = new JLabel("Low:");
 		lblLow.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblLow.setBounds(324, 31, 46, 14);
+		lblLow.setVisible(settings.viewTemp());
 		panel_local.add(lblLow);
 		
 		JPanel panel_1 = new JPanel();
