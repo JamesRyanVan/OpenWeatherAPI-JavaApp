@@ -122,7 +122,7 @@ public class AddLocationDialog extends JDialog {
 	            		
 	            	}
                 } catch (JSONException ex) {
-                	JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+                	JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
                 };
             }
         });

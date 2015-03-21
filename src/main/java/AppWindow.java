@@ -37,6 +37,8 @@ import javax.swing.JComboBox;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
@@ -65,21 +67,29 @@ public class AppWindow {
 	private DefaultComboBoxModel<City> locationModel;
 	private JComboBox<City> comboBox_location;
 	
-	JButton btnRefresh;
+	private JButton btnRefresh;
 	
 	// Location Storage
-	private int currentLocationID = 0; // Active location
+	private City currentLocation = null; // Active location
 	
 	// Status Label
 	public JLabel programStatus;
 	
 	// Panel Labels
-	private JLabel lblHelloToStart;
+	private JLabel lblHelloToStart = new JLabel();
 	
-	private JLabel temperature;
-	private JLabel temp_max;
-	private JLabel temp_min;
-	private JLabel lblUpdatedtime;
+	private JLabel temperature = new JLabel();
+	private JLabel temp_max = new JLabel();
+	private JLabel temp_min = new JLabel();
+	private JLabel lblUpdatedtime = new JLabel();
+	private JLabel locationName = new JLabel();
+	private JLabel skycondvalue = new JLabel();
+	private JLabel windspeedvalue = new JLabel();
+	private JLabel windDirvalue = new JLabel();
+	private JLabel airpressurevalue = new JLabel();
+	private JLabel humidityvalue = new JLabel();
+	private JLabel sunriseValue = new JLabel();
+	private JLabel sunsetValue = new JLabel();
 	
 	/**
 	 * Create the application.
@@ -144,7 +154,7 @@ public class AppWindow {
 		programStatus = new JLabel();
 		programStatus.setBounds(12, 454, 400, 14);
 		
-		if (currentLocationID == 0) 
+		if (currentLocation == null) 
 			programStatus.setText("Waiting for Location");
 			
 		frmOpenweatherapp.getContentPane().add(programStatus);
@@ -181,7 +191,10 @@ public class AppWindow {
 		mnFile.add(mntmRefresh);
 		mntmRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				refresh(currentLocationID);
+				if (currentLocation != null)
+				refresh(currentLocation.getCityID());
+				else
+					programStatus.setText("No Data to refresh");
 			}
 		});
 		
@@ -238,20 +251,20 @@ public class AppWindow {
 		
 		btnRefresh = new JButton("");
 		
-		if (currentLocationID == 0) 
+		if (currentLocation == null) 
 			btnRefresh.setEnabled(false);
-			
-		btnRefresh.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				refresh(currentLocationID);
-			}
-		});
 		
 		try {
 		    Image img = ImageIO.read(getClass().getResource("/main/resource/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
+		
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				refresh(currentLocation.getCityID());
+			}
+		});
 
 		btnRefresh.setBounds(233, 4, 31, 31);
 		panel.add(btnRefresh);
@@ -269,8 +282,10 @@ public class AppWindow {
 					}
 		                break;
 		            default: 
-		            	System.out.println("Selected City");
-		            	break;
+		            	System.out.println("Selected City: " + locationModel.getSelectedItem().toString());
+		            	currentLocation = (City) locationModel.getSelectedItem();
+		            	System.out.println(currentLocation.getCityID());
+					break;
 		        }
 		    }
 		});
@@ -291,7 +306,8 @@ public class AppWindow {
 				
 				if (event != null) {
 					
-					currentLocationID = event.getCityID();
+					
+					currentLocation = event.getCityObj();
 					locationModel.addElement(event.getCityObj());
 					locationModel.setSelectedItem(event.getCityObj());
 					
@@ -302,7 +318,7 @@ public class AppWindow {
 						e.printStackTrace();
 					}
 					
-					programStatus.setText("Loaded Location: " + locationModel.getSelectedItem().toString() + "  (ID:" + currentLocationID + ")" );
+					programStatus.setText("Loaded Location: " + currentLocation.getCityName() + "  (ID:" + currentLocation.getCityID() + ")" );
 				}
 			}
 		});
@@ -327,7 +343,7 @@ public class AppWindow {
 		System.out.println(local.toString());
 		
 			try {
-				panel_local_content(local);
+				panel_local_values(local);
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -336,15 +352,11 @@ public class AppWindow {
 	
 	private void refresh(int locationID) {
 				
-		if (currentLocationID == 0) 
-			programStatus.setText("Nothing to Refresh!");
-		else
 			try {
 				getJSON(locationID);
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
-			}	
-			
+			}		
 	}
 		
 	private JTabbedPane tabbedPane() throws IOException {
@@ -353,7 +365,7 @@ public class AppWindow {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(12, 11, 765, 440);
 		
-		if (currentLocationID == 0) {
+		if (currentLocation == null) {
 			tabbedPane.setEnabled(false);
 		}
 		
@@ -361,10 +373,10 @@ public class AppWindow {
 		tabbedPane.addTab("Local", null, panel_local, null);
 		panel_local.setLayout(null);
 		
-		if (currentLocationID == 0) {
+		if (currentLocation == null) {
 			panel_blank();
 		} else {
-				getJSON(currentLocationID);
+				getJSON(currentLocation.getCityID());
 		}
 		
 		panel_short = new JPanel();
@@ -393,70 +405,84 @@ public class AppWindow {
 		
 	}
 	
-	private void panel_local_content(JSONObject local) throws JSONException {
+	private void panel_local_values(JSONObject local) throws JSONException {
 		
-		lblHelloToStart.setText(null);
+		
+		if (lblHelloToStart.getText() != null) {
+			panel_labels();
+			lblHelloToStart.setText(null);
+		}
 		
 		JSONObject mainInfo = local.getJSONObject("main");
 		JSONObject sysInfo = local.getJSONObject("sys");
 		JSONObject windInfo = local.getJSONObject("wind");
 		
-		temperature = new JLabel(String.valueOf(mainInfo.getInt("temp")));
+		temperature.setText(String.valueOf(mainInfo.getInt("temp")));
+		temp_max.setText(String.valueOf(mainInfo.getInt("temp_max")));	
+		temp_min.setText(String.valueOf(mainInfo.getInt("temp_min")));
+		locationName.setText(locationModel.getSelectedItem().toString());
+		skycondvalue.setText("null");
+		windspeedvalue.setText(String.valueOf(windInfo.getInt("speed")));
+		windDirvalue.setText(String.valueOf(windInfo.getInt("deg")));
+		airpressurevalue.setText(String.valueOf(mainInfo.getInt("pressure")));
+		humidityvalue.setText(String.valueOf(mainInfo.getInt("humidity")));
+		
+		time = new Time(sysInfo.getInt("sunrise"));
+		sunriseValue.setText(String.valueOf(time.unixToTime()));
+		
+		time = new Time(sysInfo.getInt("sunset"));
+		sunsetValue.setText(String.valueOf(time.unixToTime()));
+		
+		Calendar cal = Calendar.getInstance();
+    	cal.getTime();
+    	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    	System.out.println(sdf.format(cal.getTime()));
+		lblUpdatedtime.setText(String.valueOf(sdf.format(cal.getTime())));
+	}
+	
+	private void panel_labels() {
+		
 		temperature.setFont(new Font("Tahoma", Font.PLAIN, 45));
 		temperature.setBounds(40, 56, 77, 44);
 		panel_local.add(temperature);
 		
-		temp_max = new JLabel(String.valueOf(mainInfo.getInt("temp_max")));
 		temp_max.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		temp_max.setBounds(197, 61, 60, 32);
 		panel_local.add(temp_max);
 		
-		temp_min = new JLabel(String.valueOf(mainInfo.getInt("temp_min")));
 		temp_min.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		temp_min.setBounds(323, 61, 60, 32);
 		panel_local.add(temp_min);
 		
-		JLabel lblWeatherReportFor = new JLabel(locationModel.getSelectedItem().toString());
-		lblWeatherReportFor.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblWeatherReportFor.setFont(new Font("Tahoma", Font.PLAIN, 21));
-		lblWeatherReportFor.setBounds(583, 11, 161, 33);
-		panel_local.add(lblWeatherReportFor);
+		locationName.setHorizontalAlignment(SwingConstants.RIGHT);
+		locationName.setFont(new Font("Tahoma", Font.PLAIN, 21));
+		locationName.setBounds(583, 11, 161, 33);
+		panel_local.add(locationName);
 		
-		time = new Time(local.getInt("dt"));
-		lblUpdatedtime = new JLabel(String.valueOf(time.unixToDate()));
 		lblUpdatedtime.setHorizontalAlignment(SwingConstants.LEFT);
-		lblUpdatedtime.setBounds(625, 392, 200, 14);
+		lblUpdatedtime.setBounds(700, 392, 200, 14);
 		panel_local.add(lblUpdatedtime);
 		
-		JLabel skycondvalue = new JLabel("null");
 		skycondvalue.setBounds(200, 122, 80, 14);
 		panel_local.add(skycondvalue);
 		
-		JLabel windspeedvalue = new JLabel(String.valueOf(windInfo.getInt("speed")));
 		windspeedvalue.setBounds(200, 157, 80, 14);
 		panel_local.add(windspeedvalue);
 		
-		JLabel windDirvalue = new JLabel(String.valueOf(windInfo.getInt("deg")));
 		windDirvalue.setBounds(200, 192, 80, 14);
 		panel_local.add(windDirvalue);
 		
-		JLabel airpressurevalue = new JLabel(String.valueOf(mainInfo.getInt("pressure")));
 		airpressurevalue.setBounds(200, 224, 80, 14);
 		panel_local.add(airpressurevalue);
 		
-		JLabel humidityvalue = new JLabel(String.valueOf(mainInfo.getInt("humidity")));
 		humidityvalue.setBounds(200, 257, 80, 14);
 		panel_local.add(humidityvalue);
 		
-		time = new Time(sysInfo.getInt("sunrise"));
-		JLabel sunriseValue = new JLabel(String.valueOf(time.unixToTime()));
 		sunriseValue.setBounds(200, 314, 80, 14);
 		panel_local.add(sunriseValue);
 		
-		time = new Time(sysInfo.getInt("sunset"));
-		JLabel Sunsetvalue = new JLabel(String.valueOf(time.unixToTime()));
-		Sunsetvalue.setBounds(200, 349, 80, 14);
-		panel_local.add(Sunsetvalue);
+		sunsetValue.setBounds(200, 349, 80, 14);
+		panel_local.add(sunsetValue);
 		
 		JLabel lblSkycondition = new JLabel("SkyCondition");
 		lblSkycondition.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -494,7 +520,7 @@ public class AppWindow {
 		panel_local.add(lblHumidity);
 		
 		JLabel lblLastUpdate = new JLabel("Last Updated:");
-		lblLastUpdate.setBounds(540, 389, 77, 20);
+		lblLastUpdate.setBounds(625, 389, 77, 20);
 		panel_local.add(lblLastUpdate);
 		
 		JLabel lblCurrent = new JLabel("Current:");
