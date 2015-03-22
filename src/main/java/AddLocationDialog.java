@@ -181,21 +181,21 @@ public class AddLocationDialog extends JDialog {
 		gbc_matchLabel.anchor = GridBagConstraints.LAST_LINE_START;
 		gbc_matchLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_matchLabel.gridx = 1;
-		gbc_matchLabel.gridy = 1;
+		gbc_matchLabel.gridy = 2;
 		getContentPane().add(resultLabel, gbc_matchLabel);
 			
 		GridBagConstraints gbc_cancelButton = new GridBagConstraints();
 		gbc_cancelButton.anchor = GridBagConstraints.WEST;
 		gbc_cancelButton.insets = new Insets(0, 0, 0, 5);
 		gbc_cancelButton.gridx = 1;
-		gbc_cancelButton.gridy = 2;
+		gbc_cancelButton.gridy = 3;
 		getContentPane().add(cancelButton, gbc_cancelButton);
 		
 		GridBagConstraints gbc_addButton = new GridBagConstraints();
 		gbc_addButton.anchor = GridBagConstraints.EAST;
 		gbc_addButton.insets = new Insets(0, 0, 0, 5);
 		gbc_addButton.gridx = 2;
-		gbc_addButton.gridy = 2;
+		gbc_addButton.gridy = 3;
 		getContentPane().add(addButton, gbc_addButton);
 		
 		GridBagConstraints gbc_cityList = new GridBagConstraints();
