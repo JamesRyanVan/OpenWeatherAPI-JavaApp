@@ -6,7 +6,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -17,13 +16,12 @@ import java.awt.event.MouseEvent;
 
 public class AddLocationDialog extends JDialog {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
 	private JButton addButton;
     private JButton cancelButton;
     private JButton searchButton;
+    private JLabel resultLabel;
     private JTextField searchField;
     private JList<City> cityList;
     private DefaultListModel<City> cityModel;
@@ -50,6 +48,7 @@ public class AddLocationDialog extends JDialog {
         addButton = new JButton("Add");
         cancelButton = new JButton("Cancel");
         searchButton = new JButton("Search");
+        resultLabel = new JLabel("");
 
         // Sets up add button //
         addButton.setEnabled(false); // off by default
@@ -79,7 +78,7 @@ public class AddLocationDialog extends JDialog {
         	}
         });
         
-        ///// Sets up the JList and its data model /////
+        ///// Sets up the JList and its data model and scroll pane /////
         cityModel = new DefaultListModel<City>();
         cityList = new JList<City>(cityModel);   
         cityList.setVisible(true);
@@ -108,18 +107,32 @@ public class AddLocationDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
 	            	String searchFieldIn = searchField.getText();
-	            	if (!searchFieldIn.equals("")) {
+	            	
+	            	if (!searchFieldIn.equals("")) { // If user enters text in search field
 	            		
-	            		// TODO: errors to address: no Internet, API 501, no matches for search
-		            	searchCities(searchFieldIn); 
+		            	searchCities(searchFieldIn); // Perform a like-search on OpenWeatherMap
+		 
+		            	searchField.setText(""); // Clear the search text field
 		            	
-		                searchField.requestFocusInWindow();
-		                searchField.setText("");
-		                
-		                cityList.setSelectedIndex(0);
-		                
-	            	} else { // print message to try again
-	            		
+		            	// Match found //
+		            	if (!cityModel.isEmpty()) {
+		            	
+		            		// Focus on the first result in the search result list
+		    				cityList.requestFocusInWindow();
+		    				cityList.setSelectedIndex(0);
+		    				
+		    				if (cityModel.getSize() == 1) {
+			    				resultLabel.setText(cityModel.getSize() + " match for " + searchFieldIn);
+		    				} else {
+		    					resultLabel.setText(cityModel.getSize() + " matches for " + searchFieldIn);
+		    				}
+
+		    			// No match //
+		            	} else {
+		            		resultLabel.setText("No matches for " + searchFieldIn + ". Try again.");
+		            	}
+		            
+		            	
 	            	}
                 } catch (JSONException ex) {
                 	JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -155,6 +168,7 @@ public class AddLocationDialog extends JDialog {
 		gbc_searchField.gridy = 0;
 		getContentPane().add(searchField, gbc_searchField);
 		searchField.setColumns(10);
+		
 			
 		GridBagConstraints gbc_searchButton = new GridBagConstraints();
 		gbc_searchButton.anchor = GridBagConstraints.EAST;
@@ -162,6 +176,13 @@ public class AddLocationDialog extends JDialog {
 		gbc_searchButton.gridx = 2;
 		gbc_searchButton.gridy = 0;
 		getContentPane().add(searchButton, gbc_searchButton);
+		
+		GridBagConstraints gbc_matchLabel = new GridBagConstraints();
+		gbc_matchLabel.anchor = GridBagConstraints.LAST_LINE_START;
+		gbc_matchLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_matchLabel.gridx = 1;
+		gbc_matchLabel.gridy = 1;
+		getContentPane().add(resultLabel, gbc_matchLabel);
 			
 		GridBagConstraints gbc_cancelButton = new GridBagConstraints();
 		gbc_cancelButton.anchor = GridBagConstraints.WEST;
@@ -208,14 +229,9 @@ public class AddLocationDialog extends JDialog {
 				int cityIDResult = jsonArray.getJSONObject(i).getInt("id");
 				String cityNameResult = jsonArray.getJSONObject(i).getString("name");
 				String countryNameResult = jsonArray.getJSONObject(i).getJSONObject("sys").getString("country");
-				cityModel.addElement(new City(cityIDResult, cityNameResult, countryNameResult));
-			}
-			
-		} else {
-			throw new JSONException("Failed");
-			
+				cityModel.addElement(new City(cityIDResult, cityNameResult, countryNameResult));	
+			}	
 		}
-	
 	}
 	
 	
