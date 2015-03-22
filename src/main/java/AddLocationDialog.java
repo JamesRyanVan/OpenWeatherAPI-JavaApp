@@ -27,6 +27,7 @@ public class AddLocationDialog extends JDialog {
     private JTextField searchField;
     private JList<City> cityList;
     private DefaultListModel<City> cityModel;
+    private JScrollPane cityScrollPane;
     private DialogListener dialogListener;
        
     /**
@@ -83,8 +84,7 @@ public class AddLocationDialog extends JDialog {
         cityList = new JList<City>(cityModel);   
         cityList.setVisible(true);
         cityList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        cityList.setPreferredSize(new Dimension(100, 50));
-        cityList.setVisibleRowCount(5);
+        cityScrollPane = new JScrollPane(cityList);
         
         // If user double clicks search result, selects city //
         cityList.addMouseListener(new MouseAdapter() {
@@ -182,7 +182,7 @@ public class AddLocationDialog extends JDialog {
 		gbc_cityList.fill = GridBagConstraints.BOTH;
 		gbc_cityList.gridx = 1;
 		gbc_cityList.gridy = 1;
-		getContentPane().add(cityList, gbc_cityList);
+		getContentPane().add(cityScrollPane, gbc_cityList);
     	
     }
     
