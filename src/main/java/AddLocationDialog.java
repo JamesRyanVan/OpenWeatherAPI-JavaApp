@@ -1,5 +1,3 @@
-
-
 import javax.swing.*;
 
 import org.json.JSONArray;
@@ -312,8 +310,3 @@ public class AddLocationDialog extends JDialog {
 	}
 
 }
-
-
-
-
-
