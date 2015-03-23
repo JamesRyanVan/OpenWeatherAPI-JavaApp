@@ -2,9 +2,10 @@ package main.java;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.net.MalformedURLException;
 import java.util.Scanner;
 
 /**
@@ -131,39 +132,52 @@ public class WeatherAPI {
     	
  
         JSONObject jsonObj = new JSONObject();
+        
+        Scanner urlReader = null;
+        InputStream urlStream = null; 
+        String queryResult = "";
+        
         try {
              /* Does a query and saves query result as a string */
-            String queryResult = "";
-            Scanner urlReader = new Scanner(new URL(address).openStream());
+            urlStream = new URL(address).openStream();
+            urlReader = new Scanner(urlStream);
             while (urlReader.hasNext()) {
                 queryResult += urlReader.nextLine();
             }
-            urlReader.close();
-
-            /* Builds the JSON Object from query result */
-            jsonObj = new JSONObject(queryResult);
             
-            if (requestType == 0) {
+        } catch (IOException ioEx) {
+            ioEx.printStackTrace();	
+            return null;
+        } finally {
+        	if (urlReader != null) {
+        		urlReader.close();
+        	}
+        }
+        
+       try {
+	        /* Builds the JSON Object from query result */
+	        jsonObj = new JSONObject(queryResult);
+	        
+	        if (requestType == 0) {
 	            /* Checks if API call was valid */
 	            if (jsonObj.get("cod").equals("404")) {
 	                return null;
 	            }
-            } else if (requestType == 1)
-            	/* Location not found */
-            	if (jsonObj.get("count").equals(0)) {
-            		return null;
-            	}
-            
-        } catch (MalformedURLException malEx) {
-            malEx.printStackTrace();
-            return null;
-        } catch (IOException ioEx) {
-            ioEx.printStackTrace();
-            return null;
-        } catch (JSONException jsonEx) {
-            jsonEx.printStackTrace();
-            return null;
-        }
+	        } else if (requestType == 1) {
+	        	/* Location not found and JSONObj has the message "like" */
+	        	if (jsonObj.get("message").equals("like")) {
+	            	if (jsonObj.get("count").equals(0)) {
+	            		return null;
+	            	}
+	            /* Location not found and JSONObj has the message "" */
+	        	} else if (jsonObj.get("message").equals("")) {
+	        		return null;
+	        	}
+	        }
+       } catch (JSONException jsonEx) {
+    	   jsonEx.printStackTrace();
+       }
+       
 
         /* Return the JSON object */
         return jsonObj;

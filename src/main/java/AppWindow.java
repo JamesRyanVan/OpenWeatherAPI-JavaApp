@@ -401,19 +401,23 @@ public class AppWindow {
 			public void dialogEventOccurred(DialogEvent event) {
 				
 				if (event != null) {
-					
-					
-					currentLocation = event.getCityObj();
-					locationModel.addElement(event.getCityObj());
-					locationModel.setSelectedItem(event.getCityObj());
-					
 					try {
 						getJSON(event.getCityID());
+						
+						currentLocation = event.getCityObj();
+						locationModel.addElement(event.getCityObj());
+						locationModel.setSelectedItem(event.getCityObj());
+						
+						programStatus.setText("Loaded Location: " + currentLocation.getCityName() + "  (ID:" + currentLocation.getCityID() + ")" );
+					
 					} catch (IOException e) {
-						e.printStackTrace();
+						JOptionPane.showMessageDialog(null, e.toString(), "Loading city failed.. Try again", JOptionPane.ERROR_MESSAGE);
+						
+						//  loading location failed...
+					
 					}
 					
-					programStatus.setText("Loaded Location: " + currentLocation.getCityName() + "  (ID:" + currentLocation.getCityID() + ")" );
+					
 				}
 			}
 		});
@@ -428,20 +432,27 @@ public class AppWindow {
 		
 		weather = new WeatherAPI(locationID, settings.viewMetricUnits()); // Gets the JSON data from WeatherAPI
 			
-		JSONObject local = weather.getLocal();
+		JSONObject local = weather.getLocal(); // null if there was an error
 		JSONObject shortTerm = weather.getShortTerm();
 		JSONObject longTerm = weather.getLongTerm();
 		
-		tabbedPane.setEnabled(true);
-		btnRefresh.setEnabled(true);
+		if (local != null && shortTerm != null && longTerm != null) {
+			tabbedPane.setEnabled(true);
+			btnRefresh.setEnabled(true);
+			
+			System.out.println(local.toString());
+			
+				try {
+					panel_local_values(local);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+		} else {
+			// JSON failed..
+			throw new IOException();
 		
-		System.out.println(local.toString());
+		}
 		
-			try {
-				panel_local_values(local);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
 	}
 	
 	private void refresh(int locationID) {
