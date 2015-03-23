@@ -114,7 +114,6 @@ public class AddLocationDialog extends JDialog {
 	            	String searchFieldIn = searchField.getText();
 	            	
 	            	if (!searchFieldIn.equals("")) { // If user enters text in search field
-	            		try {
 	            			searchCities(searchFieldIn); // Perform a like-search on OpenWeatherMap
 	            	     	searchField.setText(""); // Clear the search text field
 			            	
@@ -137,15 +136,7 @@ public class AddLocationDialog extends JDialog {
 			            		addButton.setEnabled(false);
 			            		resultLabel.setText("No matches for " + searchFieldIn + ". Try again.");
 			            	}
-	            		
-	            		} catch (IOException ex) {
-//	            			ex.printStackTrace();
-	            			resultLabel.setText("Server error try again.");
-	            		}
-		 
-		       
-		            
-		            	
+		
 	            	}
                 } catch (Exception ex) { // CHANGE
                 	JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -245,8 +236,6 @@ public class AddLocationDialog extends JDialog {
 				String countryNameResult = jsonArray.getJSONObject(i).getJSONObject("sys").getString("country");
 				cityModel.addElement(new City(cityIDResult, cityNameResult, countryNameResult));	
 			}	
-		} else {
-			throw new IOException();
 		}
 	}
 	
