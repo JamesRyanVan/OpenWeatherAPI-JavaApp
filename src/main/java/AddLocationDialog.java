@@ -13,6 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
 
 public class AddLocationDialog extends JDialog {
 
@@ -42,6 +46,7 @@ public class AddLocationDialog extends JDialog {
         setBounds(100, 100, 376, 293);
         setLocationRelativeTo(parent);
         setVisible(true);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
   
         // Creates components //
         searchField = new JTextField();
@@ -109,32 +114,40 @@ public class AddLocationDialog extends JDialog {
 	            	String searchFieldIn = searchField.getText();
 	            	
 	            	if (!searchFieldIn.equals("")) { // If user enters text in search field
-	            		
-		            	searchCities(searchFieldIn); // Perform a like-search on OpenWeatherMap
-		 
-		            	searchField.setText(""); // Clear the search text field
-		            	
-		            	// Match found //
-		            	if (!cityModel.isEmpty()) {
-		            	
-		            		// Focus on the first result in the search result list
-		    				cityList.requestFocusInWindow();
-		    				cityList.setSelectedIndex(0);
-		    				
-		    				if (cityModel.getSize() == 1) {
-			    				resultLabel.setText(cityModel.getSize() + " match for " + searchFieldIn);
-		    				} else {
-		    					resultLabel.setText(cityModel.getSize() + " matches for " + searchFieldIn);
-		    				}
+	            		try {
+	            			searchCities(searchFieldIn); // Perform a like-search on OpenWeatherMap
+	            	     	searchField.setText(""); // Clear the search text field
+			            	
+			            	// Match found //
+			            	if (!cityModel.isEmpty()) {
+			            		
+			            		addButton.setEnabled(true);
+			            		// Focus on the first result in the search result list
+			    				cityList.requestFocusInWindow();
+			    				cityList.setSelectedIndex(0);
+			    				
+			    				if (cityModel.getSize() == 1) {
+				    				resultLabel.setText(cityModel.getSize() + " match for " + searchFieldIn);
+			    				} else {
+			    					resultLabel.setText(cityModel.getSize() + " matches for " + searchFieldIn);
+			    				}
 
-		    			// No match //
-		            	} else {
-		            		resultLabel.setText("No matches for " + searchFieldIn + ". Try again.");
-		            	}
+			    			// No match //
+			            	} else {
+			            		addButton.setEnabled(false);
+			            		resultLabel.setText("No matches for " + searchFieldIn + ". Try again.");
+			            	}
+	            		
+	            		} catch (IOException ex) {
+//	            			ex.printStackTrace();
+	            			resultLabel.setText("Server error try again.");
+	            		}
+		 
+		       
 		            
 		            	
 	            	}
-                } catch (JSONException ex) {
+                } catch (Exception ex) { // CHANGE
                 	JOptionPane.showMessageDialog(null, ex.toString(), "Error", JOptionPane.ERROR_MESSAGE);
                 };
             }
@@ -182,6 +195,7 @@ public class AddLocationDialog extends JDialog {
 		gbc_matchLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_matchLabel.gridx = 1;
 		gbc_matchLabel.gridy = 2;
+		gbc_matchLabel.weighty = 0.1;
 		getContentPane().add(resultLabel, gbc_matchLabel);
 			
 		GridBagConstraints gbc_cancelButton = new GridBagConstraints();
@@ -214,7 +228,7 @@ public class AddLocationDialog extends JDialog {
 	 *  @throws JSONException if API query failed
 	 *  @param the city name to search
 	 *  */
-	private void searchCities(String cityName) throws JSONException {
+	private void searchCities(String cityName) throws JSONException, IOException {
 
 		JSONObject jsonObj = WeatherAPI.getLikeCities(cityName); 
 
@@ -231,9 +245,72 @@ public class AddLocationDialog extends JDialog {
 				String countryNameResult = jsonArray.getJSONObject(i).getJSONObject("sys").getString("country");
 				cityModel.addElement(new City(cityIDResult, cityNameResult, countryNameResult));	
 			}	
+		} else {
+			throw new IOException();
 		}
 	}
 	
+//    private void searchCities(String searchFieldIn) throws IOException {
+//		
+//		InputStream inputStream = null; // Starts new stream and scanner
+//		Scanner sc = null;
+//		cityModel.removeAllElements();
+//		
+//		try {
+//			getClass().getClassLoader();
+//		    inputStream = ClassLoader.getSystemResourceAsStream("city.list"); // File containing the list
+//		    sc = new Scanner(inputStream);
+//		    
+//		    while (sc.hasNextLine()) { // While lines exist
+//		        String line = sc.nextLine();
+//		        
+//		        if(line.toLowerCase().contains(searchFieldIn.toLowerCase())) { // If the line contains the city name 
+//		        	
+//		        	String[] lineArray = line.split("\\s+"); // Split the line up where spaces are
+//		        	int cityIDResult = Integer.parseInt(lineArray[0]); // Take the ID number
+//		        	
+//		        	int index = 1;
+//		        	String cityNameResult = "";
+//		        	
+//		        	while (true) {
+//			        	try {
+//			        		Double.parseDouble(lineArray[index]); // if index is at a double
+//			        		index += 2; // jump to index for country name
+//			        		break;
+//			        	} catch (NumberFormatException numEx) { // if index is at a string
+	
+//							// build country name string
+//			        		if (cityNameResult.length() != 0) {
+//			        			cityNameResult = cityNameResult + " " + lineArray[index++];
+//			        		} else {
+//			        			cityNameResult += lineArray[index++];
+//			        		}
+//			        	}
+//		        	}
+//		        		
+//		        	String countryNameResult = lineArray[index];
+//		        	cityModel.addElement(new City(cityIDResult, cityNameResult, countryNameResult));
+//		        
+//		        }
+//	        	
+//		    }
+//		    if (sc.ioException() != null) { // If any error is caught then 0 is returned
+//		        throw sc.ioException();
+//		    }
+//		} catch (FileNotFoundException e){
+//			JOptionPane.showMessageDialog (null, "Error", "City list file not found", JOptionPane.ERROR_MESSAGE);
+//		}
+//		
+//		finally {
+//		    if (inputStream != null) {
+//		        inputStream.close();
+//		    }
+//		    if (sc != null) {
+//		        sc.close();
+//		    }
+//		}
+//		
+//	}
 	
 	/**
 	 * Sets the dialog listener.
