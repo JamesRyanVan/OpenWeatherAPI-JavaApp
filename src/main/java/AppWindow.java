@@ -1,4 +1,4 @@
-package main.java;
+
 
 import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 
@@ -48,8 +48,6 @@ import javax.swing.border.EtchedBorder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import main.java.Settings;
 
 public class AppWindow {
 
@@ -345,7 +343,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/main/resource/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }

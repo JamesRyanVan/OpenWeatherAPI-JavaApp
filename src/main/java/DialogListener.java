@@ -1,4 +1,4 @@
-package main.java;
+
 
 /**
  * Interface that represents an action listener for AddLocationDialog class.
