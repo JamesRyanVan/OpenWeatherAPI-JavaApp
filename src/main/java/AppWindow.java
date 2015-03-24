@@ -53,6 +53,8 @@ public class AppWindow {
 
 	JFrame frmOpenweatherapp;
 	
+	private ImageIcon mapIcon;
+	
 	private JTabbedPane tabbedPane;
 	private JPanel panel_local;
 	private JPanel panel_short;
@@ -102,6 +104,7 @@ public class AppWindow {
 	private JLabel lblHumidity = new JLabel();
 	private JLabel lblLastUpdate = new JLabel();
 	private JLabel lblLow = new JLabel();
+	private JLabel map = new JLabel();
 	
 	/**
 	 * Create the application.
@@ -536,6 +539,13 @@ public class AppWindow {
 		time = localWeather.getSunsetTime();
 		sunsetValue.setText(String.valueOf(time.unixToTime()));
 		
+	    String latitude = localWeather.getLatitude();
+		String longitude = localWeather.getLongitude();
+		mapIcon = new Map(latitude,longitude).getMap();
+		map.setIcon(mapIcon);
+		
+		
+		
 		Calendar cal = Calendar.getInstance();
     	cal.getTime();
     	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
@@ -661,18 +671,27 @@ public class AppWindow {
 		lblLow.setVisible(settings.viewTemp());
 		panel_local.add(lblLow);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panel_1.setBounds(389, 122, 355, 249);
-		panel_local.add(panel_1);
+		//JPanel panel_1 = new JPanel();
+		//panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		//panel_1.setBounds(389, 122, 355, 249);
+		//panel_local.add(panel_1);
 		
-		JLabel location_image = new JLabel("");
-		location_image.setBackground(Color.GRAY);
-		location_image.setIcon(null);
-		panel_1.add(location_image);
+		
+		
+		//ImageIcon icon = new Map("Los Angeles").getMap();
+		//JLabel map = new JLabel(icon);
+		map.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		map.setBounds(389, 120, 355, 249);
+		panel_local.add(map);
+		
+		
+		//JLabel location_image = new JLabel("");
+		//location_image.setBackground(Color.gray);
+		//location_image.setIcon(null);
+		//panel_1.add(location_image);
 		
 		JLabel lblMap = new JLabel("Map:");
-		lblMap.setBounds(389, 97, 46, 14);
+		lblMap.setBounds(389, 100, 46, 14);
 		panel_local.add(lblMap);
 		
 	}

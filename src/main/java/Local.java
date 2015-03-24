@@ -13,7 +13,7 @@ import org.json.JSONObject;
 public class Local {
 	private JSONObject apiObj;
 	private Time sunriseTime, sunsetTime, updateTime;
-	private double temp, windSpeed, airPressure, humidity, tempMax, tempMin ;
+	private double temp, windSpeed, airPressure, humidity, tempMax, tempMin, lon, lat ;
 	private String skyCondition, icon;
 	private WindDirection windDir;
 	
@@ -31,6 +31,11 @@ public class Local {
 			JSONObject sys = apiObj.getJSONObject("sys");
 			this.sunriseTime = new Time(sys.getInt("sunrise"));
 			this.sunsetTime  = new Time(sys.getInt("sunset"));
+			
+			/*Get the lat and lon of the location */
+			JSONObject coord = apiObj.getJSONObject("coord");
+			this.lon = coord.getDouble("lon");
+			this.lat = coord.getDouble("lat");
 			
 			/* Get the weather data from JSON object*/
 			JSONObject weather = apiObj.getJSONArray("weather").getJSONObject(0);
@@ -52,6 +57,7 @@ public class Local {
 			
 			/* Get the time data from the JSON object */
 			this.updateTime = new Time(apiObj.getInt("dt"));
+			
 		
 		/* Ensure the location was valid and not null */
 		} catch (NullPointerException e){
@@ -147,6 +153,14 @@ public class Local {
 	 */
 	public double getTempMin() {
 		return tempMin;
+	}
+	
+	public String getLongitude(){
+		return String.valueOf(lon);
+	}
+	
+	public String getLatitude(){
+		return String.valueOf(lat);
 	}
 	
 }
