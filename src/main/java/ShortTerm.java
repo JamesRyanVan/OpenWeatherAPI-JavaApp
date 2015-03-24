@@ -1,4 +1,4 @@
-
+package main.java;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,12 +124,5 @@ public class ShortTerm {
 	public double[] getTemps(){
 		return temps;
 	}
-
-	
-	
-	
-	
-	
-	
 }
 

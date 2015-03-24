@@ -1,3 +1,5 @@
+package main.java;
+
 import javax.swing.*;
 
 import org.json.JSONArray;
@@ -11,10 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Scanner;
 
 public class AddLocationDialog extends JDialog {
 

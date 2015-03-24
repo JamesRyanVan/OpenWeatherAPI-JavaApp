@@ -1,3 +1,5 @@
+package main.java;
+
 import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 
 import javax.imageio.ImageIO;
@@ -16,8 +18,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 
@@ -32,11 +37,13 @@ import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JComboBox;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -103,6 +110,204 @@ public class AppWindow {
 	private JLabel lblLastUpdate = new JLabel();
 	private JLabel lblLow = new JLabel();
 	private JLabel map = new JLabel();
+	
+	private JLabel locationName1 = new JLabel();
+	private JPanel panel = new JPanel() {
+		private static final long serialVersionUID = 1L;
+	     @Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	  
+	private JLabel time1 = new JLabel();
+	private JLabel temp1 = new JLabel();
+	private JLabel sky1 = new JLabel();
+	private JLabel picture = new JLabel();
+	
+	JPanel panel_1 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+	     @Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel time2 = new JLabel();
+	private JLabel temp2 = new JLabel();
+	private JLabel sky2 = new JLabel();
+	private JLabel picture2 = new JLabel();
+	
+	private JPanel panel_2 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+	     @Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel time3 = new JLabel();
+	private JLabel temp3 = new JLabel();
+	private JLabel sky3 = new JLabel();
+	private JLabel picture3 = new JLabel();
+	
+	private JPanel panel_3 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+	     @Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel time4 = new JLabel();
+	private JLabel temp4 = new JLabel();
+	private JLabel sky4 = new JLabel();
+	private JLabel picture4 = new JLabel();
+	
+	private JPanel panel_4 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+	     @Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel time7 = new JLabel();
+	private JLabel temp7 = new JLabel();
+	private JLabel sky7 = new JLabel();
+	private JLabel picture7 = new JLabel();
+	
+	private JPanel panel_5 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+	     @Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel time8 = new JLabel();
+	private JLabel temp8 = new JLabel();
+	private JLabel sky8 = new JLabel();
+	private JLabel picture8 = new JLabel();
+	
+	private JPanel panel_6 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+	     @Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel time5 = new JLabel();
+	private JLabel temp5 = new JLabel();
+	private JLabel sky5 = new JLabel();
+	private JLabel picture5 = new JLabel();
+	
+	private JPanel panel_7 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+		@Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel time6 = new JLabel();
+	private JLabel temp6 = new JLabel();
+	private JLabel sky6 = new JLabel();
+	private JLabel picture6 = new JLabel();
+	
+	private URL url;
+	private BufferedImage skyImages;
+	private ImageIcon skyIcons;
 	
 	/**
 	 * Create the application.
@@ -377,7 +582,6 @@ public class AppWindow {
 					try {
 						getJSON(currentLocation.getCityID());
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					break;
@@ -443,15 +647,15 @@ public class AppWindow {
 			
 				try {
 					panel_local_values(local);
+					panel_short_values(shortTerm);
+					panel_long_values(longTerm);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 		} else {
 			// JSON failed..
 			throw new IOException();
-		
 		}
-		
 	}
 	
 	private void refresh(int locationID) {
@@ -485,16 +689,13 @@ public class AppWindow {
 		
 		panel_short = new JPanel();
 		panel_short.setBackground(Color.WHITE);
+		panel_short.setLayout(null);
 		tabbedPane.addTab("ShortTerm", null, panel_short, null);
-		
-		panel_short_content();
 		
 		panel_long = new JPanel();
 		panel_long.setBackground(Color.WHITE);
 		tabbedPane.addTab("LongTerm", null, panel_long, null);
-		
-		panel_long_content();
-		
+
 		return tabbedPane;
 		
 	}
@@ -550,6 +751,97 @@ public class AppWindow {
     	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
     	System.out.println(sdf.format(cal.getTime()));
 		lblUpdatedtime.setText(String.valueOf(sdf.format(cal.getTime())));
+	}
+	
+	private void panel_short_values(JSONObject shortTerm) throws JSONException, IOException {
+		
+		ShortTerm shortTermWeather = new ShortTerm(shortTerm);
+		
+		double[] temps = shortTermWeather.getTemps();
+		Time[] times = shortTermWeather.getTimes();
+		String[] skys = shortTermWeather.getSkyConditions();
+		String[] icons = shortTermWeather.getIcons();
+		
+		locationName1.setText(locationModel.getSelectedItem().toString());
+		
+		time1.setText(times[0].unixToTime());
+		temp1.setText("Temp: " + String.valueOf(temps[0]));				
+		sky1.setText("Sky: " + skys[0]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[0] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		picture.setIcon(skyIcons);
+		
+		time2.setText(times[1].unixToTime());
+		temp2.setText("Temp: " + String.valueOf(temps[1]));				
+		sky2.setText("Sky: " + skys[1]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[1] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		picture2.setIcon(skyIcons);
+		
+		time3.setText(times[2].unixToTime());
+		temp3.setText("Temp: " + String.valueOf(temps[2]));				
+		sky3.setText("Sky: " + skys[2]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[2] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		picture3.setIcon(skyIcons);
+		
+		time4.setText(times[3].unixToTime());
+		temp4.setText("Temp: " + String.valueOf(temps[3]));				
+		sky4.setText("Sky: " + skys[3]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[3] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		picture4.setIcon(skyIcons);
+		
+		time5.setText(times[4].unixToTime());
+		temp5.setText("Temp: " + String.valueOf(temps[4]));				
+		sky5.setText("Sky: " + skys[4]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[4] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		picture5.setIcon(skyIcons);
+		
+		time6.setText(times[5].unixToTime());
+		temp6.setText("Temp: " + String.valueOf(temps[5]));				
+		sky6.setText("Sky: " + skys[5]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[5] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		picture6.setIcon(skyIcons);
+		
+		time7.setText(times[6].unixToTime());
+		temp7.setText("Temp: " + String.valueOf(temps[6]));				
+		sky7.setText("Sky: " + skys[6]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[6] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		picture7.setIcon(skyIcons);
+		
+		time8.setText(times[7].unixToTime());
+		temp8.setText("Temp: " + String.valueOf(temps[7]));				
+		sky8.setText("Sky: " + skys[7]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[7] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		picture8.setIcon(skyIcons);
+		
+	}
+	
+	private void panel_long_values(JSONObject longTerm) throws JSONException {
+		
+		//LongTerm longTermWeather = new LongTerm(longTerm);
+		
 	}
 	
 	private void panel_labels() {
@@ -670,37 +962,187 @@ public class AppWindow {
 		lblLow.setVisible(settings.viewTemp());
 		panel_local.add(lblLow);
 		
-		//JPanel panel_1 = new JPanel();
-		//panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		//panel_1.setBounds(389, 122, 355, 249);
-		//panel_local.add(panel_1);
-		
-		
-		
-		//ImageIcon icon = new Map("Los Angeles").getMap();
-		//JLabel map = new JLabel(icon);
 		map.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		map.setBounds(389, 120, 355, 249);
 		panel_local.add(map);
-		
-		
-		//JLabel location_image = new JLabel("");
-		//location_image.setBackground(Color.gray);
-		//location_image.setIcon(null);
-		//panel_1.add(location_image);
-		
+				
 		JLabel lblMap = new JLabel("Map:");
 		lblMap.setBounds(389, 100, 46, 14);
 		panel_local.add(lblMap);
 		
-	}
-	
-	private void panel_short_content() {
+		// ShortTerm Panel Labels //
 		
-	}
-	
-	private void panel_long_content() {
+		locationName1.setHorizontalAlignment(SwingConstants.RIGHT);
+		locationName1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		locationName1.setBounds(344, 5, 400, 33);
+		panel_short.add(locationName1);
 		
-	}
-	
+		sky1.setHorizontalAlignment(SwingConstants.LEFT);
+		sky1.setBounds(10, 45, 84, 59);
+		panel.add(sky1);
+		
+		time1.setVerticalAlignment(SwingConstants.TOP);
+		time1.setBounds(10, 9, 100, 49);
+		panel.add(time1);
+		time1.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		temp1.setHorizontalAlignment(SwingConstants.LEFT);
+		temp1.setBounds(10, 22, 84, 49);
+		panel.add(temp1);
+		
+		picture.setBounds(77, 53, 46, 46);
+		panel.add(picture);
+		
+		panel.setBounds(67, 43, 133, 143);
+		panel.setOpaque(false);
+		panel_short.add(panel);
+		panel.setLayout(null);
+		
+		panel_1.setLayout(null);
+		panel_1.setOpaque(false);
+		panel_1.setBounds(223, 43, 133, 143);
+		panel_short.add(panel_1);
+		
+		time2.setVerticalAlignment(SwingConstants.TOP);
+		time2.setHorizontalAlignment(SwingConstants.LEFT);
+		time2.setBounds(10, 9, 100, 49);
+		panel_1.add(time2);
+		
+		temp2.setHorizontalAlignment(SwingConstants.LEFT);
+		temp2.setBounds(10, 22, 84, 49);
+		panel_1.add(temp2);
+		
+		sky2.setHorizontalAlignment(SwingConstants.LEFT);
+		sky2.setBounds(10, 45, 84, 59);
+		panel_1.add(sky2);
+		
+		picture2.setBounds(77, 58, 46, 46);
+		panel_1.add(picture2);
+		
+		panel_2.setLayout(null);
+		panel_2.setOpaque(false);
+		panel_2.setBounds(378, 43, 133, 143);
+		panel_short.add(panel_2);
+		
+		time3.setVerticalAlignment(SwingConstants.TOP);
+		time3.setHorizontalAlignment(SwingConstants.LEFT);
+		time3.setBounds(10, 9, 100, 49);
+		panel_2.add(time3);
+		
+		temp3.setHorizontalAlignment(SwingConstants.LEFT);
+		temp3.setBounds(10, 22, 84, 49);
+		panel_2.add(temp3);
+		
+		sky3.setHorizontalAlignment(SwingConstants.LEFT);
+		sky3.setBounds(10, 45, 84, 59);
+		panel_2.add(sky3);
+		
+		picture3.setBounds(77, 58, 46, 46);
+		panel_2.add(picture3);
+		
+		panel_3.setLayout(null);
+		panel_3.setOpaque(false);
+		panel_3.setBounds(534, 43, 133, 143);
+		panel_short.add(panel_3);
+		
+		time4.setVerticalAlignment(SwingConstants.TOP);
+		time4.setHorizontalAlignment(SwingConstants.LEFT);
+		time4.setBounds(10, 9, 100, 49);
+		panel_3.add(time4);
+		
+		temp4.setHorizontalAlignment(SwingConstants.LEFT);
+		temp4.setBounds(10, 22, 84, 49);
+		panel_3.add(temp4);
+		
+		sky4.setHorizontalAlignment(SwingConstants.LEFT);
+		sky4.setBounds(10, 45, 84, 59);
+		panel_3.add(sky4);
+		
+		picture4.setBounds(77, 58, 46, 46);
+		panel_3.add(picture4);
+		
+		panel_4.setLayout(null);
+		panel_4.setOpaque(false);
+		panel_4.setBounds(378, 210, 133, 143);
+		panel_short.add(panel_4);
+		
+		time7.setVerticalAlignment(SwingConstants.TOP);
+		time7.setHorizontalAlignment(SwingConstants.LEFT);
+		time7.setBounds(10, 9, 100, 49);
+		panel_4.add(time7);
+		
+		temp7.setHorizontalAlignment(SwingConstants.LEFT);
+		temp7.setBounds(10, 22, 84, 49);
+		panel_4.add(temp7);
+		
+		sky7.setHorizontalAlignment(SwingConstants.LEFT);
+		sky7.setBounds(10, 45, 84, 59);
+		panel_4.add(sky7);
+		
+		picture7.setBounds(77, 60, 46, 46);
+		panel_4.add(picture7);
+		
+		panel_5.setLayout(null);
+		panel_5.setOpaque(false);
+		panel_5.setBounds(534, 210, 133, 143);
+		panel_short.add(panel_5);
+		
+		time8.setVerticalAlignment(SwingConstants.TOP);
+		time8.setHorizontalAlignment(SwingConstants.LEFT);
+		time8.setBounds(10, 9, 100, 49);
+		panel_5.add(time8);
+		
+		temp8.setHorizontalAlignment(SwingConstants.LEFT);
+		temp8.setBounds(10, 22, 84, 49);
+		panel_5.add(temp8);
+		
+		sky8.setHorizontalAlignment(SwingConstants.LEFT);
+		sky8.setBounds(10, 45, 84, 59);
+		panel_5.add(sky8);
+		
+		picture8.setBounds(77, 60, 46, 46);
+		panel_5.add(picture8);
+		
+		panel_6.setLayout(null);
+		panel_6.setOpaque(false);
+		panel_6.setBounds(67, 210, 133, 143);
+		panel_short.add(panel_6);
+		
+		time5.setVerticalAlignment(SwingConstants.TOP);
+		time5.setHorizontalAlignment(SwingConstants.LEFT);
+		time5.setBounds(10, 9, 100, 49);
+		panel_6.add(time5);
+		
+		temp5.setHorizontalAlignment(SwingConstants.LEFT);
+		temp5.setBounds(10, 22, 84, 49);
+		panel_6.add(temp5);
+		
+		sky5.setHorizontalAlignment(SwingConstants.LEFT);
+		sky5.setBounds(10, 45, 84, 59);
+		panel_6.add(sky5);
+		
+		picture5.setBounds(77, 56, 46, 46);
+		panel_6.add(picture5);
+		
+		panel_7.setLayout(null);
+		panel_7.setOpaque(false);
+		panel_7.setBounds(223, 210, 133, 143);
+		panel_short.add(panel_7);
+		
+		time6.setVerticalAlignment(SwingConstants.TOP);
+		time6.setHorizontalAlignment(SwingConstants.LEFT);
+		time6.setBounds(10, 9, 100, 49);
+		panel_7.add(time6);
+		
+		temp6.setHorizontalAlignment(SwingConstants.LEFT);
+		temp6.setBounds(10, 22, 84, 49);
+		panel_7.add(temp6);
+		
+		sky6.setHorizontalAlignment(SwingConstants.LEFT);
+		sky6.setBounds(10, 45, 84, 59);
+		panel_7.add(sky6);
+		
+		picture6.setBounds(77, 58, 46, 46);
+		panel_7.add(picture6);
+	}	
 }

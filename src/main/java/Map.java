@@ -1,3 +1,5 @@
+package main.java;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -5,10 +7,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-
-
-
 
 public class Map {
 	private ImageIcon map;

@@ -1,3 +1,4 @@
+package main.java;
 /**
  * Class to convert the wind direction from degrees to a cardinal direction.
  * 
