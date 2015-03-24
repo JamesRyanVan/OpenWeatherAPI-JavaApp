@@ -19,10 +19,10 @@ public class Map {
 	 * @version	1.0
 	 * @since 	March 23, 2015
 	 */
-	public Map(String latitude, String longtitude){
+	public Map(String latitude, String longtitude,String icon ){
 
 	        try {
-	            String imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+URLEncoder.encode(latitude, "UTF-8")+","+URLEncoder.encode(longtitude, "UTF-8")+"&zoom=10&size=355x249";
+	            String imageUrl = "https://maps.googleapis.com/maps/api/staticmap?center="+URLEncoder.encode(latitude, "UTF-8")+","+URLEncoder.encode(longtitude, "UTF-8")+"&maptype=terrain&zoom=10&size=355x249&markers=icon:http://openweathermap.org/img/w/"+URLEncoder.encode(icon, "UTF-8")+".png|"+URLEncoder.encode(latitude, "UTF-8")+","+URLEncoder.encode(longtitude, "UTF-8");
 	            String destinationFile = "image.jpg";
 	            System.out.println(imageUrl);
 	            URL url = new URL(imageUrl);

@@ -344,7 +344,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/main/resource/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -539,7 +539,9 @@ public class AppWindow {
 		
 	    String latitude = localWeather.getLatitude();
 		String longitude = localWeather.getLongitude();
-		mapIcon = new Map(latitude,longitude).getMap();
+		String icon = localWeather.getIcon();
+		System.out.println(icon);
+		mapIcon = new Map(latitude,longitude,icon).getMap();
 		mapIcon.getImage().flush();
 		map.setIcon(mapIcon);
 		
