@@ -13,8 +13,9 @@ import org.json.JSONObject;
 public class Local {
 	private JSONObject apiObj;
 	private Time sunriseTime, sunsetTime, updateTime;
-	private double temp, windSpeed, windDir, airPressure, humidity, tempMax, tempMin ;
+	private double temp, windSpeed, airPressure, humidity, tempMax, tempMin ;
 	private String skyCondition, icon;
+	private WindDirection windDir;
 	
 	/**
 	 * Creates a apiObj object. Stores the apiObj weather data.
@@ -47,7 +48,7 @@ public class Local {
 			/* Get the wind data from JSON object */
 			JSONObject wind = apiObj.getJSONObject("wind");
 			this.windSpeed = wind.getDouble("speed");
-			this.windDir = wind.getDouble("deg");
+			this.windDir = new WindDirection(wind.getDouble("deg"));
 			
 			/* Get the time data from the JSON object */
 			this.updateTime = new Time(apiObj.getInt("dt"));
@@ -100,10 +101,10 @@ public class Local {
 	}
 
 	/**
-	 * @return double of the wind direction
+	 * @return String of the cardinal wind direction
 	 */
-	public double getWindDir() {
-		return windDir;
+	public String getWindDir() {
+		return windDir.getDirection();
 	}
 	
 	/**
