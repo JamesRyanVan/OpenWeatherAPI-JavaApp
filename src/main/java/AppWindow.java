@@ -1,5 +1,3 @@
-
-
 import de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel;
 
 import javax.imageio.ImageIO;
@@ -346,7 +344,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/main/resource/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -521,7 +519,7 @@ public class AppWindow {
 
 		Local localWeather = new Local(local);
 		
-		DecimalFormat df = new DecimalFormat("#.00");
+		DecimalFormat df = new DecimalFormat("#0.00");
 		temperature.setText(String.valueOf(df.format(localWeather.getTemp())));
 		
 		temp_max.setText(String.valueOf(localWeather.getTempMax()));	
@@ -542,9 +540,8 @@ public class AppWindow {
 	    String latitude = localWeather.getLatitude();
 		String longitude = localWeather.getLongitude();
 		mapIcon = new Map(latitude,longitude).getMap();
+		mapIcon.getImage().flush();
 		map.setIcon(mapIcon);
-		
-		
 		
 		Calendar cal = Calendar.getInstance();
     	cal.getTime();
@@ -561,18 +558,18 @@ public class AppWindow {
 		panel_local.add(temperature);
 		
 		temp_max.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		temp_max.setBounds(197, 61, 60, 32);
+		temp_max.setBounds(197, 61, 100, 32);
 		temp_max.setVisible(settings.viewTemp());
 		panel_local.add(temp_max);
 		
 		temp_min.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		temp_min.setBounds(323, 61, 60, 32);
+		temp_min.setBounds(323, 61, 100, 32);
 		temp_min.setVisible(settings.viewTemp());
 		panel_local.add(temp_min);
 		
 		locationName.setHorizontalAlignment(SwingConstants.RIGHT);
 		locationName.setFont(new Font("Tahoma", Font.PLAIN, 21));
-		locationName.setBounds(544, 11, 200, 33);
+		locationName.setBounds(344, 11, 400, 33);
 		panel_local.add(locationName);
 		
 		lblUpdatedtime.setHorizontalAlignment(SwingConstants.LEFT);
