@@ -52,7 +52,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
  <configuration>
  <archive>
  <manifest>
- <mainClass>App</mainClass>
+ <mainClass>main.java.App</mainClass>
  </manifest>
  </archive>
  </configuration>
@@ -78,7 +78,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
  </descriptorRefs>
  <archive>
  <manifest>
- <mainClass>App</mainClass>
+ <mainClass>main.java.App</mainClass>
  </manifest>
  </archive>
  </configuration>
@@ -91,8 +91,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
  </execution>
  </executions>
 </plugin>
-
-
 
 </plugins>
 </build>
