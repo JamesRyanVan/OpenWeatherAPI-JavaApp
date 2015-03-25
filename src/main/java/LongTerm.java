@@ -31,7 +31,7 @@ public class LongTerm {
 		try {
 			this.list = apiObjJson.getJSONArray("list");
 			for (int i = 1; i < 6; i++) {
-				JSONObject increment = list.getJSONObject(i-1);
+				JSONObject increment = list.getJSONObject(i);
 
 				this.days[i - 1] = new Time(increment.getInt("dt"));
 				this.temps[i - 1] = increment.getJSONObject("temp").getDouble(
