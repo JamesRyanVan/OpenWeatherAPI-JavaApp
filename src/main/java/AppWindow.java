@@ -136,6 +136,7 @@ public class AppWindow {
 	private JLabel temp1 = new JLabel();
 	private JLabel sky1 = new JLabel();
 	private JLabel picture = new JLabel();
+	private JLabel rain1 = new JLabel();
 	
 	JPanel panel_1 = new JPanel() {
 		private static final long serialVersionUID = 1L;
@@ -160,6 +161,7 @@ public class AppWindow {
 	private JLabel temp2 = new JLabel();
 	private JLabel sky2 = new JLabel();
 	private JLabel picture2 = new JLabel();
+	private JLabel rain2 = new JLabel();
 	
 	private JPanel panel_2 = new JPanel() {
 		private static final long serialVersionUID = 1L;
@@ -184,6 +186,7 @@ public class AppWindow {
 	private JLabel temp3 = new JLabel();
 	private JLabel sky3 = new JLabel();
 	private JLabel picture3 = new JLabel();
+	private JLabel rain3 = new JLabel();
 	
 	private JPanel panel_3 = new JPanel() {
 		private static final long serialVersionUID = 1L;
@@ -208,6 +211,7 @@ public class AppWindow {
 	private JLabel temp4 = new JLabel();
 	private JLabel sky4 = new JLabel();
 	private JLabel picture4 = new JLabel();
+	private JLabel rain4 = new JLabel();
 	
 	private JPanel panel_4 = new JPanel() {
 		private static final long serialVersionUID = 1L;
@@ -232,6 +236,7 @@ public class AppWindow {
 	private JLabel temp7 = new JLabel();
 	private JLabel sky7 = new JLabel();
 	private JLabel picture7 = new JLabel();
+	private JLabel rain7 = new JLabel();
 	
 	private JPanel panel_5 = new JPanel() {
 		private static final long serialVersionUID = 1L;
@@ -256,6 +261,7 @@ public class AppWindow {
 	private JLabel temp8 = new JLabel();
 	private JLabel sky8 = new JLabel();
 	private JLabel picture8 = new JLabel();
+	private JLabel rain8 = new JLabel();
 	
 	private JPanel panel_6 = new JPanel() {
 		private static final long serialVersionUID = 1L;
@@ -280,6 +286,7 @@ public class AppWindow {
 	private JLabel temp5 = new JLabel();
 	private JLabel sky5 = new JLabel();
 	private JLabel picture5 = new JLabel();
+	private JLabel rain5 = new JLabel();
 	
 	private JPanel panel_7 = new JPanel() {
 		private static final long serialVersionUID = 1L;
@@ -304,6 +311,7 @@ public class AppWindow {
 	private JLabel temp6 = new JLabel();
 	private JLabel sky6 = new JLabel();
 	private JLabel picture6 = new JLabel();
+	private JLabel rain6 = new JLabel();
 	
 	private URL url;
 	private BufferedImage skyImages;
@@ -758,6 +766,7 @@ public class AppWindow {
 		ShortTerm shortTermWeather = new ShortTerm(shortTerm);
 		
 		double[] temps = shortTermWeather.getTemps();
+		double[] precips = shortTermWeather.getPrecips();
 		Time[] times = shortTermWeather.getTimes();
 		String[] skys = shortTermWeather.getSkyConditions();
 		String[] icons = shortTermWeather.getIcons();
@@ -767,6 +776,7 @@ public class AppWindow {
 		time1.setText(times[0].unixToTime());
 		temp1.setText("Temp: " + String.valueOf(temps[0]));				
 		sky1.setText("Sky: " + skys[0]);
+		rain1.setText("Percipitation: " + precips[0]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[0] + ".png");
 		skyImages = ImageIO.read(url);
@@ -776,6 +786,7 @@ public class AppWindow {
 		time2.setText(times[1].unixToTime());
 		temp2.setText("Temp: " + String.valueOf(temps[1]));				
 		sky2.setText("Sky: " + skys[1]);
+		rain2.setText("Percipitation: " + precips[1]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[1] + ".png");
 		skyImages = ImageIO.read(url);
@@ -785,6 +796,7 @@ public class AppWindow {
 		time3.setText(times[2].unixToTime());
 		temp3.setText("Temp: " + String.valueOf(temps[2]));				
 		sky3.setText("Sky: " + skys[2]);
+		rain3.setText("Percipitation: " + precips[2]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[2] + ".png");
 		skyImages = ImageIO.read(url);
@@ -794,6 +806,7 @@ public class AppWindow {
 		time4.setText(times[3].unixToTime());
 		temp4.setText("Temp: " + String.valueOf(temps[3]));				
 		sky4.setText("Sky: " + skys[3]);
+		rain4.setText("Percipitation: " + precips[3]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[3] + ".png");
 		skyImages = ImageIO.read(url);
@@ -803,6 +816,7 @@ public class AppWindow {
 		time5.setText(times[4].unixToTime());
 		temp5.setText("Temp: " + String.valueOf(temps[4]));				
 		sky5.setText("Sky: " + skys[4]);
+		rain5.setText("Percipitation: " + precips[4]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[4] + ".png");
 		skyImages = ImageIO.read(url);
@@ -812,6 +826,7 @@ public class AppWindow {
 		time6.setText(times[5].unixToTime());
 		temp6.setText("Temp: " + String.valueOf(temps[5]));				
 		sky6.setText("Sky: " + skys[5]);
+		rain6.setText("Percipitation: " + precips[5]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[5] + ".png");
 		skyImages = ImageIO.read(url);
@@ -821,6 +836,7 @@ public class AppWindow {
 		time7.setText(times[6].unixToTime());
 		temp7.setText("Temp: " + String.valueOf(temps[6]));				
 		sky7.setText("Sky: " + skys[6]);
+		rain7.setText("Percipitation: " + precips[6]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[6] + ".png");
 		skyImages = ImageIO.read(url);
@@ -830,6 +846,7 @@ public class AppWindow {
 		time8.setText(times[7].unixToTime());
 		temp8.setText("Temp: " + String.valueOf(temps[7]));				
 		sky8.setText("Sky: " + skys[7]);
+		rain8.setText("Percipitation: " + precips[7]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[7] + ".png");
 		skyImages = ImageIO.read(url);
@@ -993,6 +1010,9 @@ public class AppWindow {
 		picture.setBounds(77, 53, 46, 46);
 		panel.add(picture);
 		
+		rain1.setBounds(10, 102, 100, 14);
+		panel.add(rain1);
+		
 		panel.setBounds(67, 43, 133, 143);
 		panel.setOpaque(false);
 		panel_short.add(panel);
@@ -1019,6 +1039,9 @@ public class AppWindow {
 		picture2.setBounds(77, 58, 46, 46);
 		panel_1.add(picture2);
 		
+		rain2.setBounds(10, 102, 100, 14);
+		panel_1.add(rain2);
+		
 		panel_2.setLayout(null);
 		panel_2.setOpaque(false);
 		panel_2.setBounds(378, 43, 133, 143);
@@ -1039,6 +1062,9 @@ public class AppWindow {
 		
 		picture3.setBounds(77, 58, 46, 46);
 		panel_2.add(picture3);
+		
+		rain3.setBounds(10, 102, 100, 14);
+		panel_2.add(rain3);
 		
 		panel_3.setLayout(null);
 		panel_3.setOpaque(false);
@@ -1061,6 +1087,9 @@ public class AppWindow {
 		picture4.setBounds(77, 58, 46, 46);
 		panel_3.add(picture4);
 		
+		rain4.setBounds(10, 102, 100, 14);
+		panel_3.add(rain4);
+		
 		panel_4.setLayout(null);
 		panel_4.setOpaque(false);
 		panel_4.setBounds(378, 210, 133, 143);
@@ -1081,6 +1110,9 @@ public class AppWindow {
 		
 		picture7.setBounds(77, 60, 46, 46);
 		panel_4.add(picture7);
+		
+		rain5.setBounds(10, 102, 100, 14);
+		panel_4.add(rain5);
 		
 		panel_5.setLayout(null);
 		panel_5.setOpaque(false);
@@ -1103,6 +1135,9 @@ public class AppWindow {
 		picture8.setBounds(77, 60, 46, 46);
 		panel_5.add(picture8);
 		
+		rain6.setBounds(10, 102, 100, 14);
+		panel_5.add(rain6);
+		
 		panel_6.setLayout(null);
 		panel_6.setOpaque(false);
 		panel_6.setBounds(67, 210, 133, 143);
@@ -1124,6 +1159,9 @@ public class AppWindow {
 		picture5.setBounds(77, 56, 46, 46);
 		panel_6.add(picture5);
 		
+		rain7.setBounds(10, 102, 100, 14);
+		panel_6.add(rain7);
+		
 		panel_7.setLayout(null);
 		panel_7.setOpaque(false);
 		panel_7.setBounds(223, 210, 133, 143);
@@ -1144,5 +1182,8 @@ public class AppWindow {
 		
 		picture6.setBounds(77, 58, 46, 46);
 		panel_7.add(picture6);
+		
+		rain8.setBounds(10, 102, 100, 14);
+		panel_7.add(rain8);
 	}	
 }
