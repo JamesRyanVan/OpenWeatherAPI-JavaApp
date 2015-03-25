@@ -79,7 +79,7 @@ public class WeatherAPI {
      */
     public JSONObject getLongTerm() {
 
-		String address = BASE + "/forecast/daily?id=" + cityID + APIKEY + JSON + "&cnt=5";
+		String address = BASE + "/forecast/daily?id=" + cityID + APIKEY + JSON + "&cnt=7";
         
 		/* Adds the units parameter to the url address */
         if (viewMetric) {
@@ -87,7 +87,7 @@ public class WeatherAPI {
         } else {
             address = address + IMPERIAL;
         }
-        
+        System.out.println(address);
         /* Perform API call and fetches JSONObject */
         return getJSON(address, 0);
     }
