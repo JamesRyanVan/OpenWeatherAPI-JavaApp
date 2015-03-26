@@ -43,7 +43,6 @@ import javax.swing.JComboBox;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -88,7 +87,6 @@ public class AppWindow {
 	private JLabel lblHelloToStart = new JLabel();
 	
 	private JLabel temperature = new JLabel();
-	private JLabel temperatureUnits = new JLabel();
 	private JLabel temp_max = new JLabel();
 	private JLabel temp_min = new JLabel();
 	private JLabel lblUpdatedtime = new JLabel();
@@ -600,7 +598,6 @@ public class AppWindow {
 			public void actionPerformed(ActionEvent e) {
 				settings.setViewTemp(!settings.viewTemp());
 				temperature.setVisible(settings.viewTemp());
-				temperatureUnits.setVisible(settings.viewTemp());
 				temp_max.setVisible(settings.viewTemp());
 				temp_min.setVisible(settings.viewTemp());
 				lblDailyHigh.setVisible(settings.viewTemp());
@@ -718,7 +715,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/main/resource/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -897,11 +894,10 @@ public class AppWindow {
 
 		Local localWeather = new Local(local);
 		
-		DecimalFormat df = new DecimalFormat("#0.00");
-		temperature.setText(String.valueOf(df.format(localWeather.getTemp())));
-		temperatureUnits.setText(getTempUnits());
-		temp_max.setText(String.valueOf(localWeather.getTempMax() + getTempUnits()));	
-		temp_min.setText(String.valueOf(localWeather.getTempMin() + getTempUnits()));
+		DecimalFormat df = new DecimalFormat("#0.0");
+		temperature.setText(String.valueOf(df.format(localWeather.getTemp()) + getTempUnits()));
+		temp_max.setText(String.valueOf(df.format(localWeather.getTempMax()) + getTempUnits()));	
+		temp_min.setText(String.valueOf(df.format(localWeather.getTempMin()) + getTempUnits()));
 		locationName.setText(locationModel.getSelectedItem().toString());
 		skycondvalue.setText(localWeather.getSkyCondition());
 		windspeedvalue.setText(String.valueOf(localWeather.getWindSpeed()));
@@ -1107,10 +1103,6 @@ public class AppWindow {
 		temperature.setBounds(40, 56, 200, 44);
 		temperature.setVisible(settings.viewTemp());
 		panel_local.add(temperature);
-		
-		temperatureUnits.setBounds(150, 60, 46, 14);
-		temperatureUnits.setVisible(settings.viewTemp());
-		panel_local.add(temperatureUnits);
 		
 		temp_max.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		temp_max.setBounds(197, 61, 100, 32);
