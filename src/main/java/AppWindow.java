@@ -43,6 +43,7 @@ import javax.swing.JComboBox;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -90,6 +91,8 @@ public class AppWindow {
 	private JLabel temp_max = new JLabel();
 	private JLabel temp_min = new JLabel();
 	private JLabel lblUpdatedtime = new JLabel();
+	private JLabel lblUpdatedtime1 = new JLabel();
+	private JLabel lblUpdatedtime2 = new JLabel();
 	private JLabel locationName = new JLabel();
 	private JLabel skycondvalue = new JLabel();
 	private JLabel windspeedvalue = new JLabel();
@@ -108,6 +111,8 @@ public class AppWindow {
 	private JLabel lblCurrent = new JLabel();
 	private JLabel lblHumidity = new JLabel();
 	private JLabel lblLastUpdate = new JLabel();
+	private JLabel lblLastUpdate1 = new JLabel();
+	private JLabel lblLastUpdate2 = new JLabel();
 	private JLabel lblLow = new JLabel();
 	private JLabel map = new JLabel();
 	
@@ -117,7 +122,7 @@ public class AppWindow {
 	     @Override
 	     protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        Dimension arcs = new Dimension(15,15); 
 	        int width = getWidth();
 	        int height = getHeight();
 	        Graphics2D graphics = (Graphics2D) g;
@@ -143,7 +148,7 @@ public class AppWindow {
 	     @Override
 	     protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        Dimension arcs = new Dimension(15,15); 
 	        int width = getWidth();
 	        int height = getHeight();
 	        Graphics2D graphics = (Graphics2D) g;
@@ -168,7 +173,7 @@ public class AppWindow {
 	     @Override
 	     protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        Dimension arcs = new Dimension(15,15);
 	        int width = getWidth();
 	        int height = getHeight();
 	        Graphics2D graphics = (Graphics2D) g;
@@ -193,7 +198,7 @@ public class AppWindow {
 	     @Override
 	     protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        Dimension arcs = new Dimension(15,15); 
 	        int width = getWidth();
 	        int height = getHeight();
 	        Graphics2D graphics = (Graphics2D) g;
@@ -218,7 +223,7 @@ public class AppWindow {
 	     @Override
 	     protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        Dimension arcs = new Dimension(15,15); 
 	        int width = getWidth();
 	        int height = getHeight();
 	        Graphics2D graphics = (Graphics2D) g;
@@ -243,7 +248,7 @@ public class AppWindow {
 	     @Override
 	     protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        Dimension arcs = new Dimension(15,15); 
 	        int width = getWidth();
 	        int height = getHeight();
 	        Graphics2D graphics = (Graphics2D) g;
@@ -268,7 +273,7 @@ public class AppWindow {
 	     @Override
 	     protected void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        Dimension arcs = new Dimension(15,15); 
 	        int width = getWidth();
 	        int height = getHeight();
 	        Graphics2D graphics = (Graphics2D) g;
@@ -313,6 +318,160 @@ public class AppWindow {
 	private JLabel picture6 = new JLabel();
 	private JLabel rain6 = new JLabel();
 	
+	// Labels and Panels for LongTerm
+	
+	private JLabel locationName2 = new JLabel();
+	
+	private JPanel panel_long_0 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+		@Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel long_date = new JLabel();
+	private JLabel long_temp = new JLabel();
+	private JLabel long_picture = new JLabel();
+	private JLabel long_temp_max = new JLabel();
+	private JLabel long_temp_max_label = new JLabel();
+	private JLabel long_temp_min_label = new JLabel();
+	private JLabel long_temp_min = new JLabel();
+	private JLabel long_temp_sky = new JLabel();
+	private JLabel long_temp_precip_label = new JLabel();
+	private JLabel long_temp_precip = new JLabel();
+	
+	private JPanel panel_long_1 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+		@Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel long_date1 = new JLabel();
+	private JLabel long_temp1 = new JLabel();
+	private JLabel long_picture1 = new JLabel();
+	private JLabel long_temp_max1 = new JLabel();
+	private JLabel long_temp_max_label1 = new JLabel();
+	private JLabel long_temp_min_label1 = new JLabel();
+	private JLabel long_temp_min1 = new JLabel();
+	private JLabel long_temp_sky1 = new JLabel();
+	private JLabel long_temp_precip_label1 = new JLabel();
+	private JLabel long_temp_precip1 = new JLabel();
+	
+	private JPanel panel_long_2 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+		@Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel long_date2 = new JLabel();
+	private JLabel long_temp2 = new JLabel();
+	private JLabel long_picture2 = new JLabel();
+	private JLabel long_temp_max2 = new JLabel();
+	private JLabel long_temp_max_label2 = new JLabel();
+	private JLabel long_temp_min_label2 = new JLabel();
+	private JLabel long_temp_min2 = new JLabel();
+	private JLabel long_temp_sky2 = new JLabel();
+	private JLabel long_temp_precip_label2 = new JLabel();
+	private JLabel long_temp_precip2 = new JLabel();
+	
+	private JPanel panel_long_3 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+		@Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel long_date3 = new JLabel();
+	private JLabel long_temp3 = new JLabel();
+	private JLabel long_picture3 = new JLabel();
+	private JLabel long_temp_max3 = new JLabel();
+	private JLabel long_temp_max_label3 = new JLabel();
+	private JLabel long_temp_min_label3 = new JLabel();
+	private JLabel long_temp_min3 = new JLabel();
+	private JLabel long_temp_sky3 = new JLabel();
+	private JLabel long_temp_precip_label3 = new JLabel();
+	private JLabel long_temp_precip3 = new JLabel();
+	
+	private JPanel panel_long_4 = new JPanel() {
+		private static final long serialVersionUID = 1L;
+		@Override
+	     protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        Dimension arcs = new Dimension(15,15); //Border corners arcs {width,height}, change this to whatever you want
+	        int width = getWidth();
+	        int height = getHeight();
+	        Graphics2D graphics = (Graphics2D) g;
+	        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+
+	        //Draws the rounded panel with borders.
+	        graphics.setColor(getBackground());
+	        graphics.fillRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint background
+	        graphics.setColor(getForeground());
+	        graphics.drawRoundRect(0, 0, width-1, height-1, arcs.width, arcs.height);//paint border
+	     }
+	  };
+	private JLabel long_date4 = new JLabel();
+	private JLabel long_temp4 = new JLabel();
+	private JLabel long_picture4 = new JLabel();
+	private JLabel long_temp_max4 = new JLabel();
+	private JLabel long_temp_max_label4 = new JLabel();
+	private JLabel long_temp_min_label4 = new JLabel();
+	private JLabel long_temp_min4 = new JLabel();
+	private JLabel long_temp_sky4 = new JLabel();
+	private JLabel long_temp_precip_label4 = new JLabel();
+	private JLabel long_temp_precip4 = new JLabel();
+	
 	private URL url;
 	private BufferedImage skyImages;
 	private ImageIcon skyIcons;
@@ -326,7 +485,7 @@ public class AppWindow {
 	}
 
 	private void initializeSettings() {
-		settings = new Settings(true, true, true, true, true, true, true, 0);
+		settings = new Settings(true, true, true, true, true, true, true, null);
 	}
 	
 	
@@ -702,6 +861,7 @@ public class AppWindow {
 		
 		panel_long = new JPanel();
 		panel_long.setBackground(Color.WHITE);
+		panel_long.setLayout(null);
 		tabbedPane.addTab("LongTerm", null, panel_long, null);
 
 		return tabbedPane;
@@ -710,10 +870,10 @@ public class AppWindow {
 	
 	private void panel_blank() {
 		
-		lblHelloToStart = new JLabel("hello! to start add a location");
+		lblHelloToStart = new JLabel("Hello! to get started, add a location");
 		lblHelloToStart.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lblHelloToStart.setForeground(Color.GRAY);
-		lblHelloToStart.setBounds(255, 100, 375, 58);
+		lblHelloToStart.setBounds(235, 100, 375, 58);
 		panel_local.add(lblHelloToStart);
 		
 	}
@@ -759,6 +919,8 @@ public class AppWindow {
     	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
     	System.out.println(sdf.format(cal.getTime()));
 		lblUpdatedtime.setText(String.valueOf(sdf.format(cal.getTime())));
+		lblUpdatedtime1.setText(String.valueOf(sdf.format(cal.getTime())));
+		lblUpdatedtime2.setText(String.valueOf(sdf.format(cal.getTime())));
 	}
 	
 	private void panel_short_values(JSONObject shortTerm) throws JSONException, IOException {
@@ -855,10 +1017,79 @@ public class AppWindow {
 		
 	}
 	
-	private void panel_long_values(JSONObject longTerm) throws JSONException {
+	private void panel_long_values(JSONObject longTerm) throws JSONException, IOException {
 		
-		//LongTerm longTermWeather = new LongTerm(longTerm);
+		LongTerm longTermWeather = new LongTerm(longTerm);
 		
+		Time[] dates = longTermWeather.getTimes();
+		double[] temps = longTermWeather.getTemps();
+		double[] maxTemps = longTermWeather.getMaxTemps();
+		double[] minTemps = longTermWeather.getMinTemps();
+		double[] precips = longTermWeather.getPrecips();
+		String[] sky = longTermWeather.getSkyConditions();
+		String[] icons = longTermWeather.getIcons();
+		
+		locationName2.setText(locationModel.getSelectedItem().toString());
+		
+		long_date.setText(dates[0].unixToDate());
+		long_temp.setText(String.valueOf(temps[0]));
+		long_temp_max.setText(String.valueOf(maxTemps[0]));
+		long_temp_min.setText(String.valueOf(minTemps[0]));
+		long_temp_precip.setText(String.valueOf(precips[0]));
+		long_temp_sky.setText(sky[0]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[0] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		long_picture.setIcon(skyIcons);
+		
+		long_date1.setText(dates[1].unixToDate());
+		long_temp1.setText(String.valueOf(temps[1]));
+		long_temp_max1.setText(String.valueOf(maxTemps[1]));
+		long_temp_min1.setText(String.valueOf(minTemps[1]));
+		long_temp_precip1.setText(String.valueOf(precips[1]));
+		long_temp_sky1.setText(sky[1]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[1] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		long_picture1.setIcon(skyIcons);
+		
+		long_date2.setText(dates[2].unixToDate());
+		long_temp2.setText(String.valueOf(temps[2]));
+		long_temp_max2.setText(String.valueOf(maxTemps[2]));
+		long_temp_min1.setText(String.valueOf(minTemps[2]));
+		long_temp_precip2.setText(String.valueOf(precips[2]));
+		long_temp_sky2.setText(sky[2]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[2] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		long_picture2.setIcon(skyIcons);
+		
+		long_date3.setText(dates[3].unixToDate());
+		long_temp3.setText(String.valueOf(temps[3]));
+		long_temp_max3.setText(String.valueOf(maxTemps[3]));
+		long_temp_min3.setText(String.valueOf(minTemps[3]));
+		long_temp_precip3.setText(String.valueOf(precips[3]));
+		long_temp_sky3.setText(sky[3]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[3] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		long_picture3.setIcon(skyIcons);
+		
+		long_date4.setText(dates[4].unixToDate());
+		long_temp4.setText(String.valueOf(temps[4]));
+		long_temp_max4.setText(String.valueOf(maxTemps[4]));
+		long_temp_min4.setText(String.valueOf(minTemps[4]));
+		long_temp_precip4.setText(String.valueOf(precips[4]));
+		long_temp_sky4.setText(sky[4]);
+		
+		url = new URL("http://openweathermap.org/img/w/" + icons[4] + ".png");
+		skyImages = ImageIO.read(url);
+		skyIcons = new ImageIcon(skyImages);
+		long_picture4.setIcon(skyIcons);		
 	}
 	
 	private void panel_labels() {
@@ -993,6 +1224,14 @@ public class AppWindow {
 		locationName1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		locationName1.setBounds(344, 5, 400, 33);
 		panel_short.add(locationName1);
+		
+		lblUpdatedtime1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblUpdatedtime1.setBounds(700, 392, 200, 14);
+		panel_short.add(lblUpdatedtime1);
+		
+		lblLastUpdate1 = new JLabel("Last Updated:");
+		lblLastUpdate1.setBounds(625, 389, 77, 20);
+		panel_short.add(lblLastUpdate1);
 		
 		sky1.setHorizontalAlignment(SwingConstants.LEFT);
 		sky1.setBounds(10, 45, 84, 59);
@@ -1185,5 +1424,311 @@ public class AppWindow {
 		
 		rain8.setBounds(10, 102, 100, 14);
 		panel_7.add(rain8);
+		
+		// Long Term Panel Labels //
+		
+		locationName2.setHorizontalAlignment(SwingConstants.RIGHT);
+		locationName2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		locationName2.setBounds(344, 5, 400, 33);
+		panel_long.add(locationName2);
+		
+		lblUpdatedtime2.setHorizontalAlignment(SwingConstants.LEFT);
+		lblUpdatedtime2.setBounds(700, 392, 200, 14);
+		panel_long.add(lblUpdatedtime2);
+		
+		lblLastUpdate2 = new JLabel("Last Updated:");
+		lblLastUpdate2.setBounds(625, 389, 77, 20);
+		panel_long.add(lblLastUpdate2);
+		
+		panel_long_0.setBounds(36, 45, 128, 313);
+		panel_long_0.setOpaque(false);
+		panel_long.add(panel_long_0);
+		panel_long_0.setLayout(null);
+		
+		long_date = new JLabel("date");
+		long_date.setHorizontalAlignment(SwingConstants.CENTER);
+		long_date.setBounds(10, 11, 108, 14);
+		panel_long_0.add(long_date);
+		
+		long_temp = new JLabel("00");
+		long_temp.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		long_temp.setBounds(30, 113, 70, 42);
+		panel_long_0.add(long_temp);
+		
+		long_picture = new JLabel("");
+		long_picture.setBounds(40, 36, 49, 42);
+		panel_long_0.add(long_picture);
+		
+		long_temp_max = new JLabel("00");
+		long_temp_max.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_max.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_max.setBounds(30, 186, 70, 14);
+		panel_long_0.add(long_temp_max);
+		
+		long_temp_max_label = new JLabel("Max:");
+		long_temp_max_label.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_max_label.setBounds(30, 166, 70, 14);
+		panel_long_0.add(long_temp_max_label);
+		
+		long_temp_min_label = new JLabel("Min:");
+		long_temp_min_label.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_min_label.setBounds(30, 211, 70, 14);
+		panel_long_0.add(long_temp_min_label);
+		
+		long_temp_min = new JLabel("00");
+		long_temp_min.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_min.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_min.setBounds(30, 234, 70, 14);
+		panel_long_0.add(long_temp_min);
+		
+		long_temp_sky = new JLabel("sky");
+		long_temp_sky.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_sky.setBounds(30, 89, 70, 14);
+		panel_long_0.add(long_temp_sky);
+		
+		long_temp_precip_label = new JLabel("Precipitation:");
+		long_temp_precip_label.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_precip_label.setBounds(10, 259, 108, 14);
+		panel_long_0.add(long_temp_precip_label);
+		
+		long_temp_precip = new JLabel("00");
+		long_temp_precip.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_precip.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_precip.setBounds(30, 284, 70, 14);
+		panel_long_0.add(long_temp_precip);
+		
+		panel_long_1.setLayout(null);
+		panel_long_1.setOpaque(false);
+		panel_long_1.setBounds(174, 45, 128, 313);
+		panel_long.add(panel_long_1);
+		
+		long_date1 = new JLabel("date");
+		long_date1.setHorizontalAlignment(SwingConstants.CENTER);
+		long_date1.setBounds(10, 11, 108, 14);
+		panel_long_1.add(long_date1);
+		
+		long_temp1 = new JLabel("00");
+		long_temp1.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		long_temp1.setBounds(30, 113, 70, 42);
+		panel_long_1.add(long_temp1);
+		
+		long_picture1 = new JLabel("");
+		long_picture1.setBounds(40, 36, 49, 42);
+		panel_long_1.add(long_picture1);
+		
+		long_temp_max1 = new JLabel("00");
+		long_temp_max1.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_max1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_max1.setBounds(30, 186, 70, 14);
+		panel_long_1.add(long_temp_max1);
+		
+		long_temp_max_label1 = new JLabel("Max:");
+		long_temp_max_label1.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_max_label1.setBounds(30, 166, 70, 14);
+		panel_long_1.add(long_temp_max_label1);
+		
+		long_temp_min_label1 = new JLabel("Min:");
+		long_temp_min_label1.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_min_label1.setBounds(30, 211, 70, 14);
+		panel_long_1.add(long_temp_min_label1);
+		
+		long_temp_min1 = new JLabel("00");
+		long_temp_min1.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_min1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_min1.setBounds(30, 234, 70, 14);
+		panel_long_1.add(long_temp_min1);
+		
+		long_temp_sky1 = new JLabel("sky");
+		long_temp_sky1.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_sky1.setBounds(30, 89, 70, 14);
+		panel_long_1.add(long_temp_sky1);
+		
+		long_temp_precip_label1 = new JLabel("Precipitation:");
+		long_temp_precip_label1.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_precip_label1.setBounds(10, 259, 108, 14);
+		panel_long_1.add(long_temp_precip_label1);
+		
+		long_temp_precip1 = new JLabel("00");
+		long_temp_precip1.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_precip1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_precip1.setBounds(30, 284, 70, 14);
+		panel_long_1.add(long_temp_precip1);
+		
+		panel_long_2.setLayout(null);
+		panel_long_2.setOpaque(false);
+		panel_long_2.setBounds(312, 45, 128, 313);
+		panel_long.add(panel_long_2);
+		
+		long_date2 = new JLabel("date");
+		long_date2.setHorizontalAlignment(SwingConstants.CENTER);
+		long_date2.setBounds(10, 11, 108, 14);
+		panel_long_2.add(long_date2);
+		
+		long_temp2 = new JLabel("00");
+		long_temp2.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		long_temp2.setBounds(30, 113, 70, 42);
+		panel_long_2.add(long_temp2);
+		
+		long_picture2 = new JLabel("");
+		long_picture2.setBounds(40, 36, 49, 42);
+		panel_long_2.add(long_picture2);
+		
+		long_temp_max2 = new JLabel("00");
+		long_temp_max2.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_max2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_max2.setBounds(30, 186, 70, 14);
+		panel_long_2.add(long_temp_max2);
+		
+		long_temp_max_label2 = new JLabel("Max:");
+		long_temp_max_label2.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_max_label2.setBounds(30, 166, 70, 14);
+		panel_long_2.add(long_temp_max_label2);
+		
+		long_temp_min_label2 = new JLabel("Min:");
+		long_temp_min_label2.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_min_label2.setBounds(30, 211, 70, 14);
+		panel_long_2.add(long_temp_min_label2);
+		
+		long_temp_min2 = new JLabel("00");
+		long_temp_min2.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_min2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_min2.setBounds(30, 234, 70, 14);
+		panel_long_2.add(long_temp_min2);
+		
+		long_temp_sky2 = new JLabel("sky");
+		long_temp_sky2.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_sky2.setBounds(30, 89, 70, 14);
+		panel_long_2.add(long_temp_sky2);
+		
+		long_temp_precip_label2 = new JLabel("Precipitation:");
+		long_temp_precip_label2.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_precip_label2.setBounds(10, 259, 108, 14);
+		panel_long_2.add(long_temp_precip_label2);
+		
+		long_temp_precip2 = new JLabel("00");
+		long_temp_precip2.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_precip2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_precip2.setBounds(30, 284, 70, 14);
+		panel_long_2.add(long_temp_precip2);
+		
+		panel_long_3.setLayout(null);
+		panel_long_3.setOpaque(false);
+		panel_long_3.setBounds(450, 45, 128, 313);
+		panel_long.add(panel_long_3);
+		
+		long_date3 = new JLabel("date");
+		long_date3.setHorizontalAlignment(SwingConstants.CENTER);
+		long_date3.setBounds(10, 11, 108, 14);
+		panel_long_3.add(long_date3);
+		
+		long_temp3 = new JLabel("00");
+		long_temp3.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp3.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		long_temp3.setBounds(30, 113, 70, 42);
+		panel_long_3.add(long_temp3);
+		
+		long_picture3 = new JLabel("");
+		long_picture3.setBounds(40, 36, 49, 42);
+		panel_long_3.add(long_picture3);
+		
+		long_temp_max3 = new JLabel("00");
+		long_temp_max3.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_max3.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_max3.setBounds(30, 186, 70, 14);
+		panel_long_3.add(long_temp_max3);
+		
+		long_temp_max_label3 = new JLabel("Max:");
+		long_temp_max_label3.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_max_label3.setBounds(30, 166, 70, 14);
+		panel_long_3.add(long_temp_max_label3);
+		
+		long_temp_min_label3 = new JLabel("Min:");
+		long_temp_min_label3.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_min_label3.setBounds(30, 211, 70, 14);
+		panel_long_3.add(long_temp_min_label3);
+		
+		long_temp_min3 = new JLabel("00");
+		long_temp_min3.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_min3.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_min3.setBounds(30, 234, 70, 14);
+		panel_long_3.add(long_temp_min3);
+		
+		long_temp_sky3 = new JLabel("sky");
+		long_temp_sky3.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_sky3.setBounds(30, 89, 70, 14);
+		panel_long_3.add(long_temp_sky3);
+		
+		long_temp_precip_label3 = new JLabel("Precipitation:");
+		long_temp_precip_label3.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_precip_label3.setBounds(10, 259, 108, 14);
+		panel_long_3.add(long_temp_precip_label3);
+		
+		long_temp_precip3 = new JLabel("00");
+		long_temp_precip3.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_precip3.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_precip3.setBounds(30, 284, 70, 14);
+		panel_long_3.add(long_temp_precip3);
+		
+		panel_long_4.setLayout(null);
+		panel_long_4.setOpaque(false);
+		panel_long_4.setBounds(588, 45, 128, 313);
+		panel_long.add(panel_long_4);
+		
+		long_date4 = new JLabel("date");
+		long_date4.setHorizontalAlignment(SwingConstants.CENTER);
+		long_date4.setBounds(10, 11, 108, 14);
+		panel_long_4.add(long_date4);
+		
+		long_temp4 = new JLabel("00");
+		long_temp4.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp4.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		long_temp4.setBounds(30, 113, 70, 42);
+		panel_long_4.add(long_temp4);
+		
+		long_picture4 = new JLabel("");
+		long_picture4.setBounds(40, 36, 49, 42);
+		panel_long_4.add(long_picture4);
+		
+		long_temp_max4 = new JLabel("00");
+		long_temp_max4.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_max4.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_max4.setBounds(30, 186, 70, 14);
+		panel_long_4.add(long_temp_max4);
+		
+		long_temp_max_label4 = new JLabel("Max:");
+		long_temp_max_label4.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_max_label4.setBounds(30, 166, 70, 14);
+		panel_long_4.add(long_temp_max_label4);
+		
+		long_temp_min_label4 = new JLabel("Min:");
+		long_temp_min_label4.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_min_label4.setBounds(30, 211, 70, 14);
+		panel_long_4.add(long_temp_min_label4);
+		
+		long_temp_min4 = new JLabel("00");
+		long_temp_min4.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_min4.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_min4.setBounds(30, 234, 70, 14);
+		panel_long_4.add(long_temp_min4);
+		
+		long_temp_sky4 = new JLabel("sky");
+		long_temp_sky4.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_sky4.setBounds(30, 89, 70, 14);
+		panel_long_4.add(long_temp_sky4);
+		
+		long_temp_precip_label4 = new JLabel("Precipitation:");
+		long_temp_precip_label4.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_precip_label4.setBounds(10, 259, 108, 14);
+		panel_long_4.add(long_temp_precip_label4);
+		
+		long_temp_precip4 = new JLabel("00");
+		long_temp_precip4.setHorizontalAlignment(SwingConstants.CENTER);
+		long_temp_precip4.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		long_temp_precip4.setBounds(30, 284, 70, 14);
+		panel_long_4.add(long_temp_precip4);
+		
 	}	
 }

@@ -29,7 +29,7 @@ public class Time {
 	public String unixToDate(){
 		int unixSeconds = unixTime;
 		Date date = new Date(unixSeconds*1000L); 
-		SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+		SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
 		String formattedDate = formatDate.format(date);
 		return formattedDate;
 	}

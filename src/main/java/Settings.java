@@ -18,14 +18,14 @@ public class Settings
 	boolean Temp, WindSpeedAndDir, SkyCondition, AirPressure, Humidity,
 	SunsetAndRise, MetricUnits;
 	
-	/* Array storing city ID's */
-	int[] cityIDList = new int[50];
+	/* Array storing city's */
+	City[] cityList = new City[50];
 	
 	/* Int value representing how many cities user has stored */
 	int listSize = 0;
 	
 	/* Int value pointing to cell in cityIDList array which corresponds to current city */
-	int currentCityID;
+	City currentCity;
 
 	/*
 	 * Creates a settings object. Initialized upon users first use setting boolean values to true
@@ -41,7 +41,7 @@ public class Settings
 	 * @param city int value of city ID for current city. Initially chosen upon startup
 	 */
 	public Settings(boolean temp, boolean windSpeed, boolean sky, boolean airPressure, boolean humidity,
-			boolean sunset, boolean metric, int city)
+			boolean sunset, boolean metric, City city)
 	{
 		Temp = temp;
 		WindSpeedAndDir = windSpeed;
@@ -51,9 +51,9 @@ public class Settings
 		SunsetAndRise = sunset;
 		MetricUnits = metric;
 		
-		cityIDList[listSize] = city;
+		cityList[listSize] = city;
 		listSize++;
-		currentCityID = 0;
+		currentCity = city;
 	}
 	
 	/*
@@ -171,9 +171,9 @@ public class Settings
 	/*
 	 * @param newLoc int value of new city ID to be added to city ID list
 	 */
-	public void addLocation(int newLoc)
+	public void addLocation(City newLoc)
 	{
-		cityIDList[listSize] = newLoc;
+		cityList[listSize] = newLoc;
 		listSize++;
 	}
 	
@@ -185,13 +185,13 @@ public class Settings
 	 * @param newCurrent int value of city ID to be changed to current city
 	 * @exception IOException if city ID not found in cityIDList
 	 */
-	public void changeCurrentCity(int newCurrent) throws IOException
+	public void changeCurrentCity(City newCurrent) throws IOException
 	{
 		for (int i=0; i<listSize; i++)
 		{
-			if (cityIDList[i] == newCurrent)
+			if (cityList[i] == newCurrent)
 			{
-				currentCityID = i;
+				currentCity = cityList[i];
 				return;
 			}
 		}
