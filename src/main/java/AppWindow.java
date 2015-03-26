@@ -88,6 +88,7 @@ public class AppWindow {
 	private JLabel lblHelloToStart = new JLabel();
 	
 	private JLabel temperature = new JLabel();
+	private JLabel temperatureUnits = new JLabel();
 	private JLabel temp_max = new JLabel();
 	private JLabel temp_min = new JLabel();
 	private JLabel lblUpdatedtime = new JLabel();
@@ -599,6 +600,7 @@ public class AppWindow {
 			public void actionPerformed(ActionEvent e) {
 				settings.setViewTemp(!settings.viewTemp());
 				temperature.setVisible(settings.viewTemp());
+				temperatureUnits.setVisible(settings.viewTemp());
 				temp_max.setVisible(settings.viewTemp());
 				temp_min.setVisible(settings.viewTemp());
 				lblDailyHigh.setVisible(settings.viewTemp());
@@ -833,6 +835,13 @@ public class AppWindow {
 				JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
 			}		
 	}
+	
+	private String getTempUnits() {
+		if (settings.viewMetricUnits())
+			return " °C";
+		else
+			return " °F";
+	}
 		
 	private JTabbedPane tabbedPane() throws IOException {
 		
@@ -890,9 +899,9 @@ public class AppWindow {
 		
 		DecimalFormat df = new DecimalFormat("#0.00");
 		temperature.setText(String.valueOf(df.format(localWeather.getTemp())));
-		
-		temp_max.setText(String.valueOf(localWeather.getTempMax()));	
-		temp_min.setText(String.valueOf(localWeather.getTempMin()));
+		temperatureUnits.setText(getTempUnits());
+		temp_max.setText(String.valueOf(localWeather.getTempMax() + getTempUnits()));	
+		temp_min.setText(String.valueOf(localWeather.getTempMin() + getTempUnits()));
 		locationName.setText(locationModel.getSelectedItem().toString());
 		skycondvalue.setText(localWeather.getSkyCondition());
 		windspeedvalue.setText(String.valueOf(localWeather.getWindSpeed()));
@@ -936,7 +945,7 @@ public class AppWindow {
 		locationName1.setText(locationModel.getSelectedItem().toString());
 		
 		time1.setText(times[0].unixToTime());
-		temp1.setText("Temp: " + String.valueOf(temps[0]));				
+		temp1.setText("Temp: " + String.valueOf(temps[0]) + getTempUnits());				
 		sky1.setText("Sky: " + skys[0]);
 		rain1.setText("Percipitation: " + precips[0]);
 		
@@ -946,7 +955,7 @@ public class AppWindow {
 		picture.setIcon(skyIcons);
 		
 		time2.setText(times[1].unixToTime());
-		temp2.setText("Temp: " + String.valueOf(temps[1]));				
+		temp2.setText("Temp: " + String.valueOf(temps[1]) + getTempUnits());				
 		sky2.setText("Sky: " + skys[1]);
 		rain2.setText("Percipitation: " + precips[1]);
 		
@@ -956,7 +965,7 @@ public class AppWindow {
 		picture2.setIcon(skyIcons);
 		
 		time3.setText(times[2].unixToTime());
-		temp3.setText("Temp: " + String.valueOf(temps[2]));				
+		temp3.setText("Temp: " + String.valueOf(temps[2]) + getTempUnits());				
 		sky3.setText("Sky: " + skys[2]);
 		rain3.setText("Percipitation: " + precips[2]);
 		
@@ -966,7 +975,7 @@ public class AppWindow {
 		picture3.setIcon(skyIcons);
 		
 		time4.setText(times[3].unixToTime());
-		temp4.setText("Temp: " + String.valueOf(temps[3]));				
+		temp4.setText("Temp: " + String.valueOf(temps[3]) + getTempUnits());				
 		sky4.setText("Sky: " + skys[3]);
 		rain4.setText("Percipitation: " + precips[3]);
 		
@@ -976,7 +985,7 @@ public class AppWindow {
 		picture4.setIcon(skyIcons);
 		
 		time5.setText(times[4].unixToTime());
-		temp5.setText("Temp: " + String.valueOf(temps[4]));				
+		temp5.setText("Temp: " + String.valueOf(temps[4]) + getTempUnits());				
 		sky5.setText("Sky: " + skys[4]);
 		rain5.setText("Percipitation: " + precips[4]);
 		
@@ -986,7 +995,7 @@ public class AppWindow {
 		picture5.setIcon(skyIcons);
 		
 		time6.setText(times[5].unixToTime());
-		temp6.setText("Temp: " + String.valueOf(temps[5]));				
+		temp6.setText("Temp: " + String.valueOf(temps[5]) + getTempUnits());				
 		sky6.setText("Sky: " + skys[5]);
 		rain6.setText("Percipitation: " + precips[5]);
 		
@@ -996,7 +1005,7 @@ public class AppWindow {
 		picture6.setIcon(skyIcons);
 		
 		time7.setText(times[6].unixToTime());
-		temp7.setText("Temp: " + String.valueOf(temps[6]));				
+		temp7.setText("Temp: " + String.valueOf(temps[6]) + getTempUnits());				
 		sky7.setText("Sky: " + skys[6]);
 		rain7.setText("Percipitation: " + precips[6]);
 		
@@ -1006,7 +1015,7 @@ public class AppWindow {
 		picture7.setIcon(skyIcons);
 		
 		time8.setText(times[7].unixToTime());
-		temp8.setText("Temp: " + String.valueOf(temps[7]));				
+		temp8.setText("Temp: " + String.valueOf(temps[7] + getTempUnits()));				
 		sky8.setText("Sky: " + skys[7]);
 		rain8.setText("Percipitation: " + precips[7]);
 		
@@ -1032,9 +1041,9 @@ public class AppWindow {
 		locationName2.setText(locationModel.getSelectedItem().toString());
 		
 		long_date.setText(dates[0].unixToDate());
-		long_temp.setText(String.valueOf(temps[0]));
-		long_temp_max.setText(String.valueOf(maxTemps[0]));
-		long_temp_min.setText(String.valueOf(minTemps[0]));
+		long_temp.setText(String.valueOf(temps[0] + getTempUnits()));
+		long_temp_max.setText(String.valueOf(maxTemps[0] + getTempUnits()));
+		long_temp_min.setText(String.valueOf(minTemps[0] + getTempUnits()));
 		long_temp_precip.setText(String.valueOf(precips[0]));
 		long_temp_sky.setText(sky[0]);
 		
@@ -1044,9 +1053,9 @@ public class AppWindow {
 		long_picture.setIcon(skyIcons);
 		
 		long_date1.setText(dates[1].unixToDate());
-		long_temp1.setText(String.valueOf(temps[1]));
-		long_temp_max1.setText(String.valueOf(maxTemps[1]));
-		long_temp_min1.setText(String.valueOf(minTemps[1]));
+		long_temp1.setText(String.valueOf(temps[1] + getTempUnits()));
+		long_temp_max1.setText(String.valueOf(maxTemps[1] + getTempUnits()));
+		long_temp_min1.setText(String.valueOf(minTemps[1] + getTempUnits()));
 		long_temp_precip1.setText(String.valueOf(precips[1]));
 		long_temp_sky1.setText(sky[1]);
 		
@@ -1056,9 +1065,9 @@ public class AppWindow {
 		long_picture1.setIcon(skyIcons);
 		
 		long_date2.setText(dates[2].unixToDate());
-		long_temp2.setText(String.valueOf(temps[2]));
-		long_temp_max2.setText(String.valueOf(maxTemps[2]));
-		long_temp_min1.setText(String.valueOf(minTemps[2]));
+		long_temp2.setText(String.valueOf(temps[2] + getTempUnits()));
+		long_temp_max2.setText(String.valueOf(maxTemps[2] + getTempUnits()));
+		long_temp_min2.setText(String.valueOf(minTemps[2] + getTempUnits()));
 		long_temp_precip2.setText(String.valueOf(precips[2]));
 		long_temp_sky2.setText(sky[2]);
 		
@@ -1068,9 +1077,9 @@ public class AppWindow {
 		long_picture2.setIcon(skyIcons);
 		
 		long_date3.setText(dates[3].unixToDate());
-		long_temp3.setText(String.valueOf(temps[3]));
-		long_temp_max3.setText(String.valueOf(maxTemps[3]));
-		long_temp_min3.setText(String.valueOf(minTemps[3]));
+		long_temp3.setText(String.valueOf(temps[3] + getTempUnits()));
+		long_temp_max3.setText(String.valueOf(maxTemps[3] + getTempUnits()));
+		long_temp_min3.setText(String.valueOf(minTemps[3] + getTempUnits()));
 		long_temp_precip3.setText(String.valueOf(precips[3]));
 		long_temp_sky3.setText(sky[3]);
 		
@@ -1080,9 +1089,9 @@ public class AppWindow {
 		long_picture3.setIcon(skyIcons);
 		
 		long_date4.setText(dates[4].unixToDate());
-		long_temp4.setText(String.valueOf(temps[4]));
-		long_temp_max4.setText(String.valueOf(maxTemps[4]));
-		long_temp_min4.setText(String.valueOf(minTemps[4]));
+		long_temp4.setText(String.valueOf(temps[4] + getTempUnits()));
+		long_temp_max4.setText(String.valueOf(maxTemps[4] + getTempUnits()));
+		long_temp_min4.setText(String.valueOf(minTemps[4] + getTempUnits()));
 		long_temp_precip4.setText(String.valueOf(precips[4]));
 		long_temp_sky4.setText(sky[4]);
 		
@@ -1098,6 +1107,10 @@ public class AppWindow {
 		temperature.setBounds(40, 56, 200, 44);
 		temperature.setVisible(settings.viewTemp());
 		panel_local.add(temperature);
+		
+		temperatureUnits.setBounds(150, 60, 46, 14);
+		temperatureUnits.setVisible(settings.viewTemp());
+		panel_local.add(temperatureUnits);
 		
 		temp_max.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		temp_max.setBounds(197, 61, 100, 32);
@@ -1453,7 +1466,7 @@ public class AppWindow {
 		long_temp = new JLabel("00");
 		long_temp.setHorizontalAlignment(SwingConstants.CENTER);
 		long_temp.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		long_temp.setBounds(30, 113, 70, 42);
+		long_temp.setBounds(15, 113, 100, 42);
 		panel_long_0.add(long_temp);
 		
 		long_picture = new JLabel("");
@@ -1511,7 +1524,7 @@ public class AppWindow {
 		long_temp1 = new JLabel("00");
 		long_temp1.setHorizontalAlignment(SwingConstants.CENTER);
 		long_temp1.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		long_temp1.setBounds(30, 113, 70, 42);
+		long_temp1.setBounds(15, 113, 100, 42);
 		panel_long_1.add(long_temp1);
 		
 		long_picture1 = new JLabel("");
@@ -1569,7 +1582,7 @@ public class AppWindow {
 		long_temp2 = new JLabel("00");
 		long_temp2.setHorizontalAlignment(SwingConstants.CENTER);
 		long_temp2.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		long_temp2.setBounds(30, 113, 70, 42);
+		long_temp2.setBounds(15, 113, 100, 42);
 		panel_long_2.add(long_temp2);
 		
 		long_picture2 = new JLabel("");
@@ -1627,7 +1640,7 @@ public class AppWindow {
 		long_temp3 = new JLabel("00");
 		long_temp3.setHorizontalAlignment(SwingConstants.CENTER);
 		long_temp3.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		long_temp3.setBounds(30, 113, 70, 42);
+		long_temp3.setBounds(15, 113, 100, 42);
 		panel_long_3.add(long_temp3);
 		
 		long_picture3 = new JLabel("");
@@ -1685,7 +1698,7 @@ public class AppWindow {
 		long_temp4 = new JLabel("00");
 		long_temp4.setHorizontalAlignment(SwingConstants.CENTER);
 		long_temp4.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		long_temp4.setBounds(30, 113, 70, 42);
+		long_temp4.setBounds(15, 113, 100, 42);
 		panel_long_4.add(long_temp4);
 		
 		long_picture4 = new JLabel("");
