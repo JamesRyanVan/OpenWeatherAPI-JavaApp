@@ -39,13 +39,16 @@ public class ShortTerm {
 				this.icons[i-1] = increment.getJSONArray("weather").getJSONObject(0).getString("icon");
 				
 				try {
-					this.rain[i-1] = increment.getJSONObject("rain").getInt("3h");
+					double rains = increment.getJSONObject("rain").getDouble("3h");
+					this.rain[i-1] =rains; 
+					
 					} catch (JSONException e){
 						this.rain[i-1] = 0;
 						//System.out.println("Rain not Found");
+						
 					}
 					try {
-					this.snow[i-1] = increment.getJSONObject("snow").getInt("3h");	
+					this.snow[i-1] = increment.getJSONObject("snow").getDouble("3h");	
 					} catch (JSONException e){
 						this.snow[i-1] = 0;
 						//System.out.println("snow not Found");
