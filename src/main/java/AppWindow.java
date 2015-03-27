@@ -42,7 +42,12 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComboBox;
 
 import java.awt.Color;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -484,7 +489,19 @@ public class AppWindow {
 	}
 
 	private void initializeSettings() {
-		settings = new Settings(true, true, true, true, true, true, true, null);
+		//Object Serialization Load//
+				try {
+					ObjectInputStream in = new ObjectInputStream(new FileInputStream("settings.dat"));
+					settings = (Settings) in.readObject();
+				}catch (FileNotFoundException e){
+					e.printStackTrace();
+					settings = new Settings(true, true, true, true, true, true, true, null);
+				}catch (IOException e){
+					e.printStackTrace();
+				}catch (ClassNotFoundException e){
+					e.printStackTrace();
+				}
+		////////////////////////////
 	}
 	
 	
@@ -584,6 +601,17 @@ public class AppWindow {
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Object Serialization Save data//
+				try {
+					 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("settings.dat"));
+					 out.writeObject(settings);
+					 out.close();
+				}catch (FileNotFoundException e1){
+					e1.printStackTrace();
+				}catch (IOException e1){
+					e1.printStackTrace();
+				}
+				//////////////////////////////////
 				frmOpenweatherapp.dispatchEvent(new WindowEvent(frmOpenweatherapp, WindowEvent.WINDOW_CLOSING));
 			}
 		});
@@ -715,7 +743,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/main/resources/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -835,9 +863,9 @@ public class AppWindow {
 	
 	private String getTempUnits() {
 		if (settings.viewMetricUnits())
-			return " Â°C";
+			return " °C";
 		else
-			return " Â°F";
+			return " °F";
 	}
 		
 	private JTabbedPane tabbedPane() throws IOException {
