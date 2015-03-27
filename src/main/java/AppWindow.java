@@ -504,8 +504,11 @@ public class AppWindow {
 							
 						}
 					}
+					
 		
 					currentLocation = settings.getCity();
+					locationModel.setSelectedItem(currentLocation);
+					
 					System.out.println(currentLocation);
 					
 				}catch (FileNotFoundException e){
@@ -798,7 +801,8 @@ public class AppWindow {
 		            default: 
 		            	System.out.println("Selected City: " + locationModel.getSelectedItem().toString());
 		            	currentLocation = (City) locationModel.getSelectedItem();
-		            	System.out.println(currentLocation.getCityID());
+		            	
+		            	System.out.println(currentLocation.getCityName());
 					try {
 						getJSON(currentLocation.getCityID());
 					} catch (IOException e1) {
@@ -828,6 +832,7 @@ public class AppWindow {
 						getJSON(event.getCityID());
 						
 						currentLocation = event.getCityObj();
+
 						locationModel.addElement(event.getCityObj());
 						locationModel.setSelectedItem(event.getCityObj());
 						settings.addLocation(event.getCityObj());
@@ -951,7 +956,7 @@ public class AppWindow {
 
 		Local localWeather = new Local(local);
 		
-		DecimalFormat df = new DecimalFormat("#0.0");
+		DecimalFormat df = new DecimalFormat("#0.00");
 		temperature.setText(String.valueOf(df.format(localWeather.getTemp()) + getTempUnits()));
 		temp_max.setText(String.valueOf(df.format(localWeather.getTempMax()) + getTempUnits()));	
 		temp_min.setText(String.valueOf(df.format(localWeather.getTempMin()) + getTempUnits()));
