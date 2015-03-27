@@ -715,7 +715,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/main/resource/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/main/resources/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -835,9 +835,9 @@ public class AppWindow {
 	
 	private String getTempUnits() {
 		if (settings.viewMetricUnits())
-			return " °C";
+			return " Â°C";
 		else
-			return " °F";
+			return " Â°F";
 	}
 		
 	private JTabbedPane tabbedPane() throws IOException {
@@ -923,9 +923,9 @@ public class AppWindow {
     	cal.getTime();
     	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
     	System.out.println(sdf.format(cal.getTime()));
-		lblUpdatedtime.setText(String.valueOf(sdf.format(cal.getTime())));
-		lblUpdatedtime1.setText(String.valueOf(sdf.format(cal.getTime())));
-		lblUpdatedtime2.setText(String.valueOf(sdf.format(cal.getTime())));
+		lblUpdatedtime.setText("Updated: " + String.valueOf(sdf.format(cal.getTime())));
+		lblUpdatedtime1.setText("Updated: " + String.valueOf(sdf.format(cal.getTime())));
+		lblUpdatedtime2.setText("Updated: " + String.valueOf(sdf.format(cal.getTime())));
 	}
 	
 	private void panel_short_values(JSONObject shortTerm) throws JSONException, IOException {
@@ -1099,7 +1099,7 @@ public class AppWindow {
 	
 	private void panel_labels() {
 		
-		temperature.setFont(new Font("Tahoma", Font.PLAIN, 45));
+		temperature.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		temperature.setBounds(40, 56, 200, 44);
 		temperature.setVisible(settings.viewTemp());
 		panel_local.add(temperature);
@@ -1119,8 +1119,8 @@ public class AppWindow {
 		locationName.setBounds(344, 11, 400, 33);
 		panel_local.add(locationName);
 		
-		lblUpdatedtime.setHorizontalAlignment(SwingConstants.LEFT);
-		lblUpdatedtime.setBounds(700, 392, 200, 14);
+		lblUpdatedtime.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblUpdatedtime.setBounds(550, 392, 200, 14);
 		panel_local.add(lblUpdatedtime);
 		
 		skycondvalue.setBounds(200, 122, 80, 14);
@@ -1143,11 +1143,11 @@ public class AppWindow {
 		humidityvalue.setVisible(settings.viewHumidity());
 		panel_local.add(humidityvalue);
 		
-		sunriseValue.setBounds(200, 314, 80, 14);
+		sunriseValue.setBounds(200, 314, 120, 14);
 		sunriseValue.setVisible(settings.viewSunsetAndRise());
 		panel_local.add(sunriseValue);
 		
-		sunsetValue.setBounds(200, 349, 80, 14);
+		sunsetValue.setBounds(200, 349, 120, 14);
 		sunsetValue.setVisible(settings.viewSunsetAndRise());
 		panel_local.add(sunsetValue);
 		
@@ -1192,10 +1192,6 @@ public class AppWindow {
 		lblHumidity.setBounds(40, 251, 122, 25);
 		lblHumidity.setEnabled(settings.viewHumidity());
 		panel_local.add(lblHumidity);
-
-		lblLastUpdate = new JLabel("Last Updated:");
-		lblLastUpdate.setBounds(625, 389, 77, 20);
-		panel_local.add(lblLastUpdate);
 		
 		lblCurrent = new JLabel("Current:");
 		lblCurrent.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -1231,12 +1227,8 @@ public class AppWindow {
 		panel_short.add(locationName1);
 		
 		lblUpdatedtime1.setHorizontalAlignment(SwingConstants.LEFT);
-		lblUpdatedtime1.setBounds(700, 392, 200, 14);
+		lblUpdatedtime1.setBounds(550, 392, 200, 14);
 		panel_short.add(lblUpdatedtime1);
-		
-		lblLastUpdate1 = new JLabel("Last Updated:");
-		lblLastUpdate1.setBounds(625, 389, 77, 20);
-		panel_short.add(lblLastUpdate1);
 		
 		sky1.setHorizontalAlignment(SwingConstants.LEFT);
 		sky1.setBounds(10, 45, 84, 59);
@@ -1438,12 +1430,8 @@ public class AppWindow {
 		panel_long.add(locationName2);
 		
 		lblUpdatedtime2.setHorizontalAlignment(SwingConstants.LEFT);
-		lblUpdatedtime2.setBounds(700, 392, 200, 14);
+		lblUpdatedtime2.setBounds(550, 392, 200, 14);
 		panel_long.add(lblUpdatedtime2);
-		
-		lblLastUpdate2 = new JLabel("Last Updated:");
-		lblLastUpdate2.setBounds(625, 389, 77, 20);
-		panel_long.add(lblLastUpdate2);
 		
 		panel_long_0.setBounds(36, 45, 128, 313);
 		panel_long_0.setOpaque(false);
