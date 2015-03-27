@@ -1,12 +1,14 @@
 package main.java;
 
+import java.io.Serializable;
+
 /**
  * Class that represents a city.
  * 
  * @author Group 10
  *
  */
-public class City {
+public class City implements Serializable {
     
 	/* city's ID */
     private int cityID;

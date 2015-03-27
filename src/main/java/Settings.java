@@ -26,16 +26,14 @@ public class Settings implements Serializable{
 	SunsetAndRise, MetricUnits;
 	
 	/* Array storing city's */
-	City[] cityList = new City[50];
+	private City[] cityList;
 	
 	/* Int value representing how many cities user has stored */
-	int listSize = 0;
+	int listSize = 1;
 	
 	/* Int value pointing to cell in cityIDList array which corresponds to current city */
-	City currentCity;
+	private City currentCity;
 	
-	JComboBox<City> cityCombo;
-
 	/*
 	 * Creates a settings object. Initialized upon users first use setting boolean values to true
 	 * if user wishes to view corresponding data.
@@ -59,11 +57,10 @@ public class Settings implements Serializable{
 		Humidity = humidity;
 		SunsetAndRise = sunset;
 		MetricUnits = metric;
-		
+		cityList = new City[50];
 		cityList[listSize] = city;
 		listSize++;
 		currentCity = city;
-		this.cityCombo = cityCombo;
 	}
 	
 	/*
@@ -197,19 +194,14 @@ public class Settings implements Serializable{
 	 */
 	public void changeCurrentCity(City newCurrent) throws IOException
 	{
-		for (int i=0; i<listSize; i++)
-		{
-			if (cityList[i] == newCurrent)
-			{
-				currentCity = cityList[i];
-				return;
-			}
-		}
-		throw new IOException("City not found");
+		currentCity = newCurrent;
 	}
 	
 	public City getCity(){
 		return this.currentCity;
 	}
 	
+	public City[] getCityList() {
+		return cityList;
+	}
 }
