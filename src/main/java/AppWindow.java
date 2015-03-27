@@ -76,6 +76,8 @@ public class AppWindow {
 	private Settings settings;
 	private Time time;
 	
+	final String DEGREE  = "\u00b0";
+	
 	// Location ComboBox
 	private DefaultComboBoxModel<City> locationModel;
 	private JComboBox<City> comboBox_location;
@@ -863,9 +865,9 @@ public class AppWindow {
 	
 	private String getTempUnits() {
 		if (settings.viewMetricUnits())
-			return " °C";
+			return DEGREE + "C";
 		else
-			return " °F";
+			return DEGREE + "F";
 	}
 		
 	private JTabbedPane tabbedPane() throws IOException {
