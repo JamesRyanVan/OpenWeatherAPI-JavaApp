@@ -1,6 +1,9 @@
 package main.java;
 
 import java.io.IOException;
+import java.io.Serializable;
+
+import javax.swing.JComboBox;
 
 /**
  * Class that stores user settings/preferences
@@ -12,8 +15,12 @@ import java.io.IOException;
  *
  */
 
-public class Settings
-{
+public class Settings implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/* Boolean values to determine whether or not user wishes to view corresponding data */
 	boolean Temp, WindSpeedAndDir, SkyCondition, AirPressure, Humidity,
 	SunsetAndRise, MetricUnits;
@@ -26,6 +33,8 @@ public class Settings
 	
 	/* Int value pointing to cell in cityIDList array which corresponds to current city */
 	City currentCity;
+	
+	JComboBox<City> cityCombo;
 
 	/*
 	 * Creates a settings object. Initialized upon users first use setting boolean values to true
@@ -54,6 +63,7 @@ public class Settings
 		cityList[listSize] = city;
 		listSize++;
 		currentCity = city;
+		this.cityCombo = cityCombo;
 	}
 	
 	/*
@@ -197,4 +207,9 @@ public class Settings
 		}
 		throw new IOException("City not found");
 	}
+	
+	public City getCity(){
+		return this.currentCity;
+	}
+	
 }
