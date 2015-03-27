@@ -897,6 +897,21 @@ public class AppWindow {
 			return DEGREE + "C";
 		else
 			return DEGREE + "F";
+	
+	}
+	private String getWindUnits(){
+		if (settings.viewMetricUnits())
+			return " Km/H";
+		else
+			return " mph";
+	}
+	
+	private String getPressure(double pressure){
+		if (settings.viewMetricUnits())
+			return String.valueOf(pressure/10.00)+" kPa" ;
+		else
+			return String.valueOf(pressure)+" mb";
+		
 	}
 		
 	private JTabbedPane tabbedPane() throws IOException {
@@ -962,10 +977,11 @@ public class AppWindow {
 		temp_min.setText(String.valueOf(df.format(localWeather.getTempMin()) + getTempUnits()));
 		locationName.setText(locationModel.getSelectedItem().toString());
 		skycondvalue.setText(localWeather.getSkyCondition());
-		windspeedvalue.setText(String.valueOf(localWeather.getWindSpeed()));
+		windspeedvalue.setText(String.valueOf(localWeather.getWindSpeed()) + getWindUnits());
 		windDirvalue.setText(String.valueOf(localWeather.getWindDir()));
-		airpressurevalue.setText(String.valueOf(localWeather.getAirPressure()));
-		humidityvalue.setText(String.valueOf(localWeather.getHumidity()));
+		double pressureConvert = localWeather.getAirPressure();
+		airpressurevalue.setText(getPressure(pressureConvert));
+		humidityvalue.setText(String.valueOf(localWeather.getHumidity())+" %");
 		
 		time = localWeather.getSunriseTime();
 		sunriseValue.setText(String.valueOf(time.unixToTime()));
@@ -1005,7 +1021,7 @@ public class AppWindow {
 		time1.setText(times[0].unixToTime());
 		temp1.setText("Temp: " + String.valueOf(temps[0]) + getTempUnits());				
 		sky1.setText("Sky: " + skys[0]);
-		rain1.setText("Percipitation: " + precips[0]);
+		rain1.setText("Precip: " + precips[0]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[0] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1015,7 +1031,7 @@ public class AppWindow {
 		time2.setText(times[1].unixToTime());
 		temp2.setText("Temp: " + String.valueOf(temps[1]) + getTempUnits());				
 		sky2.setText("Sky: " + skys[1]);
-		rain2.setText("Percipitation: " + precips[1]);
+		rain2.setText("Precip: " + precips[1]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[1] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1025,7 +1041,7 @@ public class AppWindow {
 		time3.setText(times[2].unixToTime());
 		temp3.setText("Temp: " + String.valueOf(temps[2]) + getTempUnits());				
 		sky3.setText("Sky: " + skys[2]);
-		rain3.setText("Percipitation: " + precips[2]);
+		rain3.setText("Precip: " + precips[2]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[2] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1035,7 +1051,7 @@ public class AppWindow {
 		time4.setText(times[3].unixToTime());
 		temp4.setText("Temp: " + String.valueOf(temps[3]) + getTempUnits());				
 		sky4.setText("Sky: " + skys[3]);
-		rain4.setText("Percipitation: " + precips[3]);
+		rain4.setText("Precip: " + precips[3]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[3] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1045,7 +1061,7 @@ public class AppWindow {
 		time5.setText(times[4].unixToTime());
 		temp5.setText("Temp: " + String.valueOf(temps[4]) + getTempUnits());				
 		sky5.setText("Sky: " + skys[4]);
-		rain5.setText("Percipitation: " + precips[4]);
+		rain5.setText("Precip: " + precips[4]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[4] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1055,7 +1071,7 @@ public class AppWindow {
 		time6.setText(times[5].unixToTime());
 		temp6.setText("Temp: " + String.valueOf(temps[5]) + getTempUnits());				
 		sky6.setText("Sky: " + skys[5]);
-		rain6.setText("Percipitation: " + precips[5]);
+		rain6.setText("Precip: " + precips[5]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[5] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1065,7 +1081,7 @@ public class AppWindow {
 		time7.setText(times[6].unixToTime());
 		temp7.setText("Temp: " + String.valueOf(temps[6]) + getTempUnits());				
 		sky7.setText("Sky: " + skys[6]);
-		rain7.setText("Percipitation: " + precips[6]);
+		rain7.setText("Precip: " + precips[6]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[6] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1075,7 +1091,7 @@ public class AppWindow {
 		time8.setText(times[7].unixToTime());
 		temp8.setText("Temp: " + String.valueOf(temps[7] + getTempUnits()));				
 		sky8.setText("Sky: " + skys[7]);
-		rain8.setText("Percipitation: " + precips[7]);
+		rain8.setText("Precip: " + precips[7]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[7] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1302,7 +1318,7 @@ public class AppWindow {
 		time1.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		temp1.setHorizontalAlignment(SwingConstants.LEFT);
-		temp1.setBounds(10, 22, 84, 49);
+		temp1.setBounds(10, 22, 88, 49);
 		panel.add(temp1);
 		
 		picture.setBounds(77, 53, 46, 46);
@@ -1327,7 +1343,7 @@ public class AppWindow {
 		panel_1.add(time2);
 		
 		temp2.setHorizontalAlignment(SwingConstants.LEFT);
-		temp2.setBounds(10, 22, 84, 49);
+		temp2.setBounds(10, 22, 88, 49);
 		panel_1.add(temp2);
 		
 		sky2.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1351,7 +1367,7 @@ public class AppWindow {
 		panel_2.add(time3);
 		
 		temp3.setHorizontalAlignment(SwingConstants.LEFT);
-		temp3.setBounds(10, 22, 84, 49);
+		temp3.setBounds(10, 22, 88, 49);
 		panel_2.add(temp3);
 		
 		sky3.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1375,7 +1391,7 @@ public class AppWindow {
 		panel_3.add(time4);
 		
 		temp4.setHorizontalAlignment(SwingConstants.LEFT);
-		temp4.setBounds(10, 22, 84, 49);
+		temp4.setBounds(10, 22, 88, 49);
 		panel_3.add(temp4);
 		
 		sky4.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1399,7 +1415,7 @@ public class AppWindow {
 		panel_4.add(time7);
 		
 		temp7.setHorizontalAlignment(SwingConstants.LEFT);
-		temp7.setBounds(10, 22, 84, 49);
+		temp7.setBounds(10, 22, 88, 49);
 		panel_4.add(temp7);
 		
 		sky7.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1423,7 +1439,7 @@ public class AppWindow {
 		panel_5.add(time8);
 		
 		temp8.setHorizontalAlignment(SwingConstants.LEFT);
-		temp8.setBounds(10, 22, 84, 49);
+		temp8.setBounds(10, 22, 88, 49);
 		panel_5.add(temp8);
 		
 		sky8.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1447,7 +1463,7 @@ public class AppWindow {
 		panel_6.add(time5);
 		
 		temp5.setHorizontalAlignment(SwingConstants.LEFT);
-		temp5.setBounds(10, 22, 84, 49);
+		temp5.setBounds(10, 22, 88, 49);
 		panel_6.add(temp5);
 		
 		sky5.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1471,11 +1487,11 @@ public class AppWindow {
 		panel_7.add(time6);
 		
 		temp6.setHorizontalAlignment(SwingConstants.LEFT);
-		temp6.setBounds(10, 22, 84, 49);
+		temp6.setBounds(10, 22, 88, 49);
 		panel_7.add(temp6);
 		
 		sky6.setHorizontalAlignment(SwingConstants.LEFT);
-		sky6.setBounds(10, 45, 84, 59);
+		sky6.setBounds(10, 45, 88, 59);
 		panel_7.add(sky6);
 		
 		picture6.setBounds(77, 58, 46, 46);
