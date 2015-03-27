@@ -79,7 +79,7 @@ public class AppWindow {
 	final String DEGREE  = "\u00b0";
 	
 	// Location ComboBox
-	private DefaultComboBoxModel<City> locationModel = new DefaultComboBoxModel<City>();
+	private DefaultComboBoxModel<City> locationModel= new DefaultComboBoxModel<City>();;
 	private JComboBox<City> comboBox_location;
 	
 	private JButton btnRefresh;
@@ -121,7 +121,6 @@ public class AppWindow {
 	private JLabel lblLastUpdate2 = new JLabel();
 	private JLabel lblLow = new JLabel();
 	private JLabel map = new JLabel();
-	private boolean loaded=false;
 	
 	private JLabel locationName1 = new JLabel();
 	private JPanel panel = new JPanel() {
@@ -497,14 +496,12 @@ public class AppWindow {
 					ObjectInputStream in = new ObjectInputStream(new FileInputStream("settings.dat"));
 					settings = (Settings) in.readObject();
 					City[] cityList = settings.getCityList();
-					currentLocation = settings.getCity();
-					System.out.println(settings.getCity());
 					//if (cityList[0] != null)
 					for (int i = 0; i < cityList.length; i++ ) {
 						if (cityList[i] != null) {
 							System.out.println(cityList[i].getCityName());
 							locationModel.addElement(cityList[i]);	
-						
+							
 						}
 					}
 				}catch (FileNotFoundException e){
@@ -555,7 +552,8 @@ public class AppWindow {
 		
 		locationModel.addElement(new City(0, "", "Add Location")); 
 		comboBox_location = new JComboBox<City>(locationModel);
-		currentLocation = settings.getCity();
+		
+		
 		
 		
 
@@ -859,7 +857,7 @@ public class AppWindow {
 			System.out.println(local.toString());
 			
 				try {
-					//panel_local_values(local);
+					panel_local_values(local);
 					panel_short_values(shortTerm);
 					panel_long_values(longTerm);
 				} catch (JSONException e) {
@@ -900,7 +898,7 @@ public class AppWindow {
 		panel_local.setBackground(Color.WHITE);
 		tabbedPane.addTab("Local", null, panel_local, null);
 		panel_local.setLayout(null);
-		System.out.println(currentLocation.getCityName());
+		
 		if (currentLocation == null) {
 			panel_blank();
 		} else {
