@@ -504,6 +504,10 @@ public class AppWindow {
 							
 						}
 					}
+		
+					currentLocation = settings.getCity();
+					System.out.println(currentLocation);
+					
 				}catch (FileNotFoundException e){
 					e.printStackTrace();
 					settings = new Settings(true, true, true, true, true, true, true, null);
@@ -618,8 +622,13 @@ public class AppWindow {
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				
+			
 				//Object Serialization Save data//
 				try {
+					settings.changeCurrentCity(currentLocation);
+					
 					 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("settings.dat"));
 					 out.writeObject(settings);
 					 out.close();
@@ -899,13 +908,6 @@ public class AppWindow {
 		tabbedPane.addTab("Local", null, panel_local, null);
 		panel_local.setLayout(null);
 		
-		if (currentLocation == null) {
-			panel_blank();
-		} else {
-			System.out.println(currentLocation.getCityID());
-				getJSON(currentLocation.getCityID());
-		}
-		
 		panel_short = new JPanel();
 		panel_short.setBackground(Color.WHITE);
 		panel_short.setLayout(null);
@@ -916,6 +918,14 @@ public class AppWindow {
 		panel_long.setLayout(null);
 		tabbedPane.addTab("LongTerm", null, panel_long, null);
 
+		if (currentLocation == null) {
+			System.out.println("Current location is NULL");
+			panel_blank();
+		} else {
+			System.out.println(currentLocation.getCityID());
+				getJSON(currentLocation.getCityID());
+		}
+		
 		return tabbedPane;
 		
 	}
@@ -937,6 +947,7 @@ public class AppWindow {
 			panel_labels();
 			lblHelloToStart.setText(null);
 		}
+		
 
 		Local localWeather = new Local(local);
 		
