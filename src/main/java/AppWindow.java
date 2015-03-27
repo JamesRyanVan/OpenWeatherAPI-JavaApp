@@ -504,6 +504,8 @@ public class AppWindow {
 					e.printStackTrace();
 				}
 		////////////////////////////
+
+				
 	}
 	
 	
@@ -541,6 +543,15 @@ public class AppWindow {
 		locationModel = new DefaultComboBoxModel<City>();
 		locationModel.addElement(new City(0, "", "Add Location")); 
 		comboBox_location = new JComboBox<City>(locationModel);
+		currentLocation = settings.getCity();
+		City[] cityList = settings.getCityList();
+		//if (cityList[0] != null)
+		for (int i = 0; i < cityList.length; i++ ) {
+			if (cityList[i] != null) {
+				System.out.println(cityList[i].getCityName());
+				locationModel.addElement(cityList[i]);			
+			}
+		}
 
 		frmOpenweatherapp.getContentPane().add(locationPanel());
 		try {
@@ -745,7 +756,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/main/resources/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -806,7 +817,7 @@ public class AppWindow {
 						currentLocation = event.getCityObj();
 						locationModel.addElement(event.getCityObj());
 						locationModel.setSelectedItem(event.getCityObj());
-						
+						settings.addLocation(event.getCityObj());
 						programStatus.setText("Loaded Location: " + currentLocation.getCityName() + "  (ID:" + currentLocation.getCityID() + ")" );
 					
 					} catch (IOException e) {
