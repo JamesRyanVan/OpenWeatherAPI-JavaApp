@@ -89,7 +89,7 @@ public class ShortTerm {
 	public double[] getPrecips() {
 	double[] precips = new double[8];
 	for (int x=0; x<8;x++){
-		precips[x] = snow[x] + rain [x];
+		precips[x] = roundTwoDecimals(snow[x] + rain [x]);
 	}
 	return precips;
 	}

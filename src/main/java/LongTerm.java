@@ -117,7 +117,7 @@ public class LongTerm {
 	public double[] getPrecips() {
 		double[] precips = new double[10];
 		for (int x = 0; x < 5; x++) {
-			precips[x] = snow[x] + rain[x];
+			precips[x] = roundTwoDecimals(snow[x] + rain[x]);
 		}
 		return precips;
 	}
