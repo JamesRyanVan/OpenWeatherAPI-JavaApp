@@ -1,5 +1,7 @@
 package main.java;
 
+import java.text.DecimalFormat;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,12 +36,12 @@ public class ShortTerm {
 				JSONObject increment = list.getJSONObject(i);
 				
 				this.times[i-1] = new Time(increment.getInt("dt"));
-				this.temps[i-1] = increment.getJSONObject("main").getDouble("temp");
+				this.temps[i-1] = roundTwoDecimals(increment.getJSONObject("main").getDouble("temp"));
 				this.skyConditions[i-1] = increment.getJSONArray("weather").getJSONObject(0).getString("main");
 				this.icons[i-1] = increment.getJSONArray("weather").getJSONObject(0).getString("icon");
 				
 				try {
-					double rains = increment.getJSONObject("rain").getDouble("3h");
+					double rains = roundTwoDecimals(increment.getJSONObject("rain").getDouble("3h"));
 					this.rain[i-1] =rains; 
 					
 					} catch (JSONException e){
@@ -48,7 +50,7 @@ public class ShortTerm {
 						
 					}
 					try {
-					this.snow[i-1] = increment.getJSONObject("snow").getDouble("3h");	
+					this.snow[i-1] = roundTwoDecimals(increment.getJSONObject("snow").getDouble("3h"));	
 					} catch (JSONException e){
 						this.snow[i-1] = 0;
 						//System.out.println("snow not Found");
@@ -126,6 +128,10 @@ public class ShortTerm {
 	 */
 	public double[] getTemps(){
 		return temps;
+	}
+	double roundTwoDecimals(double d) {
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+    return Double.valueOf(twoDForm.format(d));
 	}
 }
 

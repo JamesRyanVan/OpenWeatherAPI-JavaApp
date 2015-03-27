@@ -1,5 +1,7 @@
 package main.java;
 
+import java.text.DecimalFormat;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,25 +36,25 @@ public class LongTerm {
 				JSONObject increment = list.getJSONObject(i-1);
 
 				this.days[i - 1] = new Time(increment.getInt("dt"));
-				this.temps[i - 1] = increment.getJSONObject("temp").getDouble(
-						"day");
-				this.minTemps[i - 1] = increment.getJSONObject("temp")
-						.getDouble("min");
-				this.maxTemps[i - 1] = increment.getJSONObject("temp")
-						.getDouble("max");
+				this.temps[i - 1] = roundTwoDecimals(increment.getJSONObject("temp").getDouble(
+						"day"));
+				this.minTemps[i - 1] = roundTwoDecimals(increment.getJSONObject("temp")
+						.getDouble("min"));
+				this.maxTemps[i - 1] = roundTwoDecimals(increment.getJSONObject("temp")
+						.getDouble("max"));
 				this.skyConditions[i - 1] = increment.getJSONArray("weather")
 						.getJSONObject(0).getString("main");
 				this.icons[i - 1] = increment.getJSONArray("weather")
 						.getJSONObject(0).getString("icon");
 
 				try {
-					this.rain[i - 1] = increment.getDouble("rain");
+					this.rain[i - 1] = roundTwoDecimals(increment.getDouble("rain"));
 				} catch (JSONException e) {
 					this.rain[i - 1] = 0;
 
 				}
 				try {
-					this.snow[i - 1] = increment.getDouble("snow");
+					this.snow[i - 1] = roundTwoDecimals(increment.getDouble("snow"));
 				} catch (JSONException e) {
 					this.snow[i - 1] = 0;
 
@@ -146,6 +148,11 @@ public class LongTerm {
 	 */
 	public Time[] getTimes() {
 		return days;
+	}
+	
+	double roundTwoDecimals(double d) {
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+    return Double.valueOf(twoDForm.format(d));
 	}
 
 }

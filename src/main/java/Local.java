@@ -1,5 +1,7 @@
 package main.java;
 
+import java.text.DecimalFormat;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,6 +30,7 @@ public class Local {
 		this.apiObj= apiObjJSON;
 		/* Get the system data from JSON object */
 		try{
+			
 			JSONObject sys = apiObj.getJSONObject("sys");
 			this.sunriseTime = new Time(sys.getInt("sunrise"));
 			this.sunsetTime  = new Time(sys.getInt("sunset"));
@@ -44,15 +47,15 @@ public class Local {
 			
 			/* Get the main data from JSON object */
 			JSONObject main = apiObj.getJSONObject("main");
-			this.temp = main.getDouble("temp");
-			this.tempMax = main.getDouble("temp_max");
-			this.tempMin = main.getDouble("temp_min");
-			this.airPressure = main.getDouble("pressure");
-			this.humidity = main.getDouble("humidity");
+			this.temp = roundTwoDecimals(main.getDouble("temp"));
+			this.tempMax = roundTwoDecimals(main.getDouble("temp_max"));
+			this.tempMin = roundTwoDecimals(main.getDouble("temp_min"));
+			this.airPressure = roundTwoDecimals(main.getDouble("pressure"));
+			this.humidity = roundTwoDecimals(main.getDouble("humidity"));
 			
 			/* Get the wind data from JSON object */
 			JSONObject wind = apiObj.getJSONObject("wind");
-			this.windSpeed = wind.getDouble("speed");
+			this.windSpeed = roundTwoDecimals(wind.getDouble("speed"));
 			this.windDir = new WindDirection(wind.getDouble("deg"));
 			
 			/* Get the time data from the JSON object */
@@ -161,6 +164,11 @@ public class Local {
 	
 	public String getLatitude(){
 		return String.valueOf(lat);
+	}
+	
+	double roundTwoDecimals(double d) {
+        DecimalFormat twoDForm = new DecimalFormat("#.##");
+    return Double.valueOf(twoDForm.format(d));
 	}
 	
 }
