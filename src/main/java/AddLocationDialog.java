@@ -120,35 +120,48 @@ public class AddLocationDialog extends JDialog {
 				String searchFieldIn = searchField.getText();
 				
 				if (!searchFieldIn.equals("")) { // If user enters text in search field
-        			searchCities(searchFieldIn); // Perform a like-search on OpenWeatherMap
-        	     	searchField.setText(""); // Clear the search text field
-        	     	
-        	     	if (searchFieldIn.length() > 20) {
-						searchFieldIn = searchFieldIn.substring(0, 20) + "..";
-					}
-        	     	
-	            	// Match found //
-	            	if (!cityModel.isEmpty()) {
-	            		
-	            		addButton.setEnabled(true);
-	            		// Focus on the first result in the search result list
-	    				cityList.requestFocusInWindow();
-	    				cityList.setSelectedIndex(0);
-	    				
-	    				
-	    				
-	    				if (cityModel.getSize() == 1) {
-		    				resultLabel.setText(cityModel.getSize() + " match for \"" + searchFieldIn + "\"");
-	    				} else {
-	    					resultLabel.setText(cityModel.getSize() + " matches for \"" + searchFieldIn + "\"");
-	    				}
-	            	} else {
-	            		cityModel.removeAllElements();
+					try {
+	        			searchCities(searchFieldIn); // Perform a like-search on OpenWeatherMap
+	        	     	searchField.setText(""); // Clear the search text field
+	        	     	
+	        	     	if (searchFieldIn.length() > 20) {
+							searchFieldIn = searchFieldIn.substring(0, 20) + "..";
+						}
+	        	     	
+		            	// Match found //
+		            	if (!cityModel.isEmpty()) {
+		            		
+		            		addButton.setEnabled(true);
+		            		// Focus on the first result in the search result list
+		    				cityList.requestFocusInWindow();
+		    				cityList.setSelectedIndex(0);
+		    				
+		    				
+		    				
+		    				if (cityModel.getSize() == 1) {
+			    				resultLabel.setText(cityModel.getSize() + " match for \"" + searchFieldIn + "\"");
+		    				} else {
+		    					resultLabel.setText(cityModel.getSize() + " matches for \"" + searchFieldIn + "\"");
+		    				}
+		            	} else {
+		            		cityModel.removeAllElements();
+							searchField.setText("");
+							addButton.setEnabled(false);
+						
+			        		resultLabel.setText("No matches for " + "\"" + searchFieldIn + "\"");
+		            	}
+					} catch (JSONException jsonEx){
+						cityModel.removeAllElements();
 						searchField.setText("");
+						resultLabel.setText("Server error. Try again.");
 						addButton.setEnabled(false);
 					
-		        		resultLabel.setText("No matches for " + "\"" + searchFieldIn + "\"");
-	            	}
+					} catch (IOException ioEx) {
+						cityModel.removeAllElements();
+						resultLabel.setText("Server error. Try again.");
+						addButton.setEnabled(false);
+						searchField.setText("");
+					}
 				}
 			}
         });
@@ -252,7 +265,7 @@ public class AddLocationDialog extends JDialog {
 	 *  @throws JSONException if API query failed
 	 *  @param the city name to search
 	 *  */
-		private void searchCities(String cityName) {
+		private void searchCities(String cityName) throws IOException, JSONException {
 			
 			try {
 
@@ -275,17 +288,6 @@ public class AddLocationDialog extends JDialog {
 					} 
 				}
 						
-			} catch (JSONException jsonEx){
-				cityModel.removeAllElements();
-				searchField.setText("");
-				resultLabel.setText("Server error. Try again.");
-				addButton.setEnabled(false);
-			
-			} catch (IOException ioEx) {
-				cityModel.removeAllElements();
-				resultLabel.setText("Server error. Try again.");
-				addButton.setEnabled(false);
-				searchField.setText("");
 			} catch (LocationNotFoundException locEx){
 				cityModel.removeAllElements();
 				searchField.setText("");
