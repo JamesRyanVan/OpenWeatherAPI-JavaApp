@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.Random;
 import java.util.Scanner;
@@ -237,6 +238,7 @@ public class WeatherAPI {
         // Set up
         BufferedReader urlReader = null;
         HttpURLConnection connection = null;
+        
         InputStream urlStream = null; 
         int http_status;
         StringBuilder queryResult = new StringBuilder();
@@ -244,6 +246,9 @@ public class WeatherAPI {
         try {
         	// Open a connection and get the input stream
             connection = (HttpURLConnection) new URL(address).openConnection();
+            connection.setReadTimeout(5000); // 5 secs to start reading data or timeout
+            connection.setConnectTimeout(7000); // 7 secs to connect to server or timeout
+          
             urlStream = connection.getInputStream();
             
             // Check response code, if not successful (code 200)
@@ -300,8 +305,16 @@ public class WeatherAPI {
             }
       
         } catch (IOException ioEx) {
- 		   throw new IOException("IOException while opening connection");
-        }
+        	if (urlStream != null) {
+        	 	urlStream.close();
+        	}
+        	if (connection != null) {
+        		connection.disconnect();
+        	}
+  
+ 		   	throw new IOException("IOException while opening connection");
+        } 
+    
         
 
         /* Return the JSON object */
