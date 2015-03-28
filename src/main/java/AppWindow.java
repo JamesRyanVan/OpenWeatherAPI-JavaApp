@@ -773,7 +773,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/main/resources/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -945,10 +945,11 @@ public class AppWindow {
 	}
 	
 	private String getPressure(double pressure){
+		DecimalFormat df = new DecimalFormat("#0.00");
 		if (settings.viewMetricUnits())
-			return String.valueOf(pressure/10.00)+" kPa" ;
+			return String.valueOf(df.format(pressure/10.00))+" kPa" ;
 		else
-			return String.valueOf(pressure)+" mb";
+			return String.valueOf(df.format(pressure))+" mb";
 		
 	}
 		
@@ -1217,7 +1218,7 @@ public class AppWindow {
 	
 	private void panel_labels() {
 		
-		temperature.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		temperature.setFont(new Font("Tahoma", Font.PLAIN, 35));
 		temperature.setBounds(40, 56, 200, 44);
 		temperature.setVisible(settings.viewTemp());
 		panel_local.add(temperature);
@@ -1253,7 +1254,7 @@ public class AppWindow {
 		windDirvalue.setVisible(settings.viewWindSpeedAndDir());
 		panel_local.add(windDirvalue);
 		
-		airpressurevalue.setBounds(200, 224, 80, 14);
+		airpressurevalue.setBounds(200, 224, 150, 14);
 		airpressurevalue.setVisible(settings.viewAirPressure());
 		panel_local.add(airpressurevalue);
 		
@@ -1344,7 +1345,7 @@ public class AppWindow {
 		locationName1.setBounds(344, 5, 400, 33);
 		panel_short.add(locationName1);
 		
-		lblUpdatedtime1.setHorizontalAlignment(SwingConstants.LEFT);
+		lblUpdatedtime1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUpdatedtime1.setBounds(550, 392, 200, 14);
 		panel_short.add(lblUpdatedtime1);
 		
@@ -1358,7 +1359,7 @@ public class AppWindow {
 		time1.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		temp1.setHorizontalAlignment(SwingConstants.LEFT);
-		temp1.setBounds(10, 22, 88, 49);
+		temp1.setBounds(10, 22, 150, 49);
 		panel.add(temp1);
 		
 		picture.setBounds(77, 53, 46, 46);
@@ -1383,7 +1384,7 @@ public class AppWindow {
 		panel_1.add(time2);
 		
 		temp2.setHorizontalAlignment(SwingConstants.LEFT);
-		temp2.setBounds(10, 22, 88, 49);
+		temp2.setBounds(10, 22, 150, 49);
 		panel_1.add(temp2);
 		
 		sky2.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1407,7 +1408,7 @@ public class AppWindow {
 		panel_2.add(time3);
 		
 		temp3.setHorizontalAlignment(SwingConstants.LEFT);
-		temp3.setBounds(10, 22, 88, 49);
+		temp3.setBounds(10, 22, 150, 49);
 		panel_2.add(temp3);
 		
 		sky3.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1431,7 +1432,7 @@ public class AppWindow {
 		panel_3.add(time4);
 		
 		temp4.setHorizontalAlignment(SwingConstants.LEFT);
-		temp4.setBounds(10, 22, 88, 49);
+		temp4.setBounds(10, 22, 150, 49);
 		panel_3.add(temp4);
 		
 		sky4.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1455,7 +1456,7 @@ public class AppWindow {
 		panel_4.add(time7);
 		
 		temp7.setHorizontalAlignment(SwingConstants.LEFT);
-		temp7.setBounds(10, 22, 88, 49);
+		temp7.setBounds(10, 22, 150, 49);
 		panel_4.add(temp7);
 		
 		sky7.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1479,7 +1480,7 @@ public class AppWindow {
 		panel_5.add(time8);
 		
 		temp8.setHorizontalAlignment(SwingConstants.LEFT);
-		temp8.setBounds(10, 22, 88, 49);
+		temp8.setBounds(10, 22, 150, 49);
 		panel_5.add(temp8);
 		
 		sky8.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1503,7 +1504,7 @@ public class AppWindow {
 		panel_6.add(time5);
 		
 		temp5.setHorizontalAlignment(SwingConstants.LEFT);
-		temp5.setBounds(10, 22, 88, 49);
+		temp5.setBounds(10, 22, 150, 49);
 		panel_6.add(temp5);
 		
 		sky5.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1527,7 +1528,7 @@ public class AppWindow {
 		panel_7.add(time6);
 		
 		temp6.setHorizontalAlignment(SwingConstants.LEFT);
-		temp6.setBounds(10, 22, 88, 49);
+		temp6.setBounds(10, 22, 150, 49);
 		panel_7.add(temp6);
 		
 		sky6.setHorizontalAlignment(SwingConstants.LEFT);
@@ -1547,7 +1548,7 @@ public class AppWindow {
 		locationName2.setBounds(344, 5, 400, 33);
 		panel_long.add(locationName2);
 		
-		lblUpdatedtime2.setHorizontalAlignment(SwingConstants.LEFT);
+		lblUpdatedtime2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUpdatedtime2.setBounds(550, 392, 200, 14);
 		panel_long.add(lblUpdatedtime2);
 		
