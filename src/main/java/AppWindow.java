@@ -22,7 +22,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.util.List;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.SystemColor;
@@ -53,7 +52,6 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 
 import javax.swing.SwingConstants;
@@ -119,9 +117,6 @@ public class AppWindow {
 	private JLabel lblDailyHigh = new JLabel();
 	private JLabel lblCurrent = new JLabel();
 	private JLabel lblHumidity = new JLabel();
-	private JLabel lblLastUpdate = new JLabel();
-	private JLabel lblLastUpdate1 = new JLabel();
-	private JLabel lblLastUpdate2 = new JLabel();
 	private JLabel lblLow = new JLabel();
 	private JLabel map = new JLabel();
 	
@@ -498,6 +493,7 @@ public class AppWindow {
 				try {
 					ObjectInputStream in = new ObjectInputStream(new FileInputStream("settings.dat"));
 					settings = (Settings) in.readObject();
+					in.close();
 					City[] cityList = settings.getCityList();
 					//if (cityList[0] != null)
 					locationModel.addElement(new City(0, "", "Add Location")); 
@@ -608,9 +604,6 @@ public class AppWindow {
 			}
 		});
 		mnLocations.add(mntmNew);
-		
-		JMenuItem mntmRemove = new JMenuItem("Remove");
-		mnLocations.add(mntmRemove);
 		
 		JMenuItem mntmRefresh = new JMenuItem("Refresh");
 		mnFile.add(mntmRefresh);
