@@ -13,6 +13,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
@@ -21,6 +22,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.util.List;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.SystemColor;
@@ -51,6 +53,7 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import javax.swing.SwingConstants;
@@ -497,11 +500,12 @@ public class AppWindow {
 					settings = (Settings) in.readObject();
 					City[] cityList = settings.getCityList();
 					//if (cityList[0] != null)
+					locationModel.addElement(new City(0, "", "Add Location")); 
+					
 					for (int i = 0; i < cityList.length; i++ ) {
 						if (cityList[i] != null) {
 							System.out.println(cityList[i].getCityName());
 							locationModel.addElement(cityList[i]);	
-							
 						}
 					}
 					
@@ -514,6 +518,7 @@ public class AppWindow {
 				}catch (FileNotFoundException e){
 					e.printStackTrace();
 					settings = new Settings(true, true, true, true, true, true, true, null);
+					locationModel.addElement(new City(0, "", "Add Location")); 
 				}catch (IOException e){
 					e.printStackTrace();
 				}catch (ClassNotFoundException e){
@@ -557,7 +562,7 @@ public class AppWindow {
 		frmOpenweatherapp.setJMenuBar(menubar());
 
 		
-		locationModel.addElement(new City(0, "", "Add Location")); 
+		
 		comboBox_location = new JComboBox<City>(locationModel);
 		
 		
@@ -599,11 +604,7 @@ public class AppWindow {
 		JMenuItem mntmNew = new JMenuItem("New");
 		mntmNew.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					newLocation();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				newLocation();
 			}
 		});
 		mnLocations.add(mntmNew);
@@ -792,11 +793,7 @@ public class AppWindow {
 		        String s = ((City) comboBox_location.getSelectedItem()).toString();
 		        switch (s) {
 		            case "Add Location":
-					try {
 						newLocation();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
 		                break;
 		            default: 
 		            	System.out.println("Selected City: " + locationModel.getSelectedItem().toString());
@@ -805,8 +802,8 @@ public class AppWindow {
 		            	System.out.println(currentLocation.getCityName());
 					try {
 						getJSON(currentLocation.getCityID());
-					} catch (IOException e1) {
-						e1.printStackTrace();
+					} catch (IOException | JSONException e1) {
+						JOptionPane.showMessageDialog(null, "Error retrieving data for " + currentLocation  + ". Try again.", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
 					break;
 		        }
@@ -818,37 +815,72 @@ public class AppWindow {
 		return panel;
 	}
 	
-	private void newLocation() throws IOException {
+	private void newLocation() {
 		
 		programStatus.setText("Adding Location");
 		
 		locationDialog = new AddLocationDialog(frmOpenweatherapp);
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				
+				locationDialog.setVisible(true);
+			
+			} //run
+			
+		}); // invokeLater
+		
 		locationDialog.setDialogListener(new DialogListener() {
 			@Override
 			public void dialogEventOccurred(DialogEvent event) {
 				
 				if (event != null) {
 					try {
-						getJSON(event.getCityID());
 						
-						currentLocation = event.getCityObj();
+						City[] cityList = settings.getCityList();
+						
+						boolean containsCity = false;
+						for (int i = 0; i < cityList.length; i++) {
+							
+							if (cityList[i] != null) {
+								if (cityList[i].getCityID() == event.getCityID()) {
+									containsCity = true;
+									break;
+								}
+							}	
+						}
+						
+						if (!containsCity) {
+							getJSON(event.getCityID());
+							currentLocation = event.getCityObj();
 
-						locationModel.addElement(event.getCityObj());
-						locationModel.setSelectedItem(event.getCityObj());
-						settings.addLocation(event.getCityObj());
-						programStatus.setText("Loaded Location: " + currentLocation.getCityName() + "  (ID:" + currentLocation.getCityID() + ")" );
-					
-					} catch (IOException e) {
-						JOptionPane.showMessageDialog(null, e.toString(), "Loading city failed.. Try again", JOptionPane.ERROR_MESSAGE);
+							locationModel.addElement(event.getCityObj());
+							locationModel.setSelectedItem(event.getCityObj());
+							settings.addLocation(event.getCityObj());
+							programStatus.setText("Loaded Location: " + currentLocation.getCityName() + "  (ID:" + currentLocation.getCityID() + ")" );
+							
+							
+						} else {
+							locationModel.setSelectedItem(settings.getCity());
+							JOptionPane.showMessageDialog(null, "Already added " + event.getCityName() + ".", "ERROR", JOptionPane.ERROR_MESSAGE);
+							
+						}
 						
-						//  loading location failed...
-					
+						
+					} catch (IOException | JSONException e) {
+						JOptionPane.showMessageDialog(null, "Loading data for " + event.getCityName() + " failed.. Try again.", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
 					
 					
 				}
 			}
-		});
+		}); // dialogEventOccurred
+		
+		
+		
+		
+
 	}
 	
 	/**
@@ -856,39 +888,45 @@ public class AppWindow {
 	 * @param location
 	 * @throws IOException
 	 */
-	private void getJSON(int locationID) throws IOException {
+	private void getJSON(int locationID) throws IOException, JSONException {
 		
 		weather = new WeatherAPI(locationID, settings.viewMetricUnits()); // Gets the JSON data from WeatherAPI
 			
-		JSONObject local = weather.getLocal(); // null if there was an error
-		JSONObject shortTerm = weather.getShortTerm();
-		JSONObject longTerm = weather.getLongTerm();
-		
-		if (local != null && shortTerm != null && longTerm != null) {
-			tabbedPane.setEnabled(true);
-			btnRefresh.setEnabled(true);
-			
-			System.out.println(local.toString());
-			
-				try {
-					panel_local_values(local);
-					panel_short_values(shortTerm);
-					panel_long_values(longTerm);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-		} else {
-			// JSON failed..
-			throw new IOException();
+		// Get local, short-term and long-term
+		JSONObject local, shortTerm, longTerm;
+		try {
+			local = weather.getLocal();
+			shortTerm = weather.getShortTerm();
+			longTerm = weather.getLongTerm();
+		} catch (JSONException jsonEx) {
+			throw new JSONException("Error occurred while retrieving weather information.");
+		} catch (IOException ioEx) {
+			throw new IOException("Error occurred while retrieving weather information.");
 		}
+		
+		//// No errors from retrieving JSON objects ////
+		
+		tabbedPane.setEnabled(true);
+		btnRefresh.setEnabled(true);
+		
+		System.out.println(local.toString());
+	
+		try {
+		panel_local_values(local);
+		panel_short_values(shortTerm);
+		panel_long_values(longTerm);
+		} catch (JSONException e) {
+			throw new JSONException("Error with JSONObject formatting.");
+		}
+	
 	}
 	
 	private void refresh(int locationID) {
 				
 			try {
 				getJSON(locationID);
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, e.toString(), "Error", JOptionPane.ERROR_MESSAGE);
+			} catch (IOException | JSONException e) {
+				JOptionPane.showMessageDialog(null, "Refresh Failed... Try again.", "ERROR", JOptionPane.ERROR_MESSAGE);
 			}		
 	}
 	
@@ -939,11 +977,13 @@ public class AppWindow {
 		tabbedPane.addTab("LongTerm", null, panel_long, null);
 
 		if (currentLocation == null) {
-			System.out.println("Current location is NULL");
 			panel_blank();
 		} else {
-			System.out.println(currentLocation.getCityID());
+			try {
 				getJSON(currentLocation.getCityID());
+			} catch (JSONException | IOException e) {
+				JOptionPane.showMessageDialog(null, "Initializing city list failed.. Please refresh.", "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		
 		return tabbedPane;
