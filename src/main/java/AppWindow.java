@@ -27,7 +27,6 @@ import java.awt.RenderingHints;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 
-import javax.swing.JProgressBar;
 import javax.swing.JLabel;
 
 import java.awt.Font;
@@ -37,6 +36,7 @@ import javax.swing.ImageIcon;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
@@ -505,14 +505,13 @@ public class AppWindow {
 						}
 					}
 					
-		
 					currentLocation = settings.getCity();
 					locationModel.setSelectedItem(currentLocation);
 					
 					System.out.println(currentLocation);
 					
 				}catch (FileNotFoundException e){
-					e.printStackTrace();
+					System.out.println("No previous settings found, using default values");
 					settings = new Settings(true, true, true, true, true, true, true, null);
 					locationModel.addElement(new City(0, "", "Add Location")); 
 				}catch (IOException e){
@@ -520,9 +519,7 @@ public class AppWindow {
 				}catch (ClassNotFoundException e){
 					e.printStackTrace();
 				}
-		////////////////////////////
-
-				
+		////////////////////////////	
 	}
 	
 	
@@ -550,6 +547,31 @@ public class AppWindow {
 		frmOpenweatherapp.setResizable(false);
 		frmOpenweatherapp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		frmOpenweatherapp.addWindowListener(new WindowAdapter() {
+			  public void windowClosing(WindowEvent e) {
+				    int confirmed = JOptionPane.showConfirmDialog(null, 
+				        "Would you like to save current settings?", "Save Current Settings?",
+				        JOptionPane.YES_NO_OPTION);
+
+				    if (confirmed == JOptionPane.YES_OPTION) {
+				    	//Object Serialization Save data//
+						try {
+							settings.changeCurrentCity(currentLocation);
+							
+							 ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("settings.dat"));
+							 out.writeObject(settings);
+							 out.close();
+						}catch (FileNotFoundException e1){
+							e1.printStackTrace();
+						}catch (IOException e1){
+							e1.printStackTrace();
+						}
+						//////////////////////////////////
+				      
+				    }
+				  }
+				});
+		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Point middle = new Point(screenSize.width / 2, screenSize.height / 2);
 		Point newLocation = new Point(middle.x - (frmOpenweatherapp.getWidth() / 2), middle.y - (frmOpenweatherapp.getHeight() / 2));
@@ -557,24 +579,14 @@ public class AppWindow {
 		
 		frmOpenweatherapp.setJMenuBar(menubar());
 
-		
-		
 		comboBox_location = new JComboBox<City>(locationModel);
 		
-		
-		
-		
-
 		frmOpenweatherapp.getContentPane().add(locationPanel());
 		try {
 			frmOpenweatherapp.getContentPane().add(tabbedPane());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		JProgressBar progressBar = new JProgressBar();
-		progressBar.setBounds(631, 457, 146, 14);
-		frmOpenweatherapp.getContentPane().add(progressBar);
 		
 		programStatus = new JLabel();
 		programStatus.setBounds(12, 454, 400, 14);
@@ -619,9 +631,6 @@ public class AppWindow {
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
-			
 				//Object Serialization Save data//
 				try {
 					settings.changeCurrentCity(currentLocation);
