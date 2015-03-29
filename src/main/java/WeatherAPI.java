@@ -303,17 +303,16 @@ public class WeatherAPI {
             	
             	throw new IOException("Error connecting to OpenWeatherMap");
             }
-      
         } catch (IOException ioEx) {
-        	if (urlStream != null) {
-        	 	urlStream.close();
-        	}
-        	if (connection != null) {
-        		connection.disconnect();
-        	}
-  
- 		   	throw new IOException("IOException while opening connection");
-        } 
+ 		   	throw new IOException("500 error"); // 500 error or failure reaching server
+        } finally {
+	     	if (urlStream != null) {
+	    	 	urlStream.close();
+	    	}
+	    	if (connection != null) {
+	    		connection.disconnect();
+	    	}
+        }
     
         
 
