@@ -812,6 +812,7 @@ public class AppWindow {
 		        switch (s) {
 		            case "Add Location":
 						newLocation();
+						btnRefresh.setEnabled(false); // disable refresh while adding location
 		                break;
 		            default: 
 		            	System.out.println("Selected City: " + locationModel.getSelectedItem().toString());
@@ -856,8 +857,9 @@ public class AppWindow {
 				if (event != null) {
 					try {
 						
-						City[] cityList = settings.getCityList();
+						City newCity = event.getCityObj();
 						
+						City[] cityList = settings.getCityList();
 						boolean containsCity = false;
 						for (int i = 0; i < cityList.length; i++) {
 							
@@ -870,18 +872,28 @@ public class AppWindow {
 						}
 						
 						if (!containsCity) {
-							getJSON(event.getCityID());
-							currentLocation = event.getCityObj();
-
-							locationModel.addElement(event.getCityObj());
-							locationModel.setSelectedItem(event.getCityObj());
-							settings.addLocation(event.getCityObj());
+							getJSON(newCity.getCityID());
+							
+							currentLocation = newCity;
+							locationModel.addElement(newCity);
+							locationModel.setSelectedItem(newCity);
+							settings.addLocation(newCity);
+							
 							programStatus.setText("Loaded Location: " + currentLocation.getCityName() + "  (ID:" + currentLocation.getCityID() + ")" );
 							
 							
 						} else {
-							locationModel.setSelectedItem(settings.getCity());
-							JOptionPane.showMessageDialog(null, "Already added " + event.getCityName() + ".", "ERROR", JOptionPane.ERROR_MESSAGE);
+							// if already added city, change to it
+							if (newCity.getCityID() != currentLocation.getCityID()) {
+								locationModel.setSelectedItem(newCity);
+								currentLocation = newCity;
+								settings.changeCurrentCity(newCity);
+							} else {
+								locationModel.setSelectedItem(newCity);
+							}
+							
+							// one less popup?
+							// JOptionPane.showMessageDialog(null, "Already added " + event.getCityName() + ".", "ERROR", JOptionPane.ERROR_MESSAGE);
 							
 						}
 						
