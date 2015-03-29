@@ -60,7 +60,6 @@ import javax.swing.border.EtchedBorder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 public class AppWindow {
 
 	JFrame frmOpenweatherapp;
@@ -737,7 +736,7 @@ public class AppWindow {
 		chckbxmntmPrecipitation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				settings.setViewPrecipitation(!settings.viewPrecipitation());
-				dailyPrecipLabel.setVisible(settings.viewPrecipitation());
+				dailyPrecipLabel.setEnabled(settings.viewPrecipitation());
 				dailyPrecipValue.setVisible(settings.viewPrecipitation());
 			}
 			});
@@ -792,7 +791,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/main/resources/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -1340,7 +1339,7 @@ public class AppWindow {
 		panel_local.add(lblHumidity);
 		
 		
-		dailyPrecipLabel = new JLabel("24Hr Precip");
+		dailyPrecipLabel = new JLabel("24 Hour Precip");
 		dailyPrecipLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		dailyPrecipLabel.setBounds(40, 285, 122, 25);
 		dailyPrecipLabel.setEnabled(settings.viewPrecipitation());
