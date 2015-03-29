@@ -601,8 +601,6 @@ public class AppWindow {
 			
 		frmOpenweatherapp.getContentPane().add(programStatus);
 		
-		frmOpenweatherapp.setVisible(true);
-		
 	}
 	
 	private JMenuBar menubar() {
