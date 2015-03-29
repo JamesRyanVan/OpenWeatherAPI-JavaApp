@@ -45,6 +45,45 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 </resources>
 
 <plugins>
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-install-plugin</artifactId>
+  <version>2.3.1</version>
+    <executions>
+    <execution>
+       <id>install-main</id>
+       <phase>validate</phase>
+       <goals>
+           <goal>install-file</goal>
+       </goals>
+       <configuration>
+           <file>${project.basedir}/lib/synthetica-2.19.1.jar</file>
+           <groupId>synthetica</groupId>
+           <artifactId>synthetica-main</artifactId>
+           <version>2.19.1</version>
+           <packaging>jar</packaging>
+           <generatePom>true</generatePom>
+        </configuration>
+     </execution>
+     <execution>
+       <id>install-AluOxide</id>
+       <phase>validate</phase>
+       <goals>
+           <goal>install-file</goal>
+       </goals>
+       <configuration>
+           <file>${project.basedir}/lib/syntheticaAluOxide-2.9.7.jar</file>
+           <groupId>synthetica</groupId>
+           <artifactId>synthetica-AluOxide</artifactId>
+           <version>2.9.7</version>
+           <packaging>jar</packaging>
+           <generatePom>true</generatePom>
+        </configuration>
+      </execution>
+   </executions>
+</plugin>
+
+
  <plugin>
  <groupId>org.apache.maven.plugins</groupId>
  <artifactId> maven-jar-plugin </artifactId>

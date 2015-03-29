@@ -957,8 +957,8 @@ public class AppWindow {
 		// Get local, short-term and long-term
 		JSONObject local, shortTerm, longTerm;
 		try {
-			local = weather.getLocal();
 			shortTerm = weather.getShortTerm();
+			local = weather.getLocal();
 			longTerm = weather.getLongTerm();
 		} catch (JSONException jsonEx) {
 			throw new JSONException("Error occurred while retrieving weather information.");
@@ -1086,8 +1086,10 @@ public class AppWindow {
 		temperature.setText(String.valueOf(df.format(localWeather.getTemp()) + getTempUnits()));
 		temp_max.setText(String.valueOf(df.format(localWeather.getTempMax()) + getTempUnits()));	
 		temp_min.setText(String.valueOf(df.format(localWeather.getTempMin()) + getTempUnits()));
-//		locationName.setText(locationModel.getSelectedItem().toString());
-		locationName.setText(currentLocation.toString());
+		//Here3
+		locationName.setText(locationModel.getSelectedItem().toString());
+		//locationName.setText(currentLocation.toString());
+		
 		skycondvalue.setText(localWeather.getSkyCondition());
 		windspeedvalue.setText(String.valueOf(localWeather.getWindSpeed()) + getWindUnits());
 		windDirvalue.setText(String.valueOf(localWeather.getWindDir()));
@@ -1132,9 +1134,9 @@ public class AppWindow {
 		String[] icons = shortTermWeather.getIcons();
 		dailyPrecip = shortTermWeather.getDailyPrecip();
 		
-		
-//		locationName1.setText(locationModel.getSelectedItem().toString());
-		locationName1.setText(currentLocation.toString());
+		//Here1
+        locationName1.setText(locationModel.getSelectedItem().toString());
+		//locationName1.setText(currentLocation.toString());
 		
 		time1.setText(times[0].unixToTime());
 		temp1.setText("Temp: " + String.valueOf(temps[0]) + getTempUnits());				
@@ -1230,8 +1232,9 @@ public class AppWindow {
 		String[] sky = longTermWeather.getSkyConditions();
 		String[] icons = longTermWeather.getIcons();
 		
-//		locationName2.setText(locationModel.getSelectedItem().toString());
-		locationName2.setText(currentLocation.toString());
+		//Here2
+		locationName2.setText(locationModel.getSelectedItem().toString());
+		//locationName2.setText(currentLocation.toString());
 
 		
 		long_date.setText(dates[0].unixToDate());
