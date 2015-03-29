@@ -48,5 +48,6 @@ public class DialogEvent {
 	public String getCountryName() {
 		return cityObj.getCountryName();
 	}
+
 	
 }

@@ -8,8 +8,13 @@ package main.java;
  */
 public class WindDirection {
 	
+	/* The wind direction */
 	private String direction;
 	
+	/**
+	 * 
+	 * @param degrees double the number of degrees to convert
+	 */
 	public WindDirection(double degrees){
 		if ( (348.75 < degrees && degrees <= 360.0) || (0 <= degrees && degrees <= 11.25) ){
 			direction = "N";

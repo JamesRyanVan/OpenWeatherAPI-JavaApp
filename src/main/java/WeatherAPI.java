@@ -37,12 +37,11 @@ public class WeatherAPI {
     /* Imperial units parameter for url string */
     private final static String IMPERIAL = "&units=imperial";
 
-    /* API key parameter for url string */
+    /* API keys for url string */
     private final static String[] APIKEY_LIST = {"&APPID=bb4d737a642c4e98afff6652ea5e0d17", 
     	"&APPID=908c95bd812f38ba32bea1ca5d314d4a", "&APPID=cbc953a49ef614915e55f21d9adb292b", 
     	"&APPID=a580c44950b8e76dfc649da83054c464"};
-    
-//    private final static String[] APIKEY_LIST = {"&APPID=bb4d737a642c4e98afff6652ea5e0d17"};
+
 
     /* JSON parameter for url string */
     private final static String JSON = "&mode=json";
@@ -61,29 +60,31 @@ public class WeatherAPI {
     /**
      * Returns a JSONObject from an API call for the short-term forecast of a provided city.
      * Returns null if invalid call made.
-     * The JSONObject contains weather data in 3 hour increments for 5 days.
+     * The JSONObject contains weather data in 3 hour increments for the next 24 hours.
      *
-     * @return if valid call, the JSONObject for short-term forecast, null otherwise
+     * @throws JSONException if an error occurred with the fetched JSONObject
+     * @throws IOException if an input or output exception occurred (i.e. could not reach
+     * 					   server)
+     * @return the JSONObject for short-term forecast of a provided city
      */
     public JSONObject getShortTerm() throws JSONException, IOException {
     		
+    	/* Picks an API key at random */ 
 		Random rng = new Random();
 		String apiKey = APIKEY_LIST[rng.nextInt(APIKEY_LIST.length)];
-    	String address = BASE + "forecast?id=" + cityID + apiKey + JSON;
     	
-    	/* Adds the units parameter to the url address */
-        if (viewMetric) {
+    	
+    	/* Creates and adds the units parameter to the url address */
+		String address = BASE + "forecast?id=" + cityID + apiKey + JSON;
+		if (viewMetric) {
             address = address + METRIC;
         } else {
             address = address + IMPERIAL;
         }
         
-        JSONObject jsonObj = null;
-	   
-	    jsonObj  = getJSON(address);
-    	
-        
         /* Performs an API call and fetches JSONObject */
+        JSONObject jsonObj = null;
+	    jsonObj  = getJSON(address);
         return jsonObj;
 }
     
@@ -92,37 +93,44 @@ public class WeatherAPI {
      * Returns a JSONObject from a API call for the long-term forecast of a provided city.
      * The JSONObject contains daily weather data for the following 5 days.
      *
-     * @return if valid call, the JSONObject for long-term forecast, null otherwise
+     * @throws JSONException if an error occurred with the fetched JSONObject
+     * @throws IOException if an input or output exception occurred (i.e. could not reach
+     * 					   server)
+     * @return the JSONObject for long-term forecast of a provided city
      */
     public JSONObject getLongTerm() throws IOException, JSONException {
     	
+    	/* Picks an API key at random */ 
     	Random rng = new Random();
 		String apiKey = APIKEY_LIST[rng.nextInt(APIKEY_LIST.length)];
 		
+		
+		/* Creates and adds the units parameter to the url address */
 		String address = BASE + "forecast/daily?id=" + cityID + apiKey + JSON + "&cnt=7";
-		/* Adds the units parameter to the url address */
         if (viewMetric) {
             address = address + METRIC;
         } else {
             address = address + IMPERIAL;
         }
         
-        JSONObject jsonObj = null;
-		
-    	jsonObj = getJSON(address);
-    	
         /* Perform API call and fetches JSONObject */
+        JSONObject jsonObj = null;
+    	jsonObj = getJSON(address);
         return jsonObj;
     }
 
     /**
      * Returns a JSONObject from a API call for current weather of a provided city.
      * The JSONObject contains current weather data.
-     *
-     * @return if valid call, the JSONObject for current weather, null otherwise
+     * 
+     * @throws JSONException if an error occurred with the fetched JSONObject
+     * @throws IOException if an input or output exception occurred (i.e. could not reach
+     *					   server)
+     * @return the JSONObject for current weather of a provided city
      */
     public JSONObject getLocal() throws IOException, JSONException {
     	
+    	/* Picks an API key at random */ 
     	Random rng = new Random();
 		String apiKey = APIKEY_LIST[rng.nextInt(APIKEY_LIST.length)];
 		
@@ -144,28 +152,41 @@ public class WeatherAPI {
     
     }
     
-    public static JSONObject getLikeCities(String cityName) throws IOException, LocationNotFoundException,
-    JSONException {
-    
-    	Random rng = new Random();
-		String apiKey = APIKEY_LIST[rng.nextInt(APIKEY_LIST.length)];
-		
-    	JSONObject jsonObj = getJSON(BASE + "find?q=" + cityName + "&type=like" + apiKey + JSON);
-    	
-
-    	/* Location not found and JSONObj has the message "like" */
-    	if (jsonObj.get("message").equals("like")) {
-        	if (jsonObj.get("count").equals(0)) {
-        		throw new LocationNotFoundException("No location found.");
-        	}
-        /* Location not found and JSONObj has the message "" */
-    	} else if (jsonObj.get("message").equals("")) {
-    		throw new LocationNotFoundException("No location found.");
-    	}
-    	
-    	return jsonObj;
-    }
-
+	/**
+	 *  Returns a JSONObject from a API call using a "like" search in OpenWeatherMap of a provided city.
+	 * The JSONObject contains the like search data.
+	 *
+	 * @param String desired city name to search
+	 * @throws JSONException if an error occurred with the fetched JSONObject
+	 * @throws IOException if an input or output exception occurred (i.e. could not reach
+	 *					  server)
+	 * @throws LocationNotFoundException if there are no matches for the like search
+	 * 
+	 * @return the JSONObject for current weather of a provided city
+	 */
+	    public static JSONObject getLikeCities(String cityName) throws IOException, LocationNotFoundException,
+	    JSONException {
+	    
+	    	/* Picks an API key at random */ 
+	    	Random rng = new Random();
+			String apiKey = APIKEY_LIST[rng.nextInt(APIKEY_LIST.length)];
+			
+			/* Get JSON object from a "like" search */
+	    	JSONObject jsonObj = getJSON(BASE + "find?q=" + cityName + "&type=like" + apiKey + JSON);
+	    	
+	
+	    	/* Cases where location was not found: throw an LocationNotFound exception */
+	    	if (jsonObj.get("message").equals("like")) {
+	        	if (jsonObj.get("count").equals(0)) {
+	        		throw new LocationNotFoundException("No location found.");
+	        	}
+	    	} else if (jsonObj.get("message").equals("")) {
+	    		throw new LocationNotFoundException("No location found.");
+	    	}
+	    	
+	    	return jsonObj;
+	    }
+	
 
 
     /**
@@ -173,139 +194,90 @@ public class WeatherAPI {
      *
      * @param address the base url address for the API call (NOT including parameter for units)
      * @param requestType 0 for long-term, short-term and current weather requests, 1 for like request
-     * @return if valid call, the JSONObject for current weather, null otherwise
+     * 
+     * @throws JSONException if an error occurred with the fetched JSONObject
+	 * @throws IOException if an input or output exception occurred (i.e. could not reach
+	 *					  server)
+     * 
+     * @return the JSONObject from the API call
      */
-//    private static JSONObject getJSON(String address, int requestType) {
-//    	
-// 
-//        JSONObject jsonObj = new JSONObject();
-//        
-//        Scanner urlReader = null;
-//        InputStream urlStream = null; 
-//        String queryResult = "";
-//        
-//        try {
-//             /* Does a query and saves query result as a string */
-//            urlStream = new URL(address).openStream();
-//            urlReader = new Scanner(urlStream);
-//            while (urlReader.hasNext()) {
-//                queryResult += urlReader.nextLine();
-//            }
-//            
-//        } catch (IOException ioEx) {
-//            ioEx.printStackTrace();	
-//            return null;
-//        } finally {
-//        	if (urlReader != null) {
-//        		urlReader.close();
-//        	}
-//        }
-//        
-//       try {
-//	        /* Builds the JSON Object from query result */
-//	        jsonObj = new JSONObject(queryResult);
-//	        
-//	        if (requestType == 0) {
-//	            /* Checks if API call was valid */
-//	            if (jsonObj.get("cod").equals("404")) {
-//	                return null;
-//	            }
-//	        } else if (requestType == 1) {
-//	        	/* Location not found and JSONObj has the message "like" */
-//	        	if (jsonObj.get("message").equals("like")) {
-//	            	if (jsonObj.get("count").equals(0)) {
-//	            		return null;
-//	            	}
-//	            /* Location not found and JSONObj has the message "" */
-//	        	} else if (jsonObj.get("message").equals("")) {
-//	        		return null;
-//	        	}
-//	        }
-//       } catch (JSONException jsonEx) {
-//    	   jsonEx.printStackTrace();
-//       }
-//       
-//
-//        /* Return the JSON object */
-//        return jsonObj;
-//    }
     
     private static JSONObject getJSON(String address) throws JSONException,
     IOException {
+  
+        //* Initialize objects needed for establishing connection/creating stream *//
+    	JSONObject jsonObj = new JSONObject();
     	 
-        JSONObject jsonObj = new JSONObject();
-        
-        // Set up
         BufferedReader urlReader = null;
         HttpURLConnection connection = null;
-        
         InputStream urlStream = null; 
         int http_status;
+      
         StringBuilder queryResult = new StringBuilder();
         
         try {
-        	// Open a connection and get the input stream
-            connection = (HttpURLConnection) new URL(address).openConnection();
-            connection.setReadTimeout(5000); // 5 secs to start reading data or timeout
-            connection.setConnectTimeout(7000); // 7 secs to connect to server or timeout
-          
+        	///* Opens connection and get the input stream *////
+            
+        	connection = (HttpURLConnection) new URL(address).openConnection();
+            /* Set read/connect timeout limits */
+            connection.setReadTimeout(5000); /* 5 secs to start reading data */
+            connection.setConnectTimeout(7000); /* 7 secs to connect to server */
+
             urlStream = connection.getInputStream();
             
-            // Check response code, if not successful (code 200)
+            /* Gets http status code for connection */
             http_status = connection.getResponseCode();
     
-            System.out.println(http_status);
-            
-            if (http_status == HttpURLConnection.HTTP_OK) { // success = 200
+        
+            /* Connection was successful (status was 200) */
+            if (http_status == HttpURLConnection.HTTP_OK) { 
             	try {
-             	   urlReader = new BufferedReader(new InputStreamReader(urlStream));
-            	   String line = urlReader.readLine();
-             	   
-                   while (line != null) {
-                     queryResult.append(line);
-                      line = urlReader.readLine();
-                    }
-             	   
-             	
-         	        /* Builds the JSON Object from query result */
-         	        jsonObj = new JSONObject(queryResult.toString());
-         	        
-//         	       if (requestType == 0) {
-//         	            /* Checks if API call was valid */
-//         	            if (jsonObj.get("cod").equals("404")) {
-//         	                throw new LocationNotFoundException("No location found.");
-//         	            }
-//         	       } 
+            		
+            		/* Read the input stream and build the query result as a string */
+            		urlReader = new BufferedReader(new InputStreamReader(urlStream));
+	            	String line = urlReader.readLine();
+	            	while (line != null) {
+	            		queryResult.append(line);
+	            		line = urlReader.readLine();
+            		}
+	             	
+	         	    /* Builds the JSON Object from query result */
+	         	    jsonObj = new JSONObject(queryResult.toString());
          	       
+         	    /* Catch and rethrow exceptions while reading stream / building string */
                 } catch (JSONException jsonEx) {
-             	   throw new JSONException("JSONException in WeatherAPI");
+             	   throw new JSONException("JSONException while reading stream");
                 } catch (IOException ioEx) {
-         		   System.out.println("IOException while building string");
-         		   ioEx.printStackTrace();
-             	   throw new IOException(); 
+             	   throw new IOException("IOException while reading stream"); 
                 } finally {
-             	   try {
-             		   urlReader.close();
+             	
+             		   /* Close stream, connection and readers */
+             		   if (urlReader != null) {
+             			   urlReader.close();
+             		   }
+   
              		   urlStream.close();
-             	   } catch (IOException e) {
-             		   System.out.println("IOException in finally");
-             		   e.printStackTrace();
-             		   throw new IOException();
-             	   }
-             	 
-             	   connection.disconnect();
+             	
+             		   connection.disconnect();
                 }
-                
-            } else { // connection not successful (not 200)
+            
+            /* Connection was not successful (status was not 200) */
+            } else { 
            	
+            	/* Close the stream and connection */
             	urlStream.close();
             	connection.disconnect();
-            	
+            
+            	/* Throw an IOException */
             	throw new IOException("Error connecting to OpenWeatherMap");
             }
+        
+        /* Catch exceptions while opening connection/getting input stream */
         } catch (IOException ioEx) {
- 		   	throw new IOException("500 error"); // 500 error or failure reaching server
+ 		   	throw new IOException("Error occurred reaching the server"); 
         } finally {
+        	
+        	/* Close the stream and connection */
 	     	if (urlStream != null) {
 	    	 	urlStream.close();
 	    	}
@@ -314,8 +286,6 @@ public class WeatherAPI {
 	    	}
         }
     
-        
-
         /* Return the JSON object */
         return jsonObj;
     }

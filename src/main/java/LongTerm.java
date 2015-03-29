@@ -31,6 +31,7 @@ public class LongTerm {
 	 */
 	public LongTerm(JSONObject apiObjJson) throws JSONException {
 		try {
+			/* Get the system data from JSON object */
 			this.list = apiObjJson.getJSONArray("list");
 			for (int i = 1; i < 6; i++) {
 				JSONObject increment = list.getJSONObject(i-1);
@@ -150,7 +151,14 @@ public class LongTerm {
 		return days;
 	}
 	
-	double roundTwoDecimals(double d) {
+	/**
+	 * Helper method to double values to two decimal places 
+	 *
+	 * @param d double the double to round
+	 * 
+	 * @return a double rounded to two decimal places
+	 */
+	private double roundTwoDecimals(double d) {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
     return Double.valueOf(twoDForm.format(d));
 	}

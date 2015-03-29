@@ -9,8 +9,10 @@ package main.java;
 public interface DialogListener {
 	
 	/**
+	 * To be implemented method for when an event in the AddLocatinoDIalog class occurs.
 	 * @param event the DialogEvent from AddLocationDialog
 	 */
 	public void dialogEventOccurred(DialogEvent event);
+	
 	
 }

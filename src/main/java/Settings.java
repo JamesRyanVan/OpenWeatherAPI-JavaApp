@@ -1,12 +1,9 @@
 package main.java;
 
-import java.io.IOException;
 import java.io.Serializable;
 
-import javax.swing.JComboBox;
-
 /**
- * Class that stores user settings/preferences
+ * Class that stores user settings/preferences.
  * 
  * 
  * @author Alec White
@@ -22,19 +19,19 @@ public class Settings implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	/* Boolean values to determine whether or not user wishes to view corresponding data */
-	boolean Temp, WindSpeedAndDir, SkyCondition, AirPressure, Humidity,
+	private boolean Temp, WindSpeedAndDir, SkyCondition, AirPressure, Humidity,
 	SunsetAndRise, MetricUnits, precipitation;
 	
 	/* Array storing city's */
 	private City[] cityList;
 	
 	/* Int value representing how many cities user has stored */
-	int listSize = 1;
+	private int listSize = 0;
 	
 	/* Int value pointing to cell in cityIDList array which corresponds to current city */
 	private City currentCity;
 	
-	/*
+	/**
 	 * Creates a settings object. Initialized upon users first use setting boolean values to true
 	 * if user wishes to view corresponding data.
 	 * 
@@ -64,7 +61,7 @@ public class Settings implements Serializable{
 		precipitation = precip;
 	}
 	
-	/*
+	/**
 	 * @return true if user wishes to view temperature
 	 */
 	public boolean viewTemp()
@@ -72,7 +69,7 @@ public class Settings implements Serializable{
 		return Temp;
 	}
 	
-	/*
+	/**
 	 * @return true is user wishes to view wind speed and direction
 	 */
 	public boolean viewWindSpeedAndDir()
@@ -80,7 +77,7 @@ public class Settings implements Serializable{
 		return WindSpeedAndDir;
 	}
 	
-	/*
+	/**
 	 * @return true if user wishes to view sky condition
 	 */
 	public boolean viewSkyCondition()
@@ -88,7 +85,7 @@ public class Settings implements Serializable{
 		return SkyCondition;
 	}
 	
-	/*
+	/**
 	 * @return true if user wishes to view air pressure
 	 */
 	public boolean viewAirPressure()
@@ -96,7 +93,7 @@ public class Settings implements Serializable{
 		return AirPressure;
 	}
 	
-	/*
+	/**
 	 * @return true if user wishes to view humidity
 	 */
 	public boolean viewHumidity()
@@ -104,7 +101,7 @@ public class Settings implements Serializable{
 		return Humidity;
 	}
 	
-	/*
+	/**
 	 * @return true if user wishes to view sunset and sunrise times
 	 */
 	public boolean viewSunsetAndRise()
@@ -112,7 +109,7 @@ public class Settings implements Serializable{
 		return SunsetAndRise;
 	}
 	
-	/*
+	/**
 	 * @return true if user wishes to view measurements in metric, false if imperial
 	 */
 	public boolean viewMetricUnits()
@@ -120,11 +117,14 @@ public class Settings implements Serializable{
 		return MetricUnits;
 	}
 	
+	/**
+	 * @return true if user wishes to view 24 hour precipitation levels
+	 */
 	public boolean viewPrecipitation(){
 		return precipitation;
 	}
 	
-	/*
+	/**
 	 * @param temp true if user wishes to view temperature
 	 */
 	public void setViewTemp(boolean temp)
@@ -133,7 +133,7 @@ public class Settings implements Serializable{
 	}
 	
 	
-	/*
+	/**
 	 * @param windSpeed true if user wishes to view wind speed and direction
 	 */
 	public void setViewWindSpeedAndDir(boolean windSpeed)
@@ -141,7 +141,7 @@ public class Settings implements Serializable{
 		WindSpeedAndDir = windSpeed;
 	}
 	
-	/*
+	/**
 	 * @param sky true if user wishes to view sky condition
 	 */
 	public void setSkyCondition(boolean sky)
@@ -149,7 +149,7 @@ public class Settings implements Serializable{
 		SkyCondition = sky;
 	}
 	
-	/*
+	/**
 	 * @param airPressure true if user wishes to view air pressure
 	 */
 	public void setViewAirPressure(boolean airPressure)
@@ -157,7 +157,7 @@ public class Settings implements Serializable{
 		AirPressure = airPressure;
 	}
 	
-	/*
+	/**
 	 * @param humidity true if user wishes to view humidity
 	 */
 	public void setViewHumidity(boolean humidity)
@@ -165,7 +165,7 @@ public class Settings implements Serializable{
 		Humidity = humidity;
 	}
 	
-	/*
+	/**
 	 * @param sunset true if user wishes to view sunset and sunrise times
 	 */
 	public void setViewSunsetAndRise(boolean sunset)
@@ -173,7 +173,7 @@ public class Settings implements Serializable{
 		SunsetAndRise = sunset;
 	}
 	
-	/*
+	/**
 	 * @param metric true if user wishes to view measurements in metric, false if imperial
 	 */
 	public void setViewMetricUnits(boolean metric)
@@ -181,6 +181,9 @@ public class Settings implements Serializable{
 		MetricUnits = metric;
 	}
 	
+	/**
+	 * @param precip true if user wishes to view 24 hour precipitation levels
+	 */
 	public void setViewPrecipitation(boolean precip){
 		precipitation = precip;
 	}
@@ -194,24 +197,38 @@ public class Settings implements Serializable{
 		listSize++;
 	}
 	
-	/*
-	 * Linear searches cityIDList for matching city ID and sets currentCityID to point
-	 * to corresponding cell.
-	 * Throws exception otherwise.
+	/**
+	 * Updates to the current city ID.
 	 * 
 	 * @param newCurrent int value of city ID to be changed to current city
-	 * @exception IOException if city ID not found in cityIDList
+	 * 
 	 */
-	public void changeCurrentCity(City newCurrent) throws IOException
+	public void changeCurrentCity(City newCurrent)
 	{
 		currentCity = newCurrent;
 	}
 	
+	
+	/**
+	 * Gets the City object for the current city ID.
+	 * 
+	 * @return the City object for the current city ID
+	 * 
+	 */
 	public City getCity(){
 		return this.currentCity;
 	}
 	
+	
+	/**
+	 * Gets the list of City objects that have been stored.
+	 * 
+	 * @return cityList the list of City objects that have been stored
+	 * 
+	 */
 	public City[] getCityList() {
 		return cityList;
 	}
+	
+	
 }

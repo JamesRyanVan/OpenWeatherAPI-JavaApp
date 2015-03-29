@@ -29,7 +29,7 @@ public class ShortTerm {
 	 * @param apiObjJson A JSONObject of the short term weather from open weather map
 	 * @throws JSONException
 	 */
-	public ShortTerm(JSONObject apiObjJson) throws JSONException{
+	public ShortTerm(JSONObject apiObjJson) throws JSONException {
 		try{
 			this.list = apiObjJson.getJSONArray("list");
 			for (int i=1 ; i<9 ; i++){
@@ -129,16 +129,34 @@ public class ShortTerm {
 	public double[] getTemps(){
 		return temps;
 	}
-	double roundTwoDecimals(double d) {
-        DecimalFormat twoDForm = new DecimalFormat("#.##");
-    return Double.valueOf(twoDForm.format(d));
+	
+	/**
+	 * Helper method to double values to two decimal places 
+	 *
+	 * @param d double the double to round
+	 * 
+	 * @return a double rounded to two decimal places
+	 */
+	private double roundTwoDecimals(double d) {
+	    DecimalFormat twoDForm = new DecimalFormat("#.##");
+	    return Double.valueOf(twoDForm.format(d));
 	}
 	
+	/**
+	 * Method that returns the precipitation over the next 24 hours.
+	 * 
+	 * @return dailyPrecip double with 24 hour precipitation levels
+	 */
 	public double getDailyPrecip(){
+		
+		/* Get the snow and rain values (per 3 hr increment)
+		 *  over next 24 hours and store in array */
 		double[] precips = new double[8];
 		for (int x=0; x<8;x++){
 			precips[x] = roundTwoDecimals(snow[x] + rain [x]);
 		}
+		
+		/* Add the precip level values in the array */
 		double dailyPrecip = 0;
 		for (int x=0; x<8;x++){
 			dailyPrecip = precips[x]  + dailyPrecip;
