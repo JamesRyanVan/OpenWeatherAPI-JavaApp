@@ -43,6 +43,7 @@ public class Settings implements Serializable{
 	 * @param sunset true if user wishes to view sunset and sunrise times
 	 * @param metric true if user wishes to view measurements in metric, false if imperial
 	 * @param city int value of city ID for current city. Initially chosen upon startup
+	 * @param precip true if user wishes to view precipitation for next 24 hours
 	 */
 	public Settings(boolean temp, boolean windSpeed, boolean sky, boolean airPressure, boolean humidity,
 			boolean sunset, boolean metric, City city,boolean precip)

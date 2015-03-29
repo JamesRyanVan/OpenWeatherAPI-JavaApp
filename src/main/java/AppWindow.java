@@ -819,7 +819,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/main/resources/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -1082,7 +1082,7 @@ public class AppWindow {
 		double pressureConvert = localWeather.getAirPressure();
 		airpressurevalue.setText(getPressure(pressureConvert));
 		humidityvalue.setText(String.valueOf(localWeather.getHumidity())+" %");
-		dailyPrecipValue.setText(String.valueOf(dailyPrecip)+" mm");
+		dailyPrecipValue.setText(String.valueOf(df.format(dailyPrecip))+" mm");
 		
 		time = localWeather.getSunriseTime();
 		sunriseValue.setText(String.valueOf(time.unixToTime()));

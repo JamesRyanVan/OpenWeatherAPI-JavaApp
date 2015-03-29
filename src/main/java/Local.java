@@ -172,19 +172,33 @@ public class Local {
 		return tempMin;
 	}
 	
+	/**
+	 * @return the value of the Longitude of the Location
+	 */
 	public String getLongitude(){
 		return String.valueOf(lon);
 	}
 	
+	/** 
+	 * @return the value of the Latitude of the location
+	 */
 	public String getLatitude(){
 		return String.valueOf(lat);
 	}
 	
+	/**
+	 * 
+	 * @param a double to be rounded
+	 * @return the parameter double to two decimal places.
+	 */
 	double roundTwoDecimals(double d) {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
     return Double.valueOf(twoDForm.format(d));
 	}
 	
+	/**
+	 * @return the 3h precipitation value
+	 */
 	public double getPrecipitation(){
 		return roundTwoDecimals(rain+snow);
 	}
