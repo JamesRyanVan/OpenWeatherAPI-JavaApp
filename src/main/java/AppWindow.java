@@ -504,7 +504,7 @@ public class AppWindow {
 					
 					for (int i = 0; i < cityList.length; i++ ) {
 						if (cityList[i] != null) {
-							System.out.println(cityList[i].getCityName());
+							
 							locationModel.addElement(cityList[i]);	
 						}
 					}
@@ -513,7 +513,7 @@ public class AppWindow {
 						locationModel.setSelectedItem(currentLocation);
 					}
 					
-					System.out.println(currentLocation);
+					
 					
 				}catch (FileNotFoundException e){
 					System.out.println("No previous settings found, using default values");
@@ -754,6 +754,7 @@ public class AppWindow {
 				try {
 					settings.setViewMetricUnits(true);
 					if (currentLocation != null) {
+						System.out.println("Getting data from Open Weather Map...");
 						getJSON(currentLocation.getCityID());
 						// case where combobox is at add location and you change units
 						locationModel.setSelectedItem(currentLocation); 
@@ -777,6 +778,7 @@ public class AppWindow {
 				try {
 					settings.setViewMetricUnits(false);
 					if (currentLocation != null) {
+						System.out.println("Getting data from Open Weather Map...");
 						getJSON(currentLocation.getCityID());
 						locationModel.setSelectedItem(currentLocation); 
 					}
@@ -843,11 +845,12 @@ public class AppWindow {
 						btnRefresh.setEnabled(false); // disable refresh while adding location
 		                break;
 		            default: 
-		            	System.out.println("Selected City: " + locationModel.getSelectedItem().toString());
+		            	
 		            	currentLocation = (City) locationModel.getSelectedItem();
 		            	
-		            	System.out.println(currentLocation.getCityName());
+		            	
 					try {
+						System.out.println("Getting data from Open Weather Map...");
 						getJSON(currentLocation.getCityID());
 					} catch (IOException | JSONException e1) {
 						JOptionPane.showMessageDialog(null, "Error retrieving data for " + currentLocation  + ". Try again.", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -900,6 +903,7 @@ public class AppWindow {
 						}
 						
 						if (!containsCity) {
+							System.out.println("Getting data from Open Weather Map...");
 							getJSON(newCity.getCityID()); // try getting json first
 							
 							currentLocation = newCity;
@@ -967,7 +971,7 @@ public class AppWindow {
 		tabbedPane.setEnabled(true);
 		btnRefresh.setEnabled(true);
 		
-		System.out.println(local.toString());
+		
 	
 		try {
 		panel_short_values(shortTerm);	
@@ -982,6 +986,7 @@ public class AppWindow {
 	private void refresh(int locationID) {
 			
 			try {
+				System.out.println("Getting data from Open Weather Map...");
 				getJSON(locationID);
 			} catch (IOException | JSONException e) {
 				JOptionPane.showMessageDialog(null, "Refresh Failed... Try again.", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -1045,6 +1050,7 @@ public class AppWindow {
 			panel_blank();
 		} else {
 			try {
+				System.out.println("Getting data from Open Weather Map...");
 				getJSON(currentLocation.getCityID());
 			} catch (JSONException | IOException e) {
 				JOptionPane.showMessageDialog(null, "Initializing city list failed.. Please refresh.", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -1099,7 +1105,7 @@ public class AppWindow {
 	    String latitude = localWeather.getLatitude();
 		String longitude = localWeather.getLongitude();
 		String icon = localWeather.getIcon();
-		System.out.println(icon);
+		
 		mapIcon = new Map(latitude,longitude,icon).getMap();
 		mapIcon.getImage().flush();
 		map.setIcon(mapIcon);
@@ -1107,7 +1113,6 @@ public class AppWindow {
 		Calendar cal = Calendar.getInstance();
     	cal.getTime();
     	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-    	System.out.println(sdf.format(cal.getTime()));
 		lblUpdatedtime.setText("Updated: " + String.valueOf(sdf.format(cal.getTime())));
 		
 		// 	SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a z");
