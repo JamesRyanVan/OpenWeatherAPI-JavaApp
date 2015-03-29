@@ -601,6 +601,8 @@ public class AppWindow {
 			
 		frmOpenweatherapp.getContentPane().add(programStatus);
 		
+		frmOpenweatherapp.setVisible(true);
+		
 	}
 	
 	private JMenuBar menubar() {
@@ -745,20 +747,48 @@ public class AppWindow {
 		JSeparator separator = new JSeparator();
 		mnView.add(separator);
 		
-		JRadioButtonMenuItem rdbtnmntmMetric = new JRadioButtonMenuItem("Metric");
+		final JRadioButtonMenuItem rdbtnmntmMetric = new JRadioButtonMenuItem("Metric");
+		final JRadioButtonMenuItem rdbtnmntmImperial = new JRadioButtonMenuItem("Imperial");
+		
 		rdbtnmntmMetric.setSelected(settings.viewMetricUnits());
 		rdbtnmntmMetric.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				settings.setViewMetricUnits(true);
+				try {
+					settings.setViewMetricUnits(true);
+					if (currentLocation != null) {
+						getJSON(currentLocation.getCityID());
+						// case where combobox is at add location and you change units
+						locationModel.setSelectedItem(currentLocation); 
+					}
+				} catch (JSONException | IOException ex) {
+					
+					// something messed up, revert back to old settings
+					settings.setViewMetricUnits(false);
+					rdbtnmntmImperial.setSelected(true);
+					rdbtnmntmMetric.setSelected(false);
+					JOptionPane.showMessageDialog(null, "Error retrieving data for " + currentLocation  + ". Try again.", "ERROR", JOptionPane.ERROR_MESSAGE);
+					
+				}
 			}
 			});
 		mnView.add(rdbtnmntmMetric);
 		
-		JRadioButtonMenuItem rdbtnmntmImperial = new JRadioButtonMenuItem("Imperial");
 		rdbtnmntmImperial.setSelected(!settings.viewMetricUnits());
 		rdbtnmntmImperial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				settings.setViewMetricUnits(false);
+				try {
+					settings.setViewMetricUnits(false);
+					if (currentLocation != null) {
+						getJSON(currentLocation.getCityID());
+						locationModel.setSelectedItem(currentLocation); 
+					}
+				} catch (JSONException | IOException ex) {
+					
+					settings.setViewMetricUnits(true);
+					rdbtnmntmImperial.setSelected(false);
+					rdbtnmntmMetric.setSelected(true);
+					JOptionPane.showMessageDialog(null, "Error retrieving data for " + currentLocation  + ". Try again.", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			});
 		mnView.add(rdbtnmntmImperial);
@@ -872,7 +902,7 @@ public class AppWindow {
 						}
 						
 						if (!containsCity) {
-							getJSON(newCity.getCityID());
+							getJSON(newCity.getCityID()); // try getting json first
 							
 							currentLocation = newCity;
 							locationModel.addElement(newCity);
@@ -952,7 +982,7 @@ public class AppWindow {
 	}
 	
 	private void refresh(int locationID) {
-				
+			
 			try {
 				getJSON(locationID);
 			} catch (IOException | JSONException e) {
@@ -1046,7 +1076,8 @@ public class AppWindow {
 		temperature.setText(String.valueOf(df.format(localWeather.getTemp()) + getTempUnits()));
 		temp_max.setText(String.valueOf(df.format(localWeather.getTempMax()) + getTempUnits()));	
 		temp_min.setText(String.valueOf(df.format(localWeather.getTempMin()) + getTempUnits()));
-		locationName.setText(locationModel.getSelectedItem().toString());
+//		locationName.setText(locationModel.getSelectedItem().toString());
+		locationName.setText(currentLocation.toString());
 		skycondvalue.setText(localWeather.getSkyCondition());
 		windspeedvalue.setText(String.valueOf(localWeather.getWindSpeed()) + getWindUnits());
 		windDirvalue.setText(String.valueOf(localWeather.getWindDir()));
@@ -1074,6 +1105,9 @@ public class AppWindow {
     	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
     	System.out.println(sdf.format(cal.getTime()));
 		lblUpdatedtime.setText("Updated: " + String.valueOf(sdf.format(cal.getTime())));
+		
+		// 	SimpleDateFormat formatTime = new SimpleDateFormat("hh:mm a z");
+		lblUpdatedtime.setText("Updated: " + localWeather.getUpdateTime().unixToTime());
 		lblUpdatedtime1.setText("Updated: " + String.valueOf(sdf.format(cal.getTime())));
 		lblUpdatedtime2.setText("Updated: " + String.valueOf(sdf.format(cal.getTime())));
 	}
@@ -1090,7 +1124,8 @@ public class AppWindow {
 		dailyPrecip = shortTermWeather.getDailyPrecip();
 		
 		
-		locationName1.setText(locationModel.getSelectedItem().toString());
+//		locationName1.setText(locationModel.getSelectedItem().toString());
+		locationName1.setText(currentLocation.toString());
 		
 		time1.setText(times[0].unixToTime());
 		temp1.setText("Temp: " + String.valueOf(temps[0]) + getTempUnits());				
@@ -1186,7 +1221,9 @@ public class AppWindow {
 		String[] sky = longTermWeather.getSkyConditions();
 		String[] icons = longTermWeather.getIcons();
 		
-		locationName2.setText(locationModel.getSelectedItem().toString());
+//		locationName2.setText(locationModel.getSelectedItem().toString());
+		locationName2.setText(currentLocation.toString());
+
 		
 		long_date.setText(dates[0].unixToDate());
 		long_temp.setText(String.valueOf(temps[0] + getTempUnits()));
