@@ -65,7 +65,7 @@ public class City implements Serializable {
      * @return String representation of city object
      */
     public String toString() {
-    	if (cityName != "") {
+    	if (!cityName.equals("")) {
         	return cityName + ", " + countryName;
     	} 
     	return countryName;
