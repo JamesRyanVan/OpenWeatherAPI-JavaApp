@@ -776,7 +776,7 @@ public class AppWindow {
 			btnRefresh.setEnabled(false);
 		
 		try {
-		    Image img = ImageIO.read(getClass().getResource("/main/resources/refresh-icon.png"));
+		    Image img = ImageIO.read(getClass().getResource("/refresh-icon.png"));
 		    btnRefresh.setIcon(new ImageIcon(img));
 		  } catch (IOException ex) {
 		  }
@@ -1227,12 +1227,12 @@ public class AppWindow {
 		panel_local.add(temperature);
 		
 		temp_max.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		temp_max.setBounds(197, 61, 100, 32);
+		temp_max.setBounds(197, 61, 150, 32);
 		temp_max.setVisible(settings.viewTemp());
 		panel_local.add(temp_max);
 		
 		temp_min.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		temp_min.setBounds(323, 61, 100, 32);
+		temp_min.setBounds(323, 61, 150, 32);
 		temp_min.setVisible(settings.viewTemp());
 		panel_local.add(temp_min);
 		
