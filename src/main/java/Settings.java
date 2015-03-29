@@ -23,7 +23,7 @@ public class Settings implements Serializable{
 
 	/* Boolean values to determine whether or not user wishes to view corresponding data */
 	boolean Temp, WindSpeedAndDir, SkyCondition, AirPressure, Humidity,
-	SunsetAndRise, MetricUnits;
+	SunsetAndRise, MetricUnits, precipitation;
 	
 	/* Array storing city's */
 	private City[] cityList;
@@ -48,7 +48,7 @@ public class Settings implements Serializable{
 	 * @param city int value of city ID for current city. Initially chosen upon startup
 	 */
 	public Settings(boolean temp, boolean windSpeed, boolean sky, boolean airPressure, boolean humidity,
-			boolean sunset, boolean metric, City city)
+			boolean sunset, boolean metric, City city,boolean precip)
 	{
 		Temp = temp;
 		WindSpeedAndDir = windSpeed;
@@ -61,6 +61,7 @@ public class Settings implements Serializable{
 		cityList[listSize] = city;
 		listSize++;
 		currentCity = city;
+		precipitation = precip;
 	}
 	
 	/*
@@ -119,6 +120,10 @@ public class Settings implements Serializable{
 		return MetricUnits;
 	}
 	
+	public boolean viewPrecipitation(){
+		return precipitation;
+	}
+	
 	/*
 	 * @param temp true if user wishes to view temperature
 	 */
@@ -126,6 +131,7 @@ public class Settings implements Serializable{
 	{
 		Temp = temp;
 	}
+	
 	
 	/*
 	 * @param windSpeed true if user wishes to view wind speed and direction
@@ -175,7 +181,11 @@ public class Settings implements Serializable{
 		MetricUnits = metric;
 	}
 	
-	/*
+	public void setViewPrecipitation(boolean precip){
+		precipitation = precip;
+	}
+	
+	/**
 	 * @param newLoc int value of new city ID to be added to city ID list
 	 */
 	public void addLocation(City newLoc)
