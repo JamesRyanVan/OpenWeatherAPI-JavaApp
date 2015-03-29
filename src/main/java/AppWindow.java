@@ -1001,6 +1001,12 @@ public class AppWindow {
 		else
 			return " mph";
 	}
+	private String getPrecipUnits(){
+		if (settings.viewMetricUnits())
+			return " mm";
+		else 
+			return " mm";
+	}
 	
 	private String getPressure(double pressure){
 		DecimalFormat df = new DecimalFormat("#0.00");
@@ -1082,7 +1088,7 @@ public class AppWindow {
 		double pressureConvert = localWeather.getAirPressure();
 		airpressurevalue.setText(getPressure(pressureConvert));
 		humidityvalue.setText(String.valueOf(localWeather.getHumidity())+" %");
-		dailyPrecipValue.setText(String.valueOf(df.format(dailyPrecip))+" mm");
+		dailyPrecipValue.setText(String.valueOf(df.format(dailyPrecip))+getPrecipUnits());
 		
 		time = localWeather.getSunriseTime();
 		sunriseValue.setText(String.valueOf(time.unixToTime()));
@@ -1128,7 +1134,7 @@ public class AppWindow {
 		time1.setText(times[0].unixToTime());
 		temp1.setText("Temp: " + String.valueOf(temps[0]) + getTempUnits());				
 		sky1.setText("Sky: " + skys[0]);
-		rain1.setText("Precip: " + precips[0]);
+		rain1.setText("Precip: " + precips[0]+getPrecipUnits());
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[0] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1138,7 +1144,7 @@ public class AppWindow {
 		time2.setText(times[1].unixToTime());
 		temp2.setText("Temp: " + String.valueOf(temps[1]) + getTempUnits());				
 		sky2.setText("Sky: " + skys[1]);
-		rain2.setText("Precip: " + precips[1]);
+		rain2.setText("Precip: " + precips[1]+getPrecipUnits());
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[1] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1148,7 +1154,7 @@ public class AppWindow {
 		time3.setText(times[2].unixToTime());
 		temp3.setText("Temp: " + String.valueOf(temps[2]) + getTempUnits());				
 		sky3.setText("Sky: " + skys[2]);
-		rain3.setText("Precip: " + precips[2]);
+		rain3.setText("Precip: " + precips[2]+getPrecipUnits());
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[2] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1158,7 +1164,7 @@ public class AppWindow {
 		time4.setText(times[3].unixToTime());
 		temp4.setText("Temp: " + String.valueOf(temps[3]) + getTempUnits());				
 		sky4.setText("Sky: " + skys[3]);
-		rain4.setText("Precip: " + precips[3]);
+		rain4.setText("Precip: " + precips[3]+getPrecipUnits());
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[3] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1168,7 +1174,7 @@ public class AppWindow {
 		time5.setText(times[4].unixToTime());
 		temp5.setText("Temp: " + String.valueOf(temps[4]) + getTempUnits());				
 		sky5.setText("Sky: " + skys[4]);
-		rain5.setText("Precip: " + precips[4]);
+		rain5.setText("Precip: " + precips[4]+getPrecipUnits());
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[4] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1178,7 +1184,7 @@ public class AppWindow {
 		time6.setText(times[5].unixToTime());
 		temp6.setText("Temp: " + String.valueOf(temps[5]) + getTempUnits());				
 		sky6.setText("Sky: " + skys[5]);
-		rain6.setText("Precip: " + precips[5]);
+		rain6.setText("Precip: " + precips[5]+getPrecipUnits());
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[5] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1188,7 +1194,7 @@ public class AppWindow {
 		time7.setText(times[6].unixToTime());
 		temp7.setText("Temp: " + String.valueOf(temps[6]) + getTempUnits());				
 		sky7.setText("Sky: " + skys[6]);
-		rain7.setText("Precip: " + precips[6]);
+		rain7.setText("Precip: " + precips[6]+getPrecipUnits());
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[6] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1198,7 +1204,7 @@ public class AppWindow {
 		time8.setText(times[7].unixToTime());
 		temp8.setText("Temp: " + String.valueOf(temps[7] + getTempUnits()));				
 		sky8.setText("Sky: " + skys[7]);
-		rain8.setText("Precip: " + precips[7]);
+		rain8.setText("Precip: " + precips[7]+getPrecipUnits());
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[7] + ".png");
 		skyImages = ImageIO.read(url);
@@ -1227,7 +1233,7 @@ public class AppWindow {
 		long_temp.setText(String.valueOf(temps[0] + getTempUnits()));
 		long_temp_max.setText(String.valueOf(maxTemps[0] + getTempUnits()));
 		long_temp_min.setText(String.valueOf(minTemps[0] + getTempUnits()));
-		long_temp_precip.setText(String.valueOf(precips[0]));
+		long_temp_precip.setText(String.valueOf(precips[0])+getPrecipUnits());
 		long_temp_sky.setText(sky[0]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[0] + ".png");
@@ -1239,7 +1245,7 @@ public class AppWindow {
 		long_temp1.setText(String.valueOf(temps[1] + getTempUnits()));
 		long_temp_max1.setText(String.valueOf(maxTemps[1] + getTempUnits()));
 		long_temp_min1.setText(String.valueOf(minTemps[1] + getTempUnits()));
-		long_temp_precip1.setText(String.valueOf(precips[1]));
+		long_temp_precip1.setText(String.valueOf(precips[1])+getPrecipUnits());
 		long_temp_sky1.setText(sky[1]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[1] + ".png");
@@ -1251,7 +1257,7 @@ public class AppWindow {
 		long_temp2.setText(String.valueOf(temps[2] + getTempUnits()));
 		long_temp_max2.setText(String.valueOf(maxTemps[2] + getTempUnits()));
 		long_temp_min2.setText(String.valueOf(minTemps[2] + getTempUnits()));
-		long_temp_precip2.setText(String.valueOf(precips[2]));
+		long_temp_precip2.setText(String.valueOf(precips[2])+getPrecipUnits());
 		long_temp_sky2.setText(sky[2]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[2] + ".png");
@@ -1263,7 +1269,7 @@ public class AppWindow {
 		long_temp3.setText(String.valueOf(temps[3] + getTempUnits()));
 		long_temp_max3.setText(String.valueOf(maxTemps[3] + getTempUnits()));
 		long_temp_min3.setText(String.valueOf(minTemps[3] + getTempUnits()));
-		long_temp_precip3.setText(String.valueOf(precips[3]));
+		long_temp_precip3.setText(String.valueOf(precips[3])+getPrecipUnits());
 		long_temp_sky3.setText(sky[3]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[3] + ".png");
@@ -1275,7 +1281,7 @@ public class AppWindow {
 		long_temp4.setText(String.valueOf(temps[4] + getTempUnits()));
 		long_temp_max4.setText(String.valueOf(maxTemps[4] + getTempUnits()));
 		long_temp_min4.setText(String.valueOf(minTemps[4] + getTempUnits()));
-		long_temp_precip4.setText(String.valueOf(precips[4]));
+		long_temp_precip4.setText(String.valueOf(precips[4])+getPrecipUnits());
 		long_temp_sky4.setText(sky[4]);
 		
 		url = new URL("http://openweathermap.org/img/w/" + icons[4] + ".png");
