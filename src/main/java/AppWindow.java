@@ -60,6 +60,7 @@ import javax.swing.border.EtchedBorder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 public class AppWindow {
 
 	JFrame frmOpenweatherapp;
@@ -78,6 +79,8 @@ public class AppWindow {
 	private Time time;
 	
 	final String DEGREE  = "\u00b0";
+	
+	private double dailyPrecip=0;
 	
 	// Location ComboBox
 	private DefaultComboBoxModel<City> locationModel= new DefaultComboBoxModel<City>();;
@@ -119,6 +122,8 @@ public class AppWindow {
 	private JLabel lblHumidity = new JLabel();
 	private JLabel lblLow = new JLabel();
 	private JLabel map = new JLabel();
+	private JLabel dailyPrecipLabel = new JLabel();
+	private JLabel dailyPrecipValue = new JLabel();
 	
 	private JLabel locationName1 = new JLabel();
 	private JPanel panel = new JPanel() {
@@ -513,7 +518,7 @@ public class AppWindow {
 					
 				}catch (FileNotFoundException e){
 					System.out.println("No previous settings found, using default values");
-					settings = new Settings(true, true, true, true, true, true, true, null);
+					settings = new Settings(true, true, true, true, true, true, true, null,true);
 					locationModel.addElement(new City(0, "", "Add Location")); 
 				}catch (IOException e){
 					e.printStackTrace();
@@ -727,6 +732,17 @@ public class AppWindow {
 			});
 		mnView.add(chckbxmntmSunsetsunrise);
 		
+		JCheckBoxMenuItem chckbxmntmPrecipitation = new JCheckBoxMenuItem("Precipitation");
+		chckbxmntmPrecipitation.setSelected(settings.viewPrecipitation());
+		chckbxmntmPrecipitation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				settings.setViewPrecipitation(!settings.viewPrecipitation());
+				dailyPrecipLabel.setVisible(settings.viewPrecipitation());
+				dailyPrecipValue.setVisible(settings.viewPrecipitation());
+			}
+			});
+		mnView.add(chckbxmntmPrecipitation);
+		
 		JSeparator separator = new JSeparator();
 		mnView.add(separator);
 		
@@ -915,8 +931,8 @@ public class AppWindow {
 		System.out.println(local.toString());
 	
 		try {
+		panel_short_values(shortTerm);	
 		panel_local_values(local);
-		panel_short_values(shortTerm);
 		panel_long_values(longTerm);
 		} catch (JSONException e) {
 			throw new JSONException("Error with JSONObject formatting.");
@@ -1026,6 +1042,7 @@ public class AppWindow {
 		double pressureConvert = localWeather.getAirPressure();
 		airpressurevalue.setText(getPressure(pressureConvert));
 		humidityvalue.setText(String.valueOf(localWeather.getHumidity())+" %");
+		dailyPrecipValue.setText(String.valueOf(dailyPrecip)+" mm");
 		
 		time = localWeather.getSunriseTime();
 		sunriseValue.setText(String.valueOf(time.unixToTime()));
@@ -1059,6 +1076,8 @@ public class AppWindow {
 		Time[] times = shortTermWeather.getTimes();
 		String[] skys = shortTermWeather.getSkyConditions();
 		String[] icons = shortTermWeather.getIcons();
+		dailyPrecip = shortTermWeather.getDailyPrecip();
+		
 		
 		locationName1.setText(locationModel.getSelectedItem().toString());
 		
@@ -1265,11 +1284,16 @@ public class AppWindow {
 		humidityvalue.setVisible(settings.viewHumidity());
 		panel_local.add(humidityvalue);
 		
-		sunriseValue.setBounds(200, 314, 120, 14);
+		
+		dailyPrecipValue.setBounds(200,292,80,14);
+		dailyPrecipValue.setVisible(true);
+		panel_local.add(dailyPrecipValue);
+		
+		sunriseValue.setBounds(200, 330, 120, 14);
 		sunriseValue.setVisible(settings.viewSunsetAndRise());
 		panel_local.add(sunriseValue);
 		
-		sunsetValue.setBounds(200, 349, 120, 14);
+		sunsetValue.setBounds(200, 363, 120, 14);
 		sunsetValue.setVisible(settings.viewSunsetAndRise());
 		panel_local.add(sunsetValue);
 		
@@ -1299,13 +1323,13 @@ public class AppWindow {
 		
 		lblSunrise = new JLabel("SunRise");
 		lblSunrise.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblSunrise.setBounds(40, 303, 110, 33);
+		lblSunrise.setBounds(40, 319, 110, 33);
 		lblSunrise.setEnabled(settings.viewSunsetAndRise());
 		panel_local.add(lblSunrise);
 		
 		lblSunset = new JLabel("SunSet");
 		lblSunset.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblSunset.setBounds(40, 338, 93, 33);
+		lblSunset.setBounds(40, 353, 93, 33);
 		lblSunset.setEnabled(settings.viewSunsetAndRise());
 		panel_local.add(lblSunset);
 		
@@ -1314,6 +1338,13 @@ public class AppWindow {
 		lblHumidity.setBounds(40, 251, 122, 25);
 		lblHumidity.setEnabled(settings.viewHumidity());
 		panel_local.add(lblHumidity);
+		
+		
+		dailyPrecipLabel = new JLabel("24Hr Precip");
+		dailyPrecipLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		dailyPrecipLabel.setBounds(40, 285, 122, 25);
+		dailyPrecipLabel.setEnabled(settings.viewPrecipitation());
+		panel_local.add(dailyPrecipLabel);
 		
 		lblCurrent = new JLabel("Current:");
 		lblCurrent.setFont(new Font("Tahoma", Font.PLAIN, 14));

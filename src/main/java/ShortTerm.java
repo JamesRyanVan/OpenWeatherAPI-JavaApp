@@ -133,5 +133,18 @@ public class ShortTerm {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
     return Double.valueOf(twoDForm.format(d));
 	}
+	
+	public double getDailyPrecip(){
+		double[] precips = new double[8];
+		for (int x=0; x<8;x++){
+			precips[x] = roundTwoDecimals(snow[x] + rain [x]);
+		}
+		double dailyPrecip = 0;
+		for (int x=0; x<8;x++){
+			dailyPrecip = precips[x]  + dailyPrecip;
+		}
+		return dailyPrecip;
+		
+	}
 }
 

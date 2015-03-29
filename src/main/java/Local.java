@@ -15,7 +15,7 @@ import org.json.JSONObject;
 public class Local {
 	private JSONObject apiObj;
 	private Time sunriseTime, sunsetTime, updateTime;
-	private double temp, windSpeed, airPressure, humidity, tempMax, tempMin, lon, lat ;
+	private double temp, windSpeed, airPressure, humidity, tempMax, tempMin, lon, lat,rain,snow ;
 	private String skyCondition, icon;
 	private WindDirection windDir;
 	
@@ -60,6 +60,20 @@ public class Local {
 			
 			/* Get the time data from the JSON object */
 			this.updateTime = new Time(apiObj.getInt("dt"));
+			
+			try {
+				this.rain = roundTwoDecimals(apiObj.getJSONObject("rain").getDouble("3h"));
+				} catch (JSONException e){
+					this.rain = 0;
+					//System.out.println("Rain not Found");
+					
+				}
+				try {
+				this.snow = roundTwoDecimals(apiObj.getJSONObject("snow").getDouble("3h"));	
+				} catch (JSONException e){
+					this.snow = 0;
+					//System.out.println("snow not Found");
+				}
 			
 		
 		/* Ensure the location was valid and not null */
@@ -169,6 +183,10 @@ public class Local {
 	double roundTwoDecimals(double d) {
         DecimalFormat twoDForm = new DecimalFormat("#.##");
     return Double.valueOf(twoDForm.format(d));
+	}
+	
+	public double getPrecipitation(){
+		return roundTwoDecimals(rain+snow);
 	}
 	
 }
