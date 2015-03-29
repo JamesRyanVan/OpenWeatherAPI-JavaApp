@@ -504,9 +504,10 @@ public class AppWindow {
 							locationModel.addElement(cityList[i]);	
 						}
 					}
-					
-					currentLocation = settings.getCity();
-					locationModel.setSelectedItem(currentLocation);
+					if (settings.getCity() != null) {
+						currentLocation = settings.getCity();
+						locationModel.setSelectedItem(currentLocation);
+					}
 					
 					System.out.println(currentLocation);
 					
