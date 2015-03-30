@@ -1459,7 +1459,7 @@ public class AppWindow {
 		picture.setBounds(77, 53, 46, 46);
 		panel.add(picture);
 		
-		rain1.setBounds(10, 102, 100, 14);
+		rain1.setBounds(10, 102, 115, 14);
 		panel.add(rain1);
 		
 		panel.setBounds(67, 43, 133, 143);
@@ -1488,7 +1488,7 @@ public class AppWindow {
 		picture2.setBounds(77, 58, 46, 46);
 		panel_1.add(picture2);
 		
-		rain2.setBounds(10, 102, 100, 14);
+		rain2.setBounds(10, 102, 115, 14);
 		panel_1.add(rain2);
 		
 		panel_2.setLayout(null);
@@ -1512,7 +1512,7 @@ public class AppWindow {
 		picture3.setBounds(77, 58, 46, 46);
 		panel_2.add(picture3);
 		
-		rain3.setBounds(10, 102, 100, 14);
+		rain3.setBounds(10, 102, 115, 14);
 		panel_2.add(rain3);
 		
 		panel_3.setLayout(null);
@@ -1536,7 +1536,7 @@ public class AppWindow {
 		picture4.setBounds(77, 58, 46, 46);
 		panel_3.add(picture4);
 		
-		rain4.setBounds(10, 102, 100, 14);
+		rain4.setBounds(10, 102, 115, 14);
 		panel_3.add(rain4);
 		
 		panel_4.setLayout(null);
@@ -1560,7 +1560,7 @@ public class AppWindow {
 		picture7.setBounds(77, 60, 46, 46);
 		panel_4.add(picture7);
 		
-		rain5.setBounds(10, 102, 100, 14);
+		rain5.setBounds(10, 102, 115, 14);
 		panel_4.add(rain5);
 		
 		panel_5.setLayout(null);
@@ -1584,7 +1584,7 @@ public class AppWindow {
 		picture8.setBounds(77, 60, 46, 46);
 		panel_5.add(picture8);
 		
-		rain6.setBounds(10, 102, 100, 14);
+		rain6.setBounds(10, 102, 115, 14);
 		panel_5.add(rain6);
 		
 		panel_6.setLayout(null);
@@ -1608,7 +1608,7 @@ public class AppWindow {
 		picture5.setBounds(77, 56, 46, 46);
 		panel_6.add(picture5);
 		
-		rain7.setBounds(10, 102, 100, 14);
+		rain7.setBounds(10, 102, 115, 14);
 		panel_6.add(rain7);
 		
 		panel_7.setLayout(null);
@@ -1632,7 +1632,7 @@ public class AppWindow {
 		picture6.setBounds(77, 58, 46, 46);
 		panel_7.add(picture6);
 		
-		rain8.setBounds(10, 102, 100, 14);
+		rain8.setBounds(10, 102, 115, 14);
 		panel_7.add(rain8);
 		
 		// Long Term Panel Labels //
@@ -1701,7 +1701,7 @@ public class AppWindow {
 		long_temp_precip = new JLabel("00");
 		long_temp_precip.setHorizontalAlignment(SwingConstants.CENTER);
 		long_temp_precip.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		long_temp_precip.setBounds(30, 284, 70, 14);
+		long_temp_precip.setBounds(30, 284, 100, 14);
 		panel_long_0.add(long_temp_precip);
 		
 		panel_long_1.setLayout(null);
@@ -1759,7 +1759,7 @@ public class AppWindow {
 		long_temp_precip1 = new JLabel("00");
 		long_temp_precip1.setHorizontalAlignment(SwingConstants.CENTER);
 		long_temp_precip1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		long_temp_precip1.setBounds(30, 284, 70, 14);
+		long_temp_precip1.setBounds(30, 284, 100, 14);
 		panel_long_1.add(long_temp_precip1);
 		
 		panel_long_2.setLayout(null);
@@ -1817,7 +1817,7 @@ public class AppWindow {
 		long_temp_precip2 = new JLabel("00");
 		long_temp_precip2.setHorizontalAlignment(SwingConstants.CENTER);
 		long_temp_precip2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		long_temp_precip2.setBounds(30, 284, 70, 14);
+		long_temp_precip2.setBounds(30, 284, 100, 14);
 		panel_long_2.add(long_temp_precip2);
 		
 		panel_long_3.setLayout(null);
@@ -1875,7 +1875,7 @@ public class AppWindow {
 		long_temp_precip3 = new JLabel("00");
 		long_temp_precip3.setHorizontalAlignment(SwingConstants.CENTER);
 		long_temp_precip3.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		long_temp_precip3.setBounds(30, 284, 70, 14);
+		long_temp_precip3.setBounds(30, 284, 100, 14);
 		panel_long_3.add(long_temp_precip3);
 		
 		panel_long_4.setLayout(null);
@@ -1933,7 +1933,7 @@ public class AppWindow {
 		long_temp_precip4 = new JLabel("00");
 		long_temp_precip4.setHorizontalAlignment(SwingConstants.CENTER);
 		long_temp_precip4.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		long_temp_precip4.setBounds(30, 284, 70, 14);
+		long_temp_precip4.setBounds(30, 284, 100, 14);
 		panel_long_4.add(long_temp_precip4);
 		
 	}	
