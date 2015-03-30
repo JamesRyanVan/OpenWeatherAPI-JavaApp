@@ -1,9 +1,5 @@
-//Run the following Install commands from the commandline while in the main directory (containing pom.xml)
-
-mvn install:install-file -Dfile=lib/synthetica-2.19.1.jar -DgroupId=synthetica -DartifactId=synthetica-main -Dversion=2.19.1 -Dpackaging=jar
-
-mvn install:install-file -Dfile=lib/syntheticaAluOxide-2.9.7.jar -DgroupId=synthetica -DartifactId=synthetica-AluOxide -Dversion=2.9.7 -Dpackaging=jar
-
+//Run the command to install the local jar files
+mvn validate 
 //Run the command
 
 mvn compile
