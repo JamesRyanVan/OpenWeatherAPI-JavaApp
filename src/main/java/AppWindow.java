@@ -797,11 +797,6 @@ public class AppWindow {
 		group.add(rdbtnmntmMetric);
 		group.add(rdbtnmntmImperial);
 		
-		JMenu mnHelp = new JMenu("Help");
-		menuBar.add(mnHelp);
-		
-		JMenuItem mntmHelpDoc = new JMenuItem("Help Doc");
-		mnHelp.add(mntmHelpDoc);
 		frmOpenweatherapp.getContentPane().setLayout(null);
 		
 		return menuBar;
