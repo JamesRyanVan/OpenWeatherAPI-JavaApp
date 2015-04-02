@@ -1,5 +1,58 @@
 # team10
 
-A team project being developed for CS2212B Introduction to Software Engineering. The project is a weather viewing program that allows a user to view the current weather in their location. The program is being developed in Java and will have a Swing GUI. The program will make use of the OpenWeatherMap api. 
+- Title 0
+OpenWeatherApp
 
-The Software will be written in java and have support on any machine that can run the virtual java machine. The user will be able to view local, shortterm, and longterm weather data of their selected locations. The location will be added by user and shown in a google map. The user will also be able change the modules shown in the application, such as toggling percepitation, windspead, sun information and more. The weather data will be availble in metric or imperial units, and they will have the ability to refresh the current data. The user also can quit the application at any time.
+- Synopsis -
+OpenWeatherApp is a weather viewing program that allows a user to view the current weather, long-term and short-term forecast for multiple locations. 
+
+The program developed in Java with the Swing GUI. The program gets weather information from the OpenWeatherMap api. It makes use of Jyloo Software's Synthetica (version 2.19.1) and Synthetica AluOxide (version 2.9.7) Java Look and Feel and json.org Java library (version 20090211).
+
+- Download and Install -
+Download the latest version (3.0) at https://github.com/UWO-2212-W2015/team10/tree/master/build. 
+
+The program comes with the necessary dependencies to execute. No installation is needed.
+
+You must have Java 1.7 or above to run OpenWeatherApp. To run the application, go to the folder containing the downloaded jar and type: java -jar 10_OpenWeatherApp-3.0-jar-with-dependencies.jar
+
+- Build -
+
+To build the program download the source code archive file (zip/tar.gz) at https://github.com/UWO-2212-W2015/team10/releases/.
+Extract it. Ensure maven 3.0 or higher is installed. From a command line program, change to the main directory containing pom.xml and type: "mvn validate" then "mvn package". This will be build a jar file in the target directory.
+
+The following dependencies were included in pom.xml:
+
+<dependencies>
+<dependency>
+	<groupId>org.json</groupId>
+	<artifactId>json</artifactId>
+	<version>20090211</version>
+</dependency>
+
+<dependency>
+        <groupId>synthetica</groupId>
+        <artifactId>synthetica-main</artifactId>
+        <version>2.19.1</version>
+</dependency>
+
+<dependency>
+        <groupId>synthetica</groupId>
+        <artifactId>synthetica-AluOxide</artifactId>
+        <version>2.9.7</version>
+</dependency>
+
+</dependencies>
+
+- Usage Example -
+
+LINK TO VIDEO
+
+- Documentation -
+
+The JavaDoc can be viewed by opening index.html in the project source code's 'doc' folder.
+
+
+
+
+
+
