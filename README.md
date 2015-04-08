@@ -44,9 +44,9 @@ The following dependencies were included in pom.xml:
 
 </dependencies>
 
-- Usage Example -
-
-LINK TO VIDEO
+Usage Example
+-----------
+Please see our video at: https://youtu.be/oIVq32y900Y
 
 Documentation
 -----------
